@@ -15,6 +15,8 @@ class Heatmap(Report):
       fmt=".2f",
       square=True,
       linewidths=.5,
+      xticklabels=True,
+      yticklabels=True,
     )
 
-    super().run()
+    super().run('heatmap')

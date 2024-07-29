@@ -23,10 +23,8 @@ class Report(ABC):
         self._imagesExtension = config['eda']['images_extension']
         self.__identifier = identifier
 
-    def getImageFilepath(self):
-        directory = f'{self._imagesDirectory}/{self.__identifier}'.split('/')
-        filename = directory.pop()
-        directory = '/'.join(directory)
+    def getImageFilepath(self, filename):
+        directory = f'{self._imagesDirectory}/{self.__identifier}'
         if not os.path.isdir(directory):
             os.makedirs(directory)
         if self._saveTimestamp:
@@ -35,9 +33,10 @@ class Report(ABC):
         return f'{directory}/{filename}'
 
     @abstractmethod
-    def run(self):
+    def run(self, plotId):
         if self._showPlot:
+            plt.tight_layout()
             plt.show()
         if self._saveImage:
-            plt.savefig(self.getImageFilepath())
-            print(self.__class__.__name__ + f': {self.getImageFilepath()} written to disk')
+            plt.savefig(self.getImageFilepath(plotId))
+            print(self.__class__.__name__ + f': {self.getImageFilepath(plotId)} written to disk')
