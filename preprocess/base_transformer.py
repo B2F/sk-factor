@@ -4,7 +4,9 @@ from sklearn.preprocessing import FunctionTransformer
 
 class BaseTransformer():
 
-    def transformer(self, df) -> pd.DataFrame:
+    _action = 'transformer'
+
+    def transform(self, df) -> pd.DataFrame:
         # Override this method to alter df directly via a FunctionTransformer.
         return df
 
@@ -12,6 +14,6 @@ class BaseTransformer():
         # Preprocess for columns selected in the .ini config.
         return Pipeline(
             steps=[
-                ('transformer', FunctionTransformer(self.transformer))
+                (self._action, FunctionTransformer(self.transform))
             ]
         )

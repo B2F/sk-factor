@@ -50,6 +50,12 @@ if argument.train_files:
 
     df_train = pd.concat(list(map(readFile, argument.train_files)), axis = mapAxis)
 
+    # Global preprocess training:
+    for action in eval(config['preprocess']['preprocessors']):
+        preprocessClass = getClassFromConfig('preprocess', action)
+        preprocessObject = preprocessClass()
+        df_train = preprocessObject.preprocess(df_train)
+
     # Features preprocess training:
     baseTransformer = getClassFromConfig('preprocess', 'base_transformer')()
     encoders = []
@@ -59,7 +65,7 @@ if argument.train_files:
         passthrough = getClassFromConfig('preprocess', 'passthrough')()
         features = df_train.columns if transformers['passthrough'] == [] else transformers['passthrough']
         encoders.append(('passthrough', passthrough.pipeline(), features))
-    del transformers['passthrough']
+        del transformers['passthrough']
     for action, features in transformers.items():
         preprocessClass = getClassFromConfig('preprocess', action)
         preprocessObject = preprocessClass()
@@ -70,22 +76,40 @@ if argument.train_files:
         verbose_feature_names_out=eval(config['preprocess']['verbose_feature_names_out'])
     )
 
-    # Global preprocess training:
-    for action in eval(config['preprocess']['preprocessors']):
-        preprocessClass = getClassFromConfig('preprocess', action)
-        preprocessObject = preprocessClass()
-        df_train = preprocessObject.preprocess(df_train)
-
     df_train = preprocessor.set_output(transform="pandas").fit_transform(df_train)
 
-    groupColumn = 'passthrough__group' if eval(config['preprocess']['verbose_feature_names_out']) else 'group'
-    if eval(config['preprocess']['groups']) and groupColumn in df_train.columns:
-        df_train.drop(groupColumn, axis=1, inplace=True)
-
     # Training plots:
+    # @todo: choose features for eda plots.
     for plot in eval(config['eda']['plots']):
         plotClass = getClassFromConfig('eda_plots', plot)
         plotObject = plotClass(df_train, config, '/'.join(argument.train_files))
         plotObject.run()
 
-# cross_validate with cv from validate directory, dynamically
+    y_train = df_train[config['training']['label']]
+    x_train = df_train
+    x_train.drop(config['training']['label'], axis=1)
+
+    # Splitting training / validaton sets:
+    # Only one splitting method by script execution.
+    # Will return an iterable list of x,y tuple
+    groups = None
+    if config['training'].get('splitting_method') is not None:
+        iteratorClass = getClassFromConfig('split', config['training']['splitting_method'])
+    if config['training']['group_column'] is not None:
+        groups = x_train[config['training']['group_column']]
+    nb_splits = int(config['training']['nb_splits'])
+    trainingSets = iteratorClass.split(nb_splits, x_train, y_train, groups)
+
+    groupColumn = 'passthrough__group' if eval(config['preprocess']['verbose_feature_names_out']) else 'group'
+    if eval(config['preprocess']['groups']) and groupColumn in df_train.columns:
+        df_train.drop(groupColumn, axis=1, inplace=True)
+
+    # @see https://blent.ai/blog/a/les-pipelines-de-scikit-learn
+    # Assemble all pipelines looping through learning_methods
+
+    # Run optionnal sampling methods and power transforms.
+
+    # Loop through above pipelines and run cross_validate.
+    # Pass An iterable yielding (train, test) splits as arrays of indices. as cv argument.
+
+    # Optionnaly save models and coefs (feature importance) from the output of cross_validate
