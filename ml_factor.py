@@ -22,15 +22,6 @@ if eval(config['debug']['enabled']) == True:
     debugpy.listen((config['debug']['host'], eval(config['debug']['port'])))
     debugpy.breakpoint()
 
-# Features filtering:
-def getDfColumns(columns):
-    includedFeatures = eval(config['features']['includedFeatures'])
-    columns = includedFeatures if includedFeatures != None else columns
-    droppedFeatures = eval(config['features']['droppedFeatures'])
-    if eval(config['preprocess']['groups']) and 'group' not in columns:
-        columns.append('group')
-    return droppedFeatures if droppedFeatures != None else columns
-
 # Modules loading
 def getClassFromConfig(package, config):
     # Only one directory sub level is supported atm.
@@ -58,21 +49,25 @@ if argument.train_files:
         return df
 
     df_train = pd.concat(list(map(readFile, argument.train_files)), axis = mapAxis)
-    df_train = df_train[getDfColumns(df_train.columns)]
 
     # Features preprocess training:
     baseTransformer = getClassFromConfig('preprocess', 'base_transformer')()
-    encoders = [
-        ('', baseTransformer.pipeline(), df_train.columns)
-    ]
+    encoders = []
     transformers = eval(config['preprocess']['transformers'])
+    # passthrough is a special transformer to keep original features untouched.
+    if 'passthrough' in transformers:
+        passthrough = getClassFromConfig('preprocess', 'passthrough')()
+        features = df_train.columns if transformers['passthrough'] == [] else transformers['passthrough']
+        encoders.append(('passthrough', passthrough.pipeline(), features))
+    del transformers['passthrough']
     for action, features in transformers.items():
         preprocessClass = getClassFromConfig('preprocess', action)
         preprocessObject = preprocessClass()
         encoders.append((action, preprocessObject.pipeline(), features))
 
     preprocessor = ColumnTransformer(
-        transformers=encoders
+        transformers=encoders,
+        verbose_feature_names_out=eval(config['preprocess']['verbose_feature_names_out'])
     )
 
     # Global preprocess training:
@@ -83,8 +78,9 @@ if argument.train_files:
 
     df_train = preprocessor.set_output(transform="pandas").fit_transform(df_train)
 
-    if eval(config['preprocess']['groups']):
-        df_train.drop('__group', axis=1, inplace=True)
+    groupColumn = 'passthrough__group' if eval(config['preprocess']['verbose_feature_names_out']) else 'group'
+    if eval(config['preprocess']['groups']) and groupColumn in df_train.columns:
+        df_train.drop(groupColumn, axis=1, inplace=True)
 
     # Training plots:
     for plot in eval(config['eda']['plots']):
