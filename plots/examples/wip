@@ -1,0 +1,13 @@
+# @todo set argument to see as one feature relate to the target:
+# Create a histogram for each column
+# g = sns.FacetGrid(df, row="performance")
+
+# for i, col in enumerate(df.columns):
+#   if col == 'performance':
+#     continue
+#   g.map(sns.histplot, col)
+
+# plt.tight_layout()
+# plt.show()
+
+# @todo catplot ? kdeplot ?

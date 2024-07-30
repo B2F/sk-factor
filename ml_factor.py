@@ -81,7 +81,7 @@ if argument.train_files:
     # Training plots:
     # @todo: choose features for eda plots.
     for plot in eval(config['eda']['plots']):
-        plotClass = getClassFromConfig('eda_plots', plot)
+        plotClass = getClassFromConfig('plots', plot)
         plotObject = plotClass(df_train, config, '/'.join(argument.train_files))
         plotObject.run()
 
