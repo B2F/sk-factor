@@ -3,6 +3,8 @@ import argparse
 import configparser
 import importlib
 from sklearn.compose import ColumnTransformer
+from pipeline.base_pipeline import BasePipeline
+from sklearn.model_selection import cross_validate
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-c", "--config", help = "Use a config file (cli args take precedence, similar keys)", default="ml_factor.ini")
@@ -78,8 +80,11 @@ if argument.train_files:
 
     df_train = preprocessor.set_output(transform="pandas").fit_transform(df_train)
 
+    if eval(config['preprocess']['verbose_feature_names_out']) and 'passthrough__group' in df_train.columns:
+        df_train.drop('passthrough__group', axis=1, inplace=True)
+
     # Training plots:
-    # @todo: choose features for eda plots.
+    # @todo: Further filter features for eda plots.
     for plot in eval(config['eda']['plots']):
         plotClass = getClassFromConfig('plots', plot)
         plotObject = plotClass(df_train, config, '/'.join(argument.train_files))
@@ -95,21 +100,23 @@ if argument.train_files:
     groups = None
     if config['training'].get('splitting_method') is not None:
         iteratorClass = getClassFromConfig('split', config['training']['splitting_method'])
-    if config['training']['group_column'] is not None:
+    if config['training'].get('group_column') is not None:
         groups = x_train[config['training']['group_column']]
-    nb_splits = int(config['training']['nb_splits'])
-    trainingSets = iteratorClass.split(nb_splits, x_train, y_train, groups)
+    if config['training'].get('nb_splits') is not None:
+        nb_splits = int(config['training']['nb_splits'])
+    else:
+        nb_splits = len(argument.train_files)
+    cv = iteratorClass.split(nb_splits, x_train, y_train, groups)
 
-    groupColumn = 'passthrough__group' if eval(config['preprocess']['verbose_feature_names_out']) else 'group'
-    if eval(config['preprocess']['groups']) and groupColumn in df_train.columns:
-        df_train.drop(groupColumn, axis=1, inplace=True)
+    # Assemble all estimators (sampling, classifiers ...) in a single pipeline
+    factoredPipeline = BasePipeline(config)
+    for estimator in eval(config['training']['estimators']):
+        estimator = getClassFromConfig('pipeline', estimator)(config).getEstimator()
+        factoredPipeline.addStep(estimator)
+    pipeline = factoredPipeline.getPipeline()
 
-    # @see https://blent.ai/blog/a/les-pipelines-de-scikit-learn
-    # Assemble all pipelines looping through learning_methods
+    # Combine the pipeline and splits in cross_validate
+    scores = cross_validate(pipeline, x_train, y_train, cv = cv)
 
-    # Run optionnal sampling methods and power transforms.
-
-    # Loop through above pipelines and run cross_validate.
-    # Pass An iterable yielding (train, test) splits as arrays of indices. as cv argument.
-
+    print(scores)
     # Optionnaly save models and coefs (feature importance) from the output of cross_validate
