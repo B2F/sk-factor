@@ -6,7 +6,9 @@ import os
 
 class Report(ABC):
 
-    _df: pd.DataFrame
+    _x: pd.DataFrame
+    _y: pd.DataFrame
+    _labels: pd.DataFrame
     _showPlot: bool
     _saveImage: bool
     _saveTimestamp: str
@@ -14,8 +16,10 @@ class Report(ABC):
     _imagesDirectory: str
     __identifier: str
 
-    def __init__(self, df, config, identifier):
-        self._df = df
+    def __init__(self, config, x, y, labels, identifier):
+        self._x = x
+        self._y = y
+        self._labels = labels
         self._showPlot = eval(config['eda']['show_plots'])
         self._saveImage = eval(config['eda']['save_images'])
         self._saveTimestamp = eval(config['eda']['save_timestamp'])

@@ -5,6 +5,7 @@ import importlib
 from sklearn.compose import ColumnTransformer
 from pipeline.base_pipeline import BasePipeline
 from sklearn.model_selection import cross_validate
+from sklearn.preprocessing import LabelEncoder
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-c", "--config", help = "Use a config file (cli args take precedence, similar keys)", default="ml_factor.ini")
@@ -78,21 +79,28 @@ if argument.train_files:
         verbose_feature_names_out=eval(config['preprocess']['verbose_feature_names_out'])
     )
 
-    df_train = preprocessor.set_output(transform="pandas").fit_transform(df_train)
+    labelName = config['preprocess']['label']
+    y_train = df_train[labelName].to_frame(labelName)
+    x_train = df_train
+    x_train.drop(labelName, axis=1, inplace=True)
+
+    labels = y_train
+    if eval(config['preprocess']['label_encode']) == True:
+        le = LabelEncoder()
+        y_train = pd.DataFrame(list(le.fit_transform(y_train)), columns=[labelName])
+        labels = le.classes_
+
+    x_train = preprocessor.set_output(transform="pandas").fit_transform(x_train)
 
     if eval(config['preprocess']['verbose_feature_names_out']) and 'passthrough__group' in df_train.columns:
-        df_train.drop('passthrough__group', axis=1, inplace=True)
+        x_train.drop('passthrough__group', axis=1, inplace=True)
 
     # Training plots:
     # @todo: Further filter features for eda plots.
     for plot in eval(config['eda']['plots']):
         plotClass = getClassFromConfig('plots', plot)
-        plotObject = plotClass(df_train, config, '/'.join(argument.train_files))
+        plotObject = plotClass(config, x_train, y_train, labels, '/'.join(argument.train_files))
         plotObject.run()
-
-    y_train = df_train[config['training']['label']]
-    x_train = df_train
-    x_train.drop(config['training']['label'], axis=1, inplace=True)
 
     # Splitting training / validaton sets:
     # Only one splitting method by script execution.
