@@ -87,7 +87,7 @@ if argument.train_files:
 
     y_train = df_train[config['training']['label']]
     x_train = df_train
-    x_train.drop(config['training']['label'], axis=1)
+    x_train.drop(config['training']['label'], axis=1, inplace=True)
 
     # Splitting training / validaton sets:
     # Only one splitting method by script execution.
