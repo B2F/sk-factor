@@ -8,7 +8,7 @@ from sklearn.model_selection import cross_validate
 from sklearn.preprocessing import LabelEncoder
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-c", "--config", help = "Use a config file (cli args take precedence, similar keys)", default="ml_factor.ini")
+parser.add_argument("-c", "--config", help = "Use a config file (cli args take precedence, similar keys)", default="sk_factor.ini")
 
 # -t and -p arguments can be cumulated
 parser.add_argument("-t", "--train_files", help = "Train with given file(s)", required = False, nargs = "*")
