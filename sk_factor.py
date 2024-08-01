@@ -59,17 +59,32 @@ if argument.train_files:
         preprocessObject = preprocessClass()
         df_train = preprocessObject.preprocess(df_train)
 
+    labelName = config['preprocess']['label']
+    y_train = df_train[labelName].to_frame(labelName)
+    x_train = df_train
+    x_train.drop(labelName, axis=1, inplace=True)
+
     # Features preprocess training:
     baseTransformer = getClassFromConfig('preprocess', 'base_transformer')()
     encoders = []
     transformers = eval(config['preprocess']['transformers'])
+    dfColumns = list(x_train.columns)
+
+    if eval(config['preprocess']['groups']):
+        dfColumns.remove('group')
+
+    if 'drop_columns' in transformers:
+        for feature in transformers['drop_columns']:
+            dfColumns.remove(feature)
     # passthrough is a special transformer to keep original features untouched.
     if 'passthrough' in transformers:
         passthrough = getClassFromConfig('preprocess', 'passthrough')()
-        features = df_train.columns if transformers['passthrough'] == [] else transformers['passthrough']
+        features = list(dfColumns) if transformers['passthrough'] == [] else transformers['passthrough']
         encoders.append(('passthrough', passthrough.pipeline(), features))
         del transformers['passthrough']
     for action, features in transformers.items():
+        if action == 'drop_columns':
+            continue
         preprocessClass = getClassFromConfig('preprocess', action)
         preprocessObject = preprocessClass()
         encoders.append((action, preprocessObject.pipeline(), features))
@@ -78,11 +93,6 @@ if argument.train_files:
         transformers=encoders,
         verbose_feature_names_out=eval(config['preprocess']['verbose_feature_names_out'])
     )
-
-    labelName = config['preprocess']['label']
-    y_train = df_train[labelName].to_frame(labelName)
-    x_train = df_train
-    x_train.drop(labelName, axis=1, inplace=True)
 
     labels = y_train
     if eval(config['preprocess']['label_encode']) == True:
