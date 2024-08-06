@@ -55,7 +55,7 @@ if argument.train_files:
 
     # Global preprocess training:
     for action in eval(config['preprocess']['preprocessors']):
-        preprocessClass = getClassFromConfig('preprocess', action)
+        preprocessClass = getClassFromConfig('preprocess', 'preprocessor/' + action)
         preprocessObject = preprocessClass()
         df_train = preprocessObject.preprocess(df_train)
 
@@ -78,14 +78,14 @@ if argument.train_files:
             dfColumns.remove(feature)
     # passthrough is a special transformer to keep original features untouched.
     if 'passthrough' in transformers:
-        passthrough = getClassFromConfig('preprocess', 'passthrough')()
+        passthrough = getClassFromConfig('preprocess', 'transformer/passthrough')()
         features = list(dfColumns) if transformers['passthrough'] == [] else transformers['passthrough']
         encoders.append(('passthrough', passthrough.pipeline(), features))
         del transformers['passthrough']
     for action, features in transformers.items():
         if action == 'drop_columns':
             continue
-        preprocessClass = getClassFromConfig('preprocess', action)
+        preprocessClass = getClassFromConfig('preprocess', 'transformer/' + action)
         preprocessObject = preprocessClass()
         encoders.append((action, preprocessObject.pipeline(), features))
 
