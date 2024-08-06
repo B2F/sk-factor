@@ -39,10 +39,14 @@ class Report(ABC):
         return f'{directory}/{filename}'
 
     @abstractmethod
-    def run(self, plotId):
+    def plot(self) -> str:
+        pass
+
+    def run(self):
+        plotId = self.plot()
         if self._showPlot:
             plt.tight_layout()
             plt.show()
         if self._saveImage:
             plt.savefig(self.getImageFilepath(plotId))
-            print(self.__class__.__name__ + f': {self.getImageFilepath(plotId)} written to disk')
+            print(os. getcwd()  + '/' + self.getImageFilepath(plotId) + " written to disk")

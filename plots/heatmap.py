@@ -4,7 +4,7 @@ import pandas as pd
 
 class Heatmap(Report):
 
-  def run(self):
+  def plot(self):
 
     df = pd.concat(list([self._x, self._y]), axis=1).corr()
 
@@ -22,4 +22,4 @@ class Heatmap(Report):
       yticklabels=True,
     )
 
-    super().run('heatmap')
+    return 'heatmap'
