@@ -23,14 +23,14 @@ config.read(argument.config)
 if eval(config['debug']['enabled']) == True:
     debugpy = importlib.import_module("debugpy")
     debugpy.listen((config['debug']['host'], eval(config['debug']['port'])))
-    debugpy.breakpoint()
+    debugpy.wait_for_client()
 
 # Modules loading
 def getClassFromConfig(package, config):
-    # Only one directory sub level is supported atm.
     if config.find('/') != -1:
-        directory, moduleName = config.split('/')
-        classModule = importlib.import_module(f"{package}.{directory}.{moduleName}")
+        directory, separator, moduleName = config.rpartition('/')
+        package = package + '.' + directory.replace('/', '.')
+        classModule = importlib.import_module(f"{package}.{moduleName}")
     else:
         moduleName = config
         classModule = importlib.import_module(f"{package}.{moduleName}")
