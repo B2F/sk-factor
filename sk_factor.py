@@ -107,10 +107,11 @@ if argument.train_files:
 
     # Training plots:
     # @todo: Further filter features for eda plots.
-    for plot in eval(config['eda']['plots']):
-        plotClass = getClassFromConfig('plots', plot)
-        plotObject = plotClass(config, x_train, y_train, labels, '/'.join(argument.train_files))
-        plotObject.run()
+    if eval(config['eda']['show_plots']) is True:
+        for plot in eval(config['eda']['plots']):
+            plotClass = getClassFromConfig('plots', plot)
+            plotObject = plotClass(config, x_train, y_train, labels, '/'.join(argument.train_files))
+            plotObject.run()
 
     if eval(config['training']['enabled']) is True:
 
