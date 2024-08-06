@@ -112,29 +112,53 @@ if argument.train_files:
         plotObject = plotClass(config, x_train, y_train, labels, '/'.join(argument.train_files))
         plotObject.run()
 
-    # Splitting training / validaton sets:
-    # Only one splitting method by script execution.
-    # Will return an iterable list of x,y tuple
-    groups = None
-    if config['training'].get('splitting_method') is not None:
-        iteratorClass = getClassFromConfig('split', config['training']['splitting_method'])
-    if config['training'].get('group_column') is not None:
-        groups = x_train[config['training']['group_column']]
-    if config['training'].get('nb_splits') is not None:
-        nb_splits = int(config['training']['nb_splits'])
-    else:
-        nb_splits = len(argument.train_files)
-    cv = iteratorClass.split(nb_splits, x_train, y_train, groups)
+    if eval(config['training']['enabled']) is True:
 
-    # Assemble all estimators (sampling, classifiers ...) in a single pipeline
-    factoredPipeline = BasePipeline(config)
-    for estimator in eval(config['training']['estimators']):
-        estimator = getClassFromConfig('pipeline', estimator)(config).getEstimator()
-        factoredPipeline.addStep(estimator)
-    pipeline = factoredPipeline.getPipeline()
+        # Splitting training / validaton sets:
+        # Only one splitting method by script execution.
+        # Will return an iterable list of x,y tuple
+        groups = None
+        if config['training'].get('splitting_method') is not None:
+            iteratorClass = getClassFromConfig('split', config['training']['splitting_method'])
+        if config['training'].get('group_column') is not None and config['training']['group_column'] in x_train.index:
+            groups = x_train[config['training']['group_column']]
+        if config['training'].get('nb_splits') is not None:
+            nb_splits = int(config['training']['nb_splits'])
+        else:
+            nb_splits = len(argument.train_files)
+        if nb_splits > 1 and groups is not None:
+            cv = iteratorClass.split(nb_splits, x_train, y_train, groups)
+        else:
+            cv = 1
 
-    # Combine the pipeline and splits in cross_validate
-    scores = cross_validate(pipeline, x_train, y_train, cv = cv)
+        # Assemble all estimators (sampling, classifiers ...) in a single pipeline
+        factoredPipeline = BasePipeline(config)
+        for estimator in eval(config['training']['estimators']):
+            estimator = getClassFromConfig('pipeline', estimator)(config, x_train, y_train).getEstimator()
+            factoredPipeline.addStep(estimator)
+        pipeline = factoredPipeline.getPipeline()
 
-    print(scores)
-    # Optionnaly save models and coefs (feature importance) from the output of cross_validate
+        # @todo: add RFECV features optimisation option
+
+        # @todo: Add an additionnal step for TunedThresholdClassifierCV, GridSearchCV, RandomizedSearchCV and such.
+
+        # cv_results = cross_validate(pipeline, x_train, y_train, cv = cv, return_estimator=True)
+        # print(cv_results)
+
+        if cv > 1:
+            y_pred = cross_val_predict(pipeline, x_train, y_train, cv = cv)
+        else:
+            y_pred = cross_val_predict(pipeline, x_train, y_train)
+
+        # @todo: set the scroring in a separate modulable package, with pre-made class for confusion matrix and precision recall
+        print(y_train.value_counts())
+        conf_matrix = confusion_matrix(y_train, y_pred)
+        cm_df = pd.DataFrame(conf_matrix,
+                        index = labels,
+                        columns = labels)
+        print(cm_df)
+
+        # sns.heatmap(cm_df, annot=True, fmt='d', cmap='Blues')
+        # plt.show()
+
+        # Optionnaly save models and coefs (feature importance) from the output of cross_validate
