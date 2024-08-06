@@ -5,8 +5,13 @@ class BaseLgbm(BaseEstimator):
 
     _params: dict
 
-    def __init__(self, config):
+    def __init__(self, config, x, y):
 
+        self._config = config
+        self._x = x
+        self._y = y
+
+        # @todo get the seed generation out of this class to print it in the main script
         if config['training']['seed'] is int:
             seed = config['training']['seed']
         elif config['training']['seed'] == 'random':

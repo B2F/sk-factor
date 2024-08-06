@@ -6,6 +6,7 @@ import os
 
 class Report(ABC):
 
+    _config: dict
     _x: pd.DataFrame
     _y: pd.DataFrame
     _labels: pd.DataFrame
@@ -17,6 +18,7 @@ class Report(ABC):
     __identifier: str
 
     def __init__(self, config, x, y, labels, identifier):
+        self._config = config
         self._x = x
         self._y = y
         self._labels = labels
