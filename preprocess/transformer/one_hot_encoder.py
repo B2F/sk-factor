@@ -4,10 +4,6 @@ from sklearn.preprocessing import OneHotEncoder as SklearnOneHotEncoder
 
 class OneHotEncoder(BaseTransformer):
 
-    def pipeline(self):
+    def transform(self):
         # Preprocess for columns selected in the .ini config.
-        return Pipeline(
-            steps=[
-                ('one_hot', SklearnOneHotEncoder(sparse_output=False, handle_unknown='ignore'))
-            ]
-        )
+        return SklearnOneHotEncoder(sparse_output=False, handle_unknown='ignore')

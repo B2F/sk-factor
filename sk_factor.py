@@ -65,7 +65,6 @@ if argument.train_files:
     x_train.drop(labelName, axis=1, inplace=True)
 
     # Features preprocess training:
-    baseTransformer = getClassFromConfig('preprocess', 'base_transformer')()
     encoders = []
     transformers = eval(config['preprocess']['transformers'])
     dfColumns = list(x_train.columns)
@@ -78,7 +77,7 @@ if argument.train_files:
             dfColumns.remove(feature)
     # passthrough is a special transformer to keep original features untouched.
     if 'passthrough' in transformers:
-        passthrough = getClassFromConfig('preprocess', 'transformer/passthrough')()
+        passthrough = getClassFromConfig('preprocess', 'transformer/passthrough')(config, x_train)
         features = list(dfColumns) if transformers['passthrough'] == [] else transformers['passthrough']
         encoders.append(('passthrough', passthrough.pipeline(), features))
         del transformers['passthrough']
@@ -86,7 +85,8 @@ if argument.train_files:
         if action == 'drop_columns':
             continue
         preprocessClass = getClassFromConfig('preprocess', 'transformer/' + action)
-        preprocessObject = preprocessClass()
+        preprocessObject = preprocessClass(config, x_train)
+        # Preprocess for columns selected in the .ini config.
         encoders.append((action, preprocessObject.pipeline(), features))
 
     preprocessor = ColumnTransformer(

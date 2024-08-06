@@ -4,10 +4,6 @@ from sklearn.pipeline import Pipeline
 
 class OrdinalEncoder(BaseTransformer):
 
-    def pipeline(self):
+    def transform(self):
         # Preprocess for columns selected in the .ini config.
-        return Pipeline(
-            steps=[
-                ('label', SklearnOrdinalEncoder())
-            ]
-        )
+        return SklearnOrdinalEncoder()
