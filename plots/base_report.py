@@ -20,7 +20,11 @@ class Report(ABC):
     _imagesDirectory: str
     __identifier: str
 
-    def __init__(self, config, x, y, labels, identifier):
+    def __init__(self, config, x, y, labels, identifier = None):
+
+        if identifier == None:
+            identifier = Path(__file__).stem
+
         self._config = config
         self._x = x
         self._y = y
