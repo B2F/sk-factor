@@ -23,7 +23,8 @@ config.read(argument.config)
 if eval(config['debug']['enabled']) == True:
     debugpy = importlib.import_module("debugpy")
     debugpy.listen((config['debug']['host'], eval(config['debug']['port'])))
-    debugpy.wait_for_client()
+    if eval(config['debug']['wait_for_client']) == True:
+        debugpy.wait_for_client()
 
 # Modules loading
 def getClassFromConfig(package, config):
