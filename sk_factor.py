@@ -119,6 +119,7 @@ if argument.train_files:
         # Only one splitting method by script execution.
         # Will return an iterable list of x,y tuple
         groups = None
+        iteratorClass = None
         if config['training'].get('splitting_method') is not None:
             iteratorClass = getClassFromConfig('split', config['training']['splitting_method'])
         if config['training'].get('group_column') is not None and config['training']['group_column'] in x_train.index:
@@ -127,10 +128,11 @@ if argument.train_files:
             nb_splits = int(config['training']['nb_splits'])
         else:
             nb_splits = len(argument.train_files)
-        if nb_splits > 1 and groups is not None:
-            cv = iteratorClass.split(nb_splits, x_train, y_train, groups)
+        if nb_splits > 1 and iteratorClass is not None:
+            iteratorObject = iteratorClass(config, x_train, y_train, nb_splits, groups)
+            cv = iteratorObject.split()
         else:
-            cv = 1
+            cv = nb_splits
 
         # Assemble all estimators (sampling, classifiers ...) in a single pipeline
         factoredPipeline = BasePipeline(config)

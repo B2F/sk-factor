@@ -1,9 +1,8 @@
-from abc import ABC
 from sklearn.model_selection import StratifiedGroupKFold
+from split.base_cv import BaseCv
 
-class StratifiedGroupKfold(ABC):
+class StratifiedGroupKfold(BaseCv):
 
-    @staticmethod
-    def split(nbSplits, x, y = None, groups = None):
-        sgkf = StratifiedGroupKFold(n_splits = nbSplits)
-        return sgkf.split(x, y, groups)
+    def split(self):
+        sgkf = StratifiedGroupKFold(n_splits = self._nSplits)
+        return sgkf.split(self._x, self._y, self._groups)
