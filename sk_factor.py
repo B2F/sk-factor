@@ -54,27 +54,37 @@ if argument.train_files:
     df_train = pd.concat(list(map(readFile, argument.train_files)), axis = mapAxis)
 
     # Global preprocess training:
+    print('Initial CSV shape:')
+    print(df_train.shape)
+
+    dfColumns = list(df_train.columns)
+
+    transformers = eval(config['preprocess']['transformers'])
+    if 'drop_columns' in transformers:
+
+        for feature in transformers['drop_columns']:
+            dfColumns.remove(feature)
+
+        df_train = df_train[dfColumns]
+        print('\nDropped columns:')
+        print(df_train.shape)
+
     for action in eval(config['preprocess']['preprocessors']):
         preprocessClass = getClassFromConfig('preprocess', 'preprocessor/' + action)
-        preprocessObject = preprocessClass()
-        df_train = preprocessObject.preprocess(df_train)
+        preprocessObject = preprocessClass(config, df_train)
+        df_train = preprocessObject.transform()
 
+    # Features preprocess training:
+    encoders = []
     labelName = config['preprocess']['label']
     y_train = df_train[labelName].to_frame(labelName)
     x_train = df_train
     x_train.drop(labelName, axis=1, inplace=True)
-
-    # Features preprocess training:
-    encoders = []
-    transformers = eval(config['preprocess']['transformers'])
-    dfColumns = list(x_train.columns)
+    dfColumns.remove(labelName)
 
     if eval(config['preprocess']['groups']):
         dfColumns.remove('group')
 
-    if 'drop_columns' in transformers:
-        for feature in transformers['drop_columns']:
-            dfColumns.remove(feature)
     # passthrough is a special transformer to keep original features untouched.
     if 'passthrough' in transformers:
         passthrough = getClassFromConfig('preprocess', 'transformer/passthrough')(config, x_train)
