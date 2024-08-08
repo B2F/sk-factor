@@ -117,8 +117,7 @@ if argument.train_files:
         x_train.drop('passthrough__group', axis=1, inplace=True)
 
     # Training plots:
-    # @todo: Further filter features for eda plots.
-    if eval(config['eda']['show_plots']) is True:
+    if eval(config['eda']['show_plots']) is True or eval(config['eda']['save_images']) is True:
         for plot in eval(config['eda']['plots']):
             plotClass = getClassFromConfig('plots', plot)
             plotObject = plotClass(config, x_train, y_train, labels, '/'.join(argument.train_files))
