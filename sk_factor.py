@@ -151,6 +151,11 @@ if argument.train_files:
             factoredPipeline.addStep(estimator)
         pipeline = factoredPipeline.getPipeline()
 
+        for runner in eval(config['training']['runners']):
+            plotClass = getClassFromConfig('training', runner)
+            plotObject = plotClass(config, x_train, y_train, labels, 'training test')
+            plotObject.run(pipeline, cv)
+
         # @todo: add RFECV features optimisation option
 
         # @todo: Add an additionnal step for TunedThresholdClassifierCV, GridSearchCV, RandomizedSearchCV and such.
@@ -158,20 +163,11 @@ if argument.train_files:
         # cv_results = cross_validate(pipeline, x_train, y_train, cv = cv, return_estimator=True)
         # print(cv_results)
 
-        if cv > 1:
-            y_pred = cross_val_predict(pipeline, x_train, y_train, cv = cv)
-        else:
-            y_pred = cross_val_predict(pipeline, x_train, y_train)
-
         # @todo: set the scroring in a separate modulable package, with pre-made class for confusion matrix and precision recall
-        print(y_train.value_counts())
-        conf_matrix = confusion_matrix(y_train, y_pred)
-        cm_df = pd.DataFrame(conf_matrix,
-                        index = labels,
-                        columns = labels)
-        print(cm_df)
 
-        # sns.heatmap(cm_df, annot=True, fmt='d', cmap='Blues')
-        # plt.show()
+        # @todo try normalize='true to better understand classes imbalance
 
         # Optionnaly save models and coefs (feature importance) from the output of cross_validate
+
+    # @todo add a --gui cli argument with automatic plugins (classes options) discovery
+    # The GUI would have tabs corresponding to following .ini sections (discovered dynamically, possibility to add sections for custom plugins)
