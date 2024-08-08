@@ -5,6 +5,7 @@ import seaborn as sns
 import time
 import os
 from matplotlib import rcParams
+from pathlib import Path
 
 class Report(ABC):
 

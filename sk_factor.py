@@ -1,14 +1,14 @@
+import os
 import pandas as pd
 import argparse
 import configparser
 import importlib
 from sklearn.compose import ColumnTransformer
 from pipeline.base_pipeline import BasePipeline
-from sklearn.model_selection import cross_validate
 from sklearn.preprocessing import LabelEncoder
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-c", "--config", help = "Use a config file (cli args take precedence, similar keys)", default="sk_factor.ini")
+parser.add_argument("-c", "--config", help = "Use a config file from the config/ directory", default="sk_factor.ini")
 
 # -t and -p arguments can be cumulated
 parser.add_argument("-t", "--train_files", help = "Train with given file(s)", required = False, nargs = "*")
@@ -18,7 +18,12 @@ parser.add_argument("-m", "--model_file", help = "Model file(s) used for predict
 argument = parser.parse_args()
 
 config = configparser.ConfigParser()
-config.read(argument.config)
+if argument.config != 'sk_factor.ini':
+    if not os.path.isfile('config/' + argument.config):
+        raise Exception('config/' + argument.config + 'not found.')
+    config.read('config/' + argument.config)
+else:
+    config.read(argument.config)
 
 if eval(config['debug']['enabled']) == True:
     debugpy = importlib.import_module("debugpy")
