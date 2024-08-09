@@ -40,7 +40,8 @@ class Report(ABC):
             rcParams['figure.figsize'] = config['eda']['figsize']
 
     def getImageFilepath(self, filename):
-        directory = f'{self._imagesDirectory}/{self.__identifier}'
+        imagePath = self.__identifier.replace('/', '-')
+        directory = f'{self._imagesDirectory}/{imagePath}'
         if not os.path.isdir(directory):
             os.makedirs(directory)
         if self._saveTimestamp:
