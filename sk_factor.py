@@ -103,6 +103,7 @@ if argument.train_files:
         preprocessClass = getClassFromConfig('preprocess', 'transformer/' + action)
         preprocessObject = preprocessClass(config, x_train)
         # Preprocess for columns selected in the .ini config.
+        features = list(dfColumns) if features == [] else features
         encoders.append((action, preprocessObject.pipeline(), features))
 
     preprocessor = ColumnTransformer(
