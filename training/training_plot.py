@@ -8,9 +8,9 @@ class TrainingPlot(Report, BaseRunner):
 
         Report.__init__(self, config, x, y, labels, identifier)
         if self._config['training'].get('show_plots'):
-            self._showPlot = self._config['training']['show_plots']
+            self._showPlot = eval(self._config['training']['show_plots'])
         if self._config['training'].get('save_images'):
-            self._saveImage = self._config['training']['save_images']
+            self._saveImage = eval(self._config['training']['save_images'])
 
     @abstractmethod
     def plot(self):
