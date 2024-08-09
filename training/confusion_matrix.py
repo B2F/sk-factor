@@ -9,16 +9,16 @@ class ConfusionMatrix(TrainingPlot):
 
     def plot(self):
 
-        text = ""
+        text = "Classes distribution:\n"
         for index, count in self._y.value_counts().to_dict().items():
-            text += str(index) + ': ' + str(count) + '\n'
+            text += str(self._labels[index]) + ': ' + str(count) + '\n'
         # y_values_count = y_train.value_counts().to_list()
         # y_values = np.unique(y_train.values)
 
-        if self._cv > 1:
-            y_pred = cross_val_predict(self._pipeline, self._x, self._y, cv = self._cv)
+        if not type(self._cv) is int or self._cv > 1:
+            y_pred = cross_val_predict(self._pipeline, self._x, self._y.values.flatten(), cv = self._cv)
         else:
-            y_pred = cross_val_predict(self._pipeline, self._x, self._y)
+            y_pred = cross_val_predict(self._pipeline, self._x, self._y.values.flatten())
 
         conf_matrix = confusion_matrix(self._y, y_pred)
         cm_df = pd.DataFrame(conf_matrix,
@@ -32,4 +32,4 @@ class ConfusionMatrix(TrainingPlot):
         ax[0].xaxis.set_ticks_position('top')
         sns.heatmap(cm_df, annot=True, fmt='d', cmap='YlOrBr', ax = ax[0])
 
-        return 'Confusion matrix'
+        return 'confusion_matrix'

@@ -113,7 +113,7 @@ if argument.train_files:
     labels = y_train
     if eval(config['preprocess']['label_encode']) == True:
         le = LabelEncoder()
-        y_train = pd.DataFrame(list(le.fit_transform(y_train)), columns=[labelName])
+        y_train = pd.DataFrame(list(le.fit_transform(y_train.values.ravel())), columns=[labelName])
         labels = le.classes_
 
     x_train = preprocessor.set_output(transform="pandas").fit_transform(x_train)

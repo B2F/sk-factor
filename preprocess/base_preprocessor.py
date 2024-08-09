@@ -18,7 +18,7 @@ class BasePreprocessor(ABC):
         return self._df
 
     def transform(self):
-        df = self.preprocess()
         print('\n' + self._id + ':')
+        df = self.preprocess()
         print(df.shape)
         return df
