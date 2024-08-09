@@ -138,7 +138,7 @@ if argument.train_files:
         iteratorClass = None
         if config['training'].get('splitting_method') is not None:
             iteratorClass = getClassFromConfig('split', config['training']['splitting_method'])
-        if config['training'].get('group_column') is not None and config['training']['group_column'] in x_train.index:
+        if config['training'].get('group_column') is not None and config['training']['group_column'] in x_train.columns:
             groups = x_train[config['training']['group_column']]
         if config['training'].get('nb_splits') is not None:
             nb_splits = int(config['training']['nb_splits'])
