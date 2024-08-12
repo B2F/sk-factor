@@ -8,12 +8,15 @@ class BasePreprocessor(ABC):
     _config = dict
     _id = Path(__file__).stem
 
-    def __init__(self, config, df: pd.DataFrame):
+    def __init__(self, config, df: pd.DataFrame, features: list = None):
         self._config = config
-        self._df = df
+        if features:
+            self._df = df[features]
+        else:
+            self._df = df
 
     @abstractmethod
-    def preprocess(self, features: list) -> pd.DataFrame:
+    def preprocess(self) -> pd.DataFrame:
         # Preprocess the whole dataset at once here.
         return self._df
 

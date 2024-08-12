@@ -14,7 +14,7 @@ class Transformers():
         return (y, le.classes_)
 
     @staticmethod
-    def apply(transformers: dict, x: pd.DataFrame, config: Config):
+    def apply(transformers: dict, config: Config, x: pd.DataFrame):
 
         verboseFeatureNamesOut = config.eq('preprocess', 'verbose_feature_names_out', True)
         encoders = []

@@ -45,23 +45,13 @@ if argument.train_files:
     transformers = config.get('preprocess', 'transformers')
     preprocessors = config.get('preprocess', 'preprocessors')
 
-    df_train = Preprocessors.apply(preprocessors, df_train)
-
-    dfColumns = list(df_train.columns)
-    labelName = config.get('preprocess', 'label')
-    y_train = df_train[labelName].to_frame(labelName)
-    x_train = df_train
-    x_train.drop(labelName, axis=1, inplace=True)
-    dfColumns.remove(labelName)
-
-    if config.get('preprocess', 'groups'):
-        dfColumns.remove('group')
-
-    x_train = Transformers.apply(transformers, x_train, config)
+    label = config.get('preprocess', 'label')
+    x_train, y_train = Preprocessors.apply(preprocessors, config, df_train, label)
+    x_train = Transformers.apply(transformers, config, x_train)
 
     labels = y_train
     if config.eq('preprocess', 'label_encode', True):
-        y_train, labels = Transformers.labelEncode(y_train, labelName)
+        y_train, labels = Transformers.labelEncode(y_train, label)
 
     ###
     # Step 2. EDA plots:

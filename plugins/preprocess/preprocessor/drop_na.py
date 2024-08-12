@@ -1,4 +1,4 @@
-from preprocess.base_preprocessor import BasePreprocessor
+from plugins.preprocess.base_preprocessor import BasePreprocessor
 from pathlib import Path
 
 class DropNa(BasePreprocessor):

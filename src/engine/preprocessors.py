@@ -1,20 +1,32 @@
 from src.engine.plugins import Plugins
 import pandas as pd
+from src.engine.config import Config
 
 class Preprocessors():
 
     @staticmethod
-    def apply(preprocessors: dict, df: pd.DataFrame):
+    def apply(preprocessors: dict, config: Config, df: pd.DataFrame, label: str) -> tuple:
+        """ Returns x and y from a given DataFrame.
+        """
 
         print('Before preprocessing:')
         print(df.shape)
 
-        if preprocessors is not dict:
+        if type(preprocessors) is not dict:
 
             return df
 
         for action, features in preprocessors.items():
-            preprocessor = Plugins.create('preprocess', 'preprocessor/' + action, df, features)
+            preprocessor = Plugins.create(
+                'preprocess', 'preprocessor/' + action,
+                config,
+                df,
+                features
+            )
             df = preprocessor.transform()
 
-        return df
+        y = df[label].to_frame(label)
+        x = df
+        x.drop(label, axis=1, inplace=True)
+
+        return x, y

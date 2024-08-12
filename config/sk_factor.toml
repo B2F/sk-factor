@@ -5,9 +5,8 @@ label_encode = true
 # Used for splitting by default (GroupKFold), see [training] group_column config.
 groupFiles = false
 # preprocessors.drop_columns = ['column_unwanted']
-# preprocessors.drop_na = []
-
 #  Pass features as is to the pipeline, empty list to keep all features.
+# preprocessors.drop_na = []
 transformers.passthrough = []
 
 #  Use with groups = true above, will encode groups from train filenames:
