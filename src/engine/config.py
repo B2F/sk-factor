@@ -37,11 +37,15 @@ class Config():
         else:
             return None
 
-    def eq(self, section, value, testvalue):
+    def eq(self, section, value, testvalue) -> bool:
 
         value = self.get(section, value)
         return value == testvalue
 
-    def getConfig(self):
+    def getConfig(self) -> dict:
 
         return self._config
+
+    def keys(self) -> list:
+
+        return list(self._config.keys())
