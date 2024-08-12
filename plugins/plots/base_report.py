@@ -61,14 +61,18 @@ class Report(ABC):
         pass
 
     def run(self):
+
         plotId = self.plot()
         dpi = 100
+
         if self._config['eda'].get('dpi'):
             dpi=self._config['eda']['dpi']
+
         if self._showPlot:
-            plt.tight_layout()
+            plt.margins(10, tight=False)
             plt.show()
         if self._saveImage:
             plt.savefig(self.getImageFilepath(plotId), dpi=dpi)
             print(os. getcwd()  + '/' + self.getImageFilepath(plotId) + " written to disk")
-        plt.clf()
+
+        plt.close()
