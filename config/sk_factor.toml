@@ -18,6 +18,7 @@ transformers.passthrough = []
 # Pipeline suffixes are removed by default:
 verbose_feature_names_out = false
 
+# @todo: implement pipeline save method.
 save_transformers_pipeline = false
 transformers_pipeline_directory = 'output/transformers'
 
@@ -73,6 +74,7 @@ seed = 'random'
 scoring = 'accuracy'
 
 [predictions]
+# @todo predictions:
 # Will use training by default, else use a model_file if specified.
 # model_file = model
 predictions_directory = 'output/predictions'

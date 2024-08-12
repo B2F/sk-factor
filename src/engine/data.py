@@ -5,6 +5,7 @@ class Data():
     @staticmethod
     def readFile(trainfile: str):
 
+        # @todo allow dynamic excel / csv retrieval.
         df = pd.read_csv(f"data/{trainfile}.csv")
         return df
 
