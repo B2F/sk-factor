@@ -9,6 +9,10 @@ class Preprocessors():
         print('Before preprocessing:')
         print(df.shape)
 
+        if preprocessors is not dict:
+
+            return df
+
         for action, features in preprocessors.items():
             preprocessor = Plugins.create('preprocess', 'preprocessor/' + action, df, features)
             df = preprocessor.transform()

@@ -7,7 +7,7 @@ class DistributionY(Report):
 
       n_bins = 5
       if self._config['eda'].get('n_bins'):
-          n_bins = eval(self._config['eda']['n_bins'])
+          n_bins = self._config['eda']['n_bins']
 
       plt.hist(self._y, bins=n_bins)
 

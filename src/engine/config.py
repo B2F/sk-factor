@@ -1,5 +1,6 @@
 import configparser
 import os
+import tomllib
 
 class Config():
 
@@ -9,19 +10,21 @@ class Config():
     def __init__(self, filename = 'sk_factor.ini'):
 
         if filename.find('/') == -1:
-            filename = self._DEFAULT_DIRECTORY + filename
+            filename = self._DEFAULT_DIRECTORY + filename + '.toml'
         config = configparser.ConfigParser()
         if not os.path.isfile(filename):
             raise Exception(filename + 'not found.')
-        config.read(filename)
+
+        with open(filename, "rb") as f:
+            config = tomllib.load(f)
 
         self._config = config
 
-    def get(self, section, value, isString = True):
+    def get(self, section, value):
 
         if self._config[section].get(section, value):
             value = self._config[section][value]
-            return value if isString else eval(value)
+            return value
         else:
             return None
 
@@ -32,9 +35,9 @@ class Config():
         else:
             return None
 
-    def eq(self, section, value, testvalue, isString = True):
+    def eq(self, section, value, testvalue):
 
-        value = self.get(section, value, isString)
+        value = self.get(section, value)
         return value == testvalue
 
     def getConfig(self):

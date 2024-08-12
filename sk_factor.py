@@ -22,10 +22,10 @@ argument = parser.parse_args()
 configObj = Config(argument.config)
 config = configObj.getConfig()
 
-if configObj.eq('debug', 'enabled', True, False):
+if configObj.eq('debug', 'enabled', True):
     debugpy = importlib.import_module("debugpy")
-    debugpy.listen((configObj.get('debug', 'host'), configObj.get('debug', 'port', False)))
-    if configObj.eq(*('debug', 'wait_for_client'), True, False):
+    debugpy.listen((configObj.get('debug', 'host'), configObj.get('debug', 'port')))
+    if configObj.eq(*('debug', 'wait_for_client'), True):
         debugpy.wait_for_client()
 
 if argument.train_files:
@@ -35,15 +35,15 @@ if argument.train_files:
 
     mergeAxis = configObj.get('training', 'trainfiles_axis')
     dataFrames = list(map(Data.readFile, argument.train_files))
-    if configObj.eq(*('preprocess', 'groups'), True, False):
+    if configObj.eq(*('preprocess', 'groups'), True):
         dataFrames = list(map(Data.addGroup, *(dataFrames, 'group')))
     df_train = Data.mergeFiles(dataFrames, mergeAxis)
 
     ###
     # Step 1. Preprocessing
 
-    transformers = configObj.get('preprocess', 'transformers', False)
-    preprocessors = configObj.get('preprocess', 'preprocessors', False)
+    transformers = configObj.get('preprocess', 'transformers')
+    preprocessors = configObj.get('preprocess', 'preprocessors')
 
     df_train = Preprocessors.apply(preprocessors, df_train)
 
@@ -54,39 +54,39 @@ if argument.train_files:
     x_train.drop(labelName, axis=1, inplace=True)
     dfColumns.remove(labelName)
 
-    if eval(configObj.get('preprocess', 'groups')):
+    if configObj.get('preprocess', 'groups'):
         dfColumns.remove('group')
 
     x_train = Transformers.apply(transformers, x_train, configObj)
 
     labels = y_train
-    if configObj.eq('preprocess', 'label_encode', True, False):
+    if configObj.eq('preprocess', 'label_encode', True):
         y_train, labels = Transformers.labelEncode(y_train, labelName)
 
     ###
     # Step 2. EDA plots:
 
-    if eval(config['eda']['show_plots']) is True or eval(config['eda']['save_images']) is True:
+    if configObj.eq('eda', 'show_plots', True) or configObj.eq('eda', 'save_images', True):
 
-        plots = eval(config['eda']['plots'])
+        plots = configObj.get('eda', 'plots')
         identifier = '/'.join(argument.train_files)
         Plots().run(plots, config, x_train, y_train, labels, identifier)
 
     ###
     # Step 3. Training:
 
-    if eval(config['training']['enabled']) is True:
+    if configObj.eq('training', 'enabled', True):
 
-        estimators = eval(config['training']['estimators'])
-        runners = eval(config['training']['runners'])
+        estimators = configObj.get('training', 'estimators')
+        runners = configObj.get('training', 'runners')
 
-        if config['training'].get('nb_splits') is not None:
-            nb_splits = int(config['training']['nb_splits'])
+        if type(configObj.get('training', 'nb_splits')) is int :
+            nb_splits = configObj.get('training', 'nb_splits')
         else:
             nb_splits = len(argument.train_files)
 
-        split_method = config['training'].get('splitting_method')
-        group_column = config['training'].get('group_column')
+        split_method = configObj.get('training', 'splitting_method')
+        group_column = configObj.get('training', 'group_column')
 
         Training(
             x_train,

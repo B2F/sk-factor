@@ -26,18 +26,25 @@ class Report(ABC):
             identifier = Path(__file__).stem
 
         self._config = config
-        self._x = x
+
+        if config['eda'].get('features'):
+            self._x = x[config['eda']['features']]
+        else:
+            self._x = x
+
         self._y = y
+
         self._labels = labels
-        self._showPlot = eval(config['eda']['show_plots'])
-        self._saveImage = eval(config['eda']['save_images'])
-        self._saveTimestamp = eval(config['eda']['save_timestamp'])
+        self._showPlot = config['eda']['show_plots']
+        self._saveImage = config['eda']['save_images']
+        self._saveTimestamp = config['eda']['save_timestamp']
         self._imagesDirectory = config['eda']['images_directory']
         self._imagesExtension = config['eda']['images_extension']
         self.__identifier = identifier
+
         # figure size in inches
-        if type(eval(config['eda'].get('figsize'))) is tuple:
-            rcParams['figure.figsize'] = config['eda']['figsize']
+        if type(config['eda'].get('figsize')) is list:
+            rcParams['figure.figsize'] = (config['eda']['figsize'][0], config['eda']['figsize'][1])
 
     def getImageFilepath(self, filename):
         imagePath = self.__identifier.replace('/', '-')

@@ -7,7 +7,7 @@ class KfoldRepeated(BaseCv):
 
         n_repeats=2
         if 'split' in self._config:
-            n_repeats = eval(self._config['split']['n_repeats'])
+            n_repeats = self._config['split']['n_repeats']
 
         k = RepeatedKFold(n_splits = self._nSplits, n_repeats=n_repeats)
         return k.split(self._x, self._y, self._groups)

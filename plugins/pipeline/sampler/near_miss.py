@@ -10,7 +10,7 @@ class NearMiss(BaseEstimator):
 
         # Illustrates how a custom config can be used in an estimator class.
         if self._config['sampling'].get('version'):
-            version = eval(self._config['sampling']['version'])
+            version = self._config['sampling']['version']
         else:
             version = 3
         nm = BaseNearMiss(version=version)

@@ -16,7 +16,7 @@ class Transformers():
     @staticmethod
     def apply(transformers: dict, x: pd.DataFrame, config: Config):
 
-        verboseFeatureNamesOut = config.eq('preprocess', 'verbose_feature_names_out', True, True)
+        verboseFeatureNamesOut = config.eq('preprocess', 'verbose_feature_names_out', True)
         encoders = []
 
         for action, features in transformers.items():

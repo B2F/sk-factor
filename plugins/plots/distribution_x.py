@@ -9,7 +9,7 @@ class DistributionX(Report):
 
         n_bins = 5
         if self._config['eda'].get('n_bins'):
-            n_bins = eval(self._config['eda']['n_bins'])
+            n_bins = self._config['eda']['n_bins']
 
         if self._config['eda'].get('distribution_x'):
             feature = self._config['eda']['distribution_x']
