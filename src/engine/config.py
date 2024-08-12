@@ -7,7 +7,7 @@ class Config():
     _DEFAULT_DIRECTORY = 'config/'
     _config: dict
 
-    def __init__(self, filename = 'sk_factor.ini'):
+    def __init__(self, filename: str):
 
         if filename.find('/') == -1:
             filename = self._DEFAULT_DIRECTORY + filename + '.toml'
@@ -22,7 +22,7 @@ class Config():
 
     def get(self, section, value):
 
-        if self._config[section].get(section, value):
+        if self._config[section].get(value):
             value = self._config[section][value]
             return value
         else:

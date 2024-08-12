@@ -10,7 +10,7 @@ from src.engine.plots import Plots
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument("-c", "--config", help = "Use a config file from the config/ directory")
+parser.add_argument("-c", "--config", help = "Use a config file from the config/ directory", default='sk_factor')
 
 # -t and -p arguments can be cumulated
 parser.add_argument("-t", "--train_files", help = "Train with given file(s)", required = False, nargs = "*")
@@ -35,7 +35,7 @@ if argument.train_files:
 
     mergeAxis = configObj.get('training', 'trainfiles_axis')
     dataFrames = list(map(Data.readFile, argument.train_files))
-    if configObj.eq(*('preprocess', 'groups'), True):
+    if configObj.eq(*('preprocess', 'groupFiles'), True):
         dataFrames = list(map(Data.addGroup, *(dataFrames, 'group')))
     df_train = Data.mergeFiles(dataFrames, mergeAxis)
 

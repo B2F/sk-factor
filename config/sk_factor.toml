@@ -1,0 +1,90 @@
+[preprocess]
+label = 'Class'
+label_encode = true
+# Gather merged files filenames in a one reserved column 'group':
+# Used for splitting by default (GroupKFold), see [training] group_column config.
+groupFiles = false
+# preprocessors.drop_columns = ['column_unwanted']
+# preprocessors.drop_na = []
+
+#  Pass features as is to the pipeline, empty list to keep all features.
+transformers.passthrough = []
+
+#  Use with groups = true above, will encode groups from train filenames:
+# transformers.ordinal_encoder = ['group']
+
+#  Encode groups in their own column (beware you cannot split on one hot encoder groups):
+# transformers.one_hot_encoder = ['group']
+
+# Pipeline suffixes are removed by default:
+verbose_feature_names_out = false
+
+save_transformers_pipeline = false
+transformers_pipeline_directory = 'output/transformers'
+
+[eda]
+show_plots = false
+save_images = false
+save_timestamp = true
+images_extension = 'png'
+images_directory = 'output/eda'
+plots = [
+  'heatmap',
+  'pairplot',
+  'distribution_x',
+  'distribution_y',
+]
+# distribution_x=column_a
+figsize = [35, 35]
+dpi = 200
+# features = ['column a', 'column b', 'column n']
+
+[training]
+# Disable to do eda only.
+enabled = true
+# Multiple files will be combined, by default the "index" axis is used.
+# If 'index' axis is used, a group column with the filename will be added.
+# If 'column' axis is used, no grouping will occur.
+trainfiles_axis = 'index'
+# Default splitting method is KFold
+# @todo add the shuffle method.
+splitting_method = 'kfold_shuffle'
+# Nb splits will be equal to the number of files in --train_files by default.
+nb_splits = 3
+group_column = 'group'
+pipeline = 'imblearn.pipeline'
+estimators = [
+    # 'power_transforms/yeo_johnson',
+    # 'sampler/tomek_links',
+    'classifier/lgbm_random_forest_mc',
+    # 'regressor/lgbm_rf_regressor',
+  ]
+runners = [
+    'score'
+    # 'confusion_matrix',
+    # precision_recall
+  ]
+save_model = false
+model_timestamp = false
+models_directory = 'models'
+# Use a random seed (default) or specify one
+# The seed will be printed with results
+seed = 'random'
+# @see https://scikit-learn.org/stable/modules/model_evaluation.html#common-cases-predefined-values
+scoring = 'accuracy'
+
+[predictions]
+# Will use training by default, else use a model_file if specified.
+# model_file = model
+predictions_directory = 'output/predictions'
+save_predictions = false
+predictions_timestamp = true
+# @todo: apply the threshold to class output
+roundpredictions = false
+# @see https://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter
+
+[debug]
+enabled = false
+port = 5678
+host = '127.0.0.1'
+wait_for_client = true
