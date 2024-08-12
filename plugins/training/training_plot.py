@@ -7,10 +7,10 @@ class TrainingPlot(Report, BaseRunner):
     def __init__(self, config, x, y, labels, identifier = None):
 
         Report.__init__(self, config, x, y, labels, identifier)
-        if self._config['training'].get('show_plots'):
-            self._showPlot = self._config['training']['show_plots']
-        if self._config['training'].get('save_images'):
-            self._saveImage = self._config['training']['save_images']
+        if self._config.get('training', 'show_plots'):
+            self._showPlot = self._config.get('training', 'show_plots')
+        if self._config.get('training', 'save_images'):
+            self._saveImage = self._config.get('training', 'save_images')
 
     @abstractmethod
     def plot(self):

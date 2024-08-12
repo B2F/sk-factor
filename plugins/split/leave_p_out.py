@@ -6,8 +6,8 @@ class LeavePOut(BaseCv):
     def split(self):
 
         p_out=2
-        if 'split' in self._config:
-            p = self._config['split']['p_out']
+        if self._config.get('split', 'p_out'):
+            p_out = self._config.get('split', 'p_out')
 
         l = BaseLeavePOut(p=p_out)
         return l.split(self._x, self._y, self._groups)

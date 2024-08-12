@@ -1,4 +1,6 @@
 from abc import ABC, abstractmethod
+import pandas as pd
+from src.engine.config import Config
 
 class BaseEstimator(ABC):
 
@@ -6,7 +8,7 @@ class BaseEstimator(ABC):
 
     _type = str
 
-    def __init__(self, config, x, y):
+    def __init__(self, config: Config, x: pd.DataFrame, y: pd.DataFrame):
 
         self._config = config
         self._x = x

@@ -1,11 +1,12 @@
 from abc import ABC, abstractmethod
 from sklearn.model_selection import GroupKFold
 import pandas as pd
+from src.engine.config import Config
 
 # Base Cross Validator.
 class BaseCv(ABC):
 
-    _config = dict
+    _config = Config
     _x = pd.DataFrame
     _y = pd.DataFrame
     _nSplits = int

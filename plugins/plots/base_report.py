@@ -6,10 +6,11 @@ import time
 import os
 from matplotlib import rcParams
 from pathlib import Path
+from src.engine.config import Config
 
 class Report(ABC):
 
-    _config: dict
+    _config: Config
     _x: pd.DataFrame
     _y: pd.DataFrame
     _labels: pd.DataFrame
@@ -20,31 +21,31 @@ class Report(ABC):
     _imagesDirectory: str
     __identifier: str
 
-    def __init__(self, config, x, y, labels, identifier = None):
+    def __init__(self, config: Config, x, y, labels, identifier = None):
 
         if identifier == None:
             identifier = Path(__file__).stem
 
         self._config = config
 
-        if config['eda'].get('features'):
-            self._x = x[config['eda']['features']]
+        if config.get('eda', 'features'):
+            self._x = x[config.get('eda', 'features')]
         else:
             self._x = x
 
         self._y = y
 
         self._labels = labels
-        self._showPlot = config['eda']['show_plots']
-        self._saveImage = config['eda']['save_images']
-        self._saveTimestamp = config['eda']['save_timestamp']
-        self._imagesDirectory = config['eda']['images_directory']
-        self._imagesExtension = config['eda']['images_extension']
+        self._showPlot = config.get('eda', 'show_plots')
+        self._saveImage = config.get('eda', 'save_images')
+        self._saveTimestamp = config.get('eda', 'save_timestamp')
+        self._imagesDirectory = config.get('eda', 'images_directory')
+        self._imagesExtension = config.get('eda', 'images_extension')
         self.__identifier = identifier
 
         # figure size in inches
-        if type(config['eda'].get('figsize')) is list:
-            rcParams['figure.figsize'] = (config['eda']['figsize'][0], config['eda']['figsize'][1])
+        if type(config.get('eda', 'figsize')) is list:
+            rcParams['figure.figsize'] = (config.get('eda', 'figsize')[0], config.get('eda', 'figsize')[1])
 
     def getImageFilepath(self, filename):
         imagePath = self.__identifier.replace('/', '-')
@@ -65,8 +66,8 @@ class Report(ABC):
         plotId = self.plot()
         dpi = 100
 
-        if self._config['eda'].get('dpi'):
-            dpi=self._config['eda']['dpi']
+        if self._config.get('eda', 'dpi'):
+            dpi=self._config.get('eda', 'dpi')
 
         if self._showPlot:
             plt.margins(10, tight=False)

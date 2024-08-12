@@ -10,7 +10,7 @@ class Pairplot(Report):
 
     g = sns.pairplot(
       df,
-      hue=self._config['preprocess']['label'],
+      hue=self._config.get('preprocess', 'label'),
       kind='scatter',
       # palette = ["#0000ff", "#55aa00", "#005500", "#ff0000"],
       # markers=['o', 'D', 'D', 'o'],

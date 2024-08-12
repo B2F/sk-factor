@@ -6,8 +6,9 @@ class TimeSeries(BaseCv):
     def split(self):
 
         gap = 7
-        if 'split' in self._config:
-            gap = self._config['split']['split_gap']
+        if self._config.get('split', 'split_gap'):
+            gap = self._config.get('split', 'split_gap')
+
         ts = TimeSeriesSplit(n_splits = self._nSplits, gap = gap)
 
         return ts.split(self._x, self._y, self._groups)

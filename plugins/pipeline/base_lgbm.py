@@ -1,20 +1,22 @@
 import random
 from plugins.pipeline.base_estimator import BaseEstimator
+import pandas as pd
+from src.engine.config import Config
 
 class BaseLgbm(BaseEstimator):
 
     _params: dict
 
-    def __init__(self, config, x, y):
+    def __init__(self, config: Config, x: pd.DataFrame, y: pd.DataFrame):
 
         self._config = config
         self._x = x
         self._y = y
 
         # @todo get the seed generation out of this class to print it in the main script
-        if config['training']['seed'] is int:
-            seed = config['training']['seed']
-        elif config['training']['seed'] == 'random':
+        if config.get('training', 'seed') is int:
+            seed = config.get('training', 'seed')
+        elif config.get('training', 'seed') == 'random':
             seed = random.seed()
 
         self._params = {

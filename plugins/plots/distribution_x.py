@@ -8,11 +8,11 @@ class DistributionX(Report):
         plot_name = 'distribution_x'
 
         n_bins = 5
-        if self._config['eda'].get('n_bins'):
-            n_bins = self._config['eda']['n_bins']
+        if self._config.get('eda', 'n_bins'):
+            n_bins = self._config.get('eda', 'n_bins')
 
-        if self._config['eda'].get('distribution_x'):
-            feature = self._config['eda']['distribution_x']
+        if self._config.get('eda', 'distribution_x'):
+            feature = self._config.get('eda', 'distribution_x')
             plt.hist(self._x[feature], bins=n_bins)
             plot_name = 'distribution_' + feature
         else:

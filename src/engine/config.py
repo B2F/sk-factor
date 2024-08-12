@@ -22,7 +22,9 @@ class Config():
 
     def get(self, section, value):
 
-        if self._config[section].get(value):
+        if section not in self._config:
+            return None
+        elif self._config[section].get(value):
             value = self._config[section][value]
             return value
         else:

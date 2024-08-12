@@ -2,6 +2,7 @@ import pandas as pd
 from src.engine.pipeline import Pipeline
 from src.engine.plugins import Plugins
 from src.engine.splits import Split
+from src.engine.config import Config
 
 class Training():
 
@@ -9,7 +10,7 @@ class Training():
     _y: pd.DataFrame
     _estimators: list
     _runners: list
-    _config: dict
+    _config: Config
     _y_labels: list
     _n_splits: int
     _split_method: str
@@ -21,7 +22,7 @@ class Training():
         y: pd.DataFrame,
         estimators: list,
         runners: list,
-        config: dict,
+        config: Config,
         labels: list,
         n_splits: int = None,
         split_method: str = None,
@@ -68,17 +69,17 @@ class Training():
 
         # Lookup in config if not in args:
 
-        if n_splits is None and self._config['training'].get('nb_splits'):
-            self._n_splits = self._config['training']['nb_splits']
+        if n_splits is None and self._config.get('training', 'nb_splits'):
+            self._n_splits = self._config.get('training', 'nb_splits')
         else:
             self._n_splits = n_splits
 
-        if method is None and self._config['training'].get('splitting_method'):
-            self._split_method = self._config['training']['splitting_method']
+        if method is None and self._config.get('training', 'splitting_method'):
+            self._split_method = self._config.get('training', 'splitting_method')
         else:
             self._split_method = method
 
-        if group is None and self._config['training'].get('group_column'):
-            self._group = self._config['training']['group_column']
+        if group is None and self._config.get('training', 'group_column'):
+            self._group = self._config.get('training', 'group_column')
         else:
             self._group = group

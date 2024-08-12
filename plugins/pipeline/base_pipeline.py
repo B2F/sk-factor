@@ -1,12 +1,13 @@
 import importlib
+from src.engine.config import Config
 
 class BasePipeline:
 
       _steps: list
 
-      def __init__(self, config):
+      def __init__(self, config: Config):
           self._steps = []
-          pipelineModule = config['training']['pipeline']
+          pipelineModule = config.get('training', 'pipeline')
           pipeline = importlib.import_module(pipelineModule)
           self._pipeline = getattr(pipeline, 'Pipeline')
 

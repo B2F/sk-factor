@@ -4,7 +4,6 @@ from src.engine.config import Config
 from src.engine.data import Data
 from src.engine.preprocessors import Preprocessors
 from src.engine.transfomers import Transformers
-from src.engine.plugins import Plugins
 from src.engine.training import Training
 from src.engine.plots import Plots
 
@@ -19,13 +18,12 @@ parser.add_argument("-m", "--model_file", help = "Model file(s) used for predict
 
 argument = parser.parse_args()
 
-configObj = Config(argument.config)
-config = configObj.getConfig()
+config = Config(argument.config)
 
-if configObj.eq('debug', 'enabled', True):
+if config.eq('debug', 'enabled', True):
     debugpy = importlib.import_module("debugpy")
-    debugpy.listen((configObj.get('debug', 'host'), configObj.get('debug', 'port')))
-    if configObj.eq(*('debug', 'wait_for_client'), True):
+    debugpy.listen((config.get('debug', 'host'), config.get('debug', 'port')))
+    if config.eq(*('debug', 'wait_for_client'), True):
         debugpy.wait_for_client()
 
 if argument.train_files:
@@ -33,60 +31,60 @@ if argument.train_files:
     ###
     # Step 0. Reading files from command line
 
-    mergeAxis = configObj.get('training', 'trainfiles_axis')
+    mergeAxis = config.get('training', 'trainfiles_axis')
     dataFrames = list(map(Data.readFile, argument.train_files))
-    if configObj.eq(*('preprocess', 'groupFiles'), True):
+    if config.eq(*('preprocess', 'groupFiles'), True):
         dataFrames = list(map(Data.addGroup, *(dataFrames, 'group')))
     df_train = Data.mergeFiles(dataFrames, mergeAxis)
 
     ###
     # Step 1. Preprocessing
 
-    transformers = configObj.get('preprocess', 'transformers')
-    preprocessors = configObj.get('preprocess', 'preprocessors')
+    transformers = config.get('preprocess', 'transformers')
+    preprocessors = config.get('preprocess', 'preprocessors')
 
     df_train = Preprocessors.apply(preprocessors, df_train)
 
     dfColumns = list(df_train.columns)
-    labelName = configObj.get('preprocess', 'label')
+    labelName = config.get('preprocess', 'label')
     y_train = df_train[labelName].to_frame(labelName)
     x_train = df_train
     x_train.drop(labelName, axis=1, inplace=True)
     dfColumns.remove(labelName)
 
-    if configObj.get('preprocess', 'groups'):
+    if config.get('preprocess', 'groups'):
         dfColumns.remove('group')
 
-    x_train = Transformers.apply(transformers, x_train, configObj)
+    x_train = Transformers.apply(transformers, x_train, config)
 
     labels = y_train
-    if configObj.eq('preprocess', 'label_encode', True):
+    if config.eq('preprocess', 'label_encode', True):
         y_train, labels = Transformers.labelEncode(y_train, labelName)
 
     ###
     # Step 2. EDA plots:
 
-    if configObj.eq('eda', 'show_plots', True) or configObj.eq('eda', 'save_images', True):
+    if config.eq('eda', 'show_plots', True) or config.eq('eda', 'save_images', True):
 
-        plots = configObj.get('eda', 'plots')
+        plots = config.get('eda', 'plots')
         identifier = '/'.join(argument.train_files)
         Plots().run(plots, config, x_train, y_train, labels, identifier)
 
     ###
     # Step 3. Training:
 
-    if configObj.eq('training', 'enabled', True):
+    if config.eq('training', 'enabled', True):
 
-        estimators = configObj.get('training', 'estimators')
-        runners = configObj.get('training', 'runners')
+        estimators = config.get('training', 'estimators')
+        runners = config.get('training', 'runners')
 
-        if type(configObj.get('training', 'nb_splits')) is int :
-            nb_splits = configObj.get('training', 'nb_splits')
+        if type(config.get('training', 'nb_splits')) is int :
+            nb_splits = config.get('training', 'nb_splits')
         else:
             nb_splits = len(argument.train_files)
 
-        split_method = configObj.get('training', 'splitting_method')
-        group_column = configObj.get('training', 'group_column')
+        split_method = config.get('training', 'splitting_method')
+        group_column = config.get('training', 'group_column')
 
         Training(
             x_train,

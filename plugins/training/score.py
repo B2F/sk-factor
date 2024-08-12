@@ -6,8 +6,8 @@ class Score(BaseRunner):
     def run(self, pipeline, cv):
 
         scoring = 'accuracy'
-        if self._config['training'].get('scoring'):
-            scoring = self._config['training']['scoring']
+        if self._config.get('training', 'scoring'):
+            scoring = self._config.get('training', 'scoring')
 
         scores = cross_val_score(
             pipeline,

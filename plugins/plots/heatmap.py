@@ -6,8 +6,8 @@ class Heatmap(Report):
 
   def plot(self):
 
-    if self._config['eda'].get('features'):
-      x = self._x[self._config['eda']['features']]
+    if self._config.get('eda', 'features'):
+      x = self._x[self._config.get('eda', 'features')]
     else:
       x = self._x
 
