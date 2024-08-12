@@ -16,11 +16,13 @@ parser.add_argument("-t", "--train_files", help = "Train with given file(s)", re
 parser.add_argument("-p", "--test_files", help = "Predict with given file(s)", required = False, nargs = "*")
 parser.add_argument("-m", "--model_file", help = "Model file(s) used for predictions", required = False, nargs = "*")
 
+parser.add_argument("-d", "--debug", help = "Enable debugging", action='store_true')
+
 argument = parser.parse_args()
 
 config = Config(argument.config)
 
-if config.eq('debug', 'enabled', True):
+if argument.debug or config.eq('debug', 'enabled', True):
     debugpy = importlib.import_module("debugpy")
     debugpy.listen((config.get('debug', 'host'), config.get('debug', 'port')))
     if config.eq(*('debug', 'wait_for_client'), True):
