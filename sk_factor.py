@@ -1,11 +1,11 @@
 import importlib
 import argparse
 from src.engine.config import Config
-from src.engine.data import Data
 from src.engine.preprocessors import Preprocessors
 from src.engine.transfomers import Transformers
 from src.engine.training import Training
 from src.engine.plots import Plots
+from src.engine.dataset_loader import DatasetLoader
 
 parser = argparse.ArgumentParser()
 
@@ -28,20 +28,19 @@ if argument.debug or config.eq('debug', 'enabled', True):
     if config.eq(*('debug', 'wait_for_client'), True):
         debugpy.wait_for_client()
 
-if argument.train_files:
+trainfiles = argument.train_files if argument.train_files else config.get('dataset', 'files')
+
+if trainfiles:
 
     ###
     # Step 0. Reading files from command line
 
-    mergeAxis = config.get('training', 'trainfiles_axis')
-    dataFrames = list(map(Data.readFile, argument.train_files))
-    if config.eq(*('preprocess', 'groupFiles'), True):
-        dataFrames = list(map(Data.addGroup, *(dataFrames, 'group')))
-    df_train = Data.mergeFiles(dataFrames, mergeAxis)
+    df_train = DatasetLoader.load(config, trainfiles)
 
     ###
     # Step 1. Preprocessing
 
+    # @todo: read config directly from engine objects.
     label = config.get('preprocess', 'label')
 
     preprocessors = config.get('preprocess', 'preprocessors')
@@ -61,7 +60,7 @@ if argument.train_files:
     if config.eq('eda', 'show_plots', True) or config.eq('eda', 'save_images', True):
 
         plots = config.get('eda', 'plots')
-        identifier = '/'.join(argument.train_files)
+        identifier = identifier = '/'.join(trainfiles) if len(trainfiles) > 1 else trainfiles
         Plots().run(plots, config, x_train, y_train, labels, identifier)
 
     ###

@@ -6,6 +6,7 @@ from plugins.preprocess.base_preprocessor import BasePreprocessor
 from plugins.preprocess.base_transformer import BaseTransformer
 from plugins.split.base_cv import BaseCv
 from plugins.training.base_runner import BaseRunner
+from plugins.loader.base_loader import BaseLoader
 
 class Plugins():
     """ Plugins factory.
@@ -37,6 +38,7 @@ class Plugins():
 
         # Check validity relating to package.
         packagesClasses = {
+            'loader': BaseLoader,
             'pipeline': BaseEstimator,
             'plots': Report,
             'preprocess.preprocessor': BasePreprocessor,

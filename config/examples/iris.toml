@@ -1,12 +1,14 @@
 [dataset]
-loader = 'csv'
+loader = 'toy_dataset'
 # Debug unprocessed features from the dataset
 show_features = false
 # Ignored if -t (--train_files) is passed to the CLI.
-# files = []
+files = ['iris']
+data = 'data'
+columns = 'feature_names'
 
 [preprocess]
-label = 'Class'
+label = 'target'
 label_encode = true
 # Gather merged files IDs in a one reserved column 'group':
 groupFiles = false
@@ -33,16 +35,14 @@ transformers_pipeline_directory = 'output/transformers'
 files_axis = 'index'
 
 [eda]
-show_plots = false
+show_plots = true
 save_images = false
 save_timestamp = true
 images_extension = 'png'
 images_directory = 'output/eda'
 plots = [
-  'heatmap',
-  'pairplot',
-  'distribution_x',
-  'distribution_y',
+  # 'heatmap',
+  # 'pairplot',
 ]
 # distribution_x=column_a
 figsize = [35, 35]
@@ -54,7 +54,7 @@ dpi = 200
 enabled = true
 splitting_method = 'kfold_shuffle'
 # Nb splits will be equal to the number of files in --train_files by default.
-nb_splits = 3
+nb_splits = 2
 group_column = 'group'
 pipeline = 'imblearn.pipeline'
 estimators = [
@@ -64,9 +64,9 @@ estimators = [
     # 'regressor/lgbm_rf_regressor',
   ]
 runners = [
-    'score'
-    # 'confusion_matrix',
-    # precision_recall
+    'score',
+    'confusion_matrix',
+    # precision_recall,
   ]
 save_model = false
 model_timestamp = false
