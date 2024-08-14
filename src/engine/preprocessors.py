@@ -27,6 +27,6 @@ class Preprocessors():
 
         y = df[label].to_frame(label)
         x = df
-        x.drop(label, axis=1, inplace=True)
+        x = x.drop(label, axis=1)
 
         return x, y
