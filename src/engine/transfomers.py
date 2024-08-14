@@ -19,12 +19,12 @@ class Transformers():
         verboseFeatureNamesOut = config.eq('preprocess', 'verbose_feature_names_out', True)
         encoders = []
 
-        for action, features in transformers.items():
+        for module, features in transformers.items():
 
-            transformer = Plugins.create('preprocess', 'transformer/' + action, config.getConfig(), x)
+            transformer = Plugins.create('preprocess.transformer', module, config.getConfig(), x)
             # Preprocess for columns selected in the .ini config.
             features = list(x.columns) if features == [] else features
-            encoders.append((action, transformer.pipeline(), features))
+            encoders.append((module, transformer.pipeline(), features))
 
         preprocessor = ColumnTransformer(
             transformers=encoders,

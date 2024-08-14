@@ -16,9 +16,9 @@ class Preprocessors():
 
             return df
 
-        for action, features in preprocessors.items():
+        for module, features in preprocessors.items():
             preprocessor = Plugins.create(
-                'preprocess', 'preprocessor/' + action,
+                'preprocess.preprocessor', module,
                 config,
                 df,
                 features
