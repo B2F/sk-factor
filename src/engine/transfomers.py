@@ -26,7 +26,8 @@ class Transformers():
             features = list(x.columns) if features == [] else features
             encoders.append((module, transformer.pipeline(), features))
 
-        for feature, transformers in many_to_one.items():
+        many_to_one_transformers = [] if not many_to_one else many_to_one.items()
+        for feature, transformers in many_to_one_transformers:
 
             transformer = Plugins.create(
                 'preprocess.transformer',

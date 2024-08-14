@@ -12,18 +12,16 @@ class Preprocessors():
         print('Before preprocessing:')
         print(df.shape)
 
-        if type(preprocessors) is not dict:
+        if type(preprocessors) is dict:
 
-            return df
-
-        for module, features in preprocessors.items():
-            preprocessor = Plugins.create(
-                'preprocess.preprocessor', module,
-                config,
-                df,
-                features
-            )
-            df = preprocessor.transform()
+            for module, features in preprocessors.items():
+                preprocessor = Plugins.create(
+                    'preprocess.preprocessor', module,
+                    config,
+                    df,
+                    features
+                )
+                df = preprocessor.transform()
 
         y = df[label].to_frame(label)
         x = df
