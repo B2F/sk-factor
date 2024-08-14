@@ -1,12 +1,21 @@
 import pandas as pd
+import os
 
 class Data():
+
+    _DEFAULT_DIRECTORY = 'data/'
 
     @staticmethod
     def readFile(trainfile: str):
 
+        if trainfile.find('.csv', -4) == -1:
+            trainfile = Data._DEFAULT_DIRECTORY + trainfile + '.csv'
+
+        if not os.path.isfile(trainfile):
+            raise Exception(trainfile + ' not found.')
+
         # @todo allow dynamic excel / csv retrieval.
-        df = pd.read_csv(f"data/{trainfile}.csv")
+        df = pd.read_csv(f"{trainfile}")
         return df
 
     @staticmethod
