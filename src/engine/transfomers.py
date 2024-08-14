@@ -14,7 +14,10 @@ class Transformers():
         return (y, le.classes_)
 
     @staticmethod
-    def apply(transformers: dict, many_to_one: dict, config: Config, x: pd.DataFrame):
+    def apply(config: Config, x: pd.DataFrame):
+
+        transformers = config.get('preprocess', 'transformers')
+        many_to_one = config.get('preprocess', 'transformers_many_to_one')
 
         verboseFeatureNamesOut = config.eq('preprocess', 'verbose_feature_names_out', True)
         encoders = []

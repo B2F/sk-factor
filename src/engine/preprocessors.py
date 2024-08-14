@@ -1,16 +1,20 @@
 from src.engine.plugins import Plugins
 import pandas as pd
 from src.engine.config import Config
+from src.engine.transfomers import Transformers
 
 class Preprocessors():
 
     @staticmethod
-    def apply(preprocessors: dict, config: Config, df: pd.DataFrame, label: str) -> tuple:
-        """ Returns x and y from a given DataFrame.
+    def apply(config: Config, df: pd.DataFrame) -> tuple:
+        """ Returns preprocessed x, y and decoded labels from the given DataFrame.
         """
 
         print('Before preprocessing:')
         print(df.shape)
+
+        preprocessors = config.get('preprocess', 'preprocessors')
+        label = config.get('preprocess', 'label')
 
         if type(preprocessors) is dict:
 
@@ -27,4 +31,8 @@ class Preprocessors():
         x = df
         x = x.drop(label, axis=1)
 
-        return x, y
+        labels = y
+        if config.eq('preprocess', 'label_encode', True):
+            y, labels = Transformers.labelEncode(y, label)
+
+        return x, y, labels

@@ -40,19 +40,8 @@ if trainfiles:
     ###
     # Step 1. Preprocessing
 
-    # @todo: read config directly from engine objects.
-    label = config.get('preprocess', 'label')
-
-    preprocessors = config.get('preprocess', 'preprocessors')
-    x_train, y_train = Preprocessors.apply(preprocessors, config, df_train, label)
-
-    transformers = config.get('preprocess', 'transformers')
-    many_to_one = config.get('preprocess', 'transformers_many_to_one')
-    x_train = Transformers.apply(transformers, many_to_one, config, x_train)
-
-    labels = y_train
-    if config.eq('preprocess', 'label_encode', True):
-        y_train, labels = Transformers.labelEncode(y_train, label)
+    x_train, y_train, labels = Preprocessors.apply(config, df_train)
+    x_train = Transformers.apply(config, x_train)
 
     ###
     # Step 2. EDA plots:
