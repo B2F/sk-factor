@@ -42,12 +42,14 @@ if argument.train_files:
     ###
     # Step 1. Preprocessing
 
-    transformers = config.get('preprocess', 'transformers')
-    preprocessors = config.get('preprocess', 'preprocessors')
-
     label = config.get('preprocess', 'label')
+
+    preprocessors = config.get('preprocess', 'preprocessors')
     x_train, y_train = Preprocessors.apply(preprocessors, config, df_train, label)
-    x_train = Transformers.apply(transformers, config, x_train)
+
+    transformers = config.get('preprocess', 'transformers')
+    many_to_one = config.get('preprocess', 'transformers_many_to_one')
+    x_train = Transformers.apply(transformers, many_to_one, config, x_train)
 
     labels = y_train
     if config.eq('preprocess', 'label_encode', True):

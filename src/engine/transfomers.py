@@ -14,7 +14,7 @@ class Transformers():
         return (y, le.classes_)
 
     @staticmethod
-    def apply(transformers: dict, config: Config, x: pd.DataFrame):
+    def apply(transformers: dict, many_to_one: dict, config: Config, x: pd.DataFrame):
 
         verboseFeatureNamesOut = config.eq('preprocess', 'verbose_feature_names_out', True)
         encoders = []
@@ -25,6 +25,19 @@ class Transformers():
             # Preprocess for columns selected in the .ini config.
             features = list(x.columns) if features == [] else features
             encoders.append((module, transformer.pipeline(), features))
+
+        for feature, transformers in many_to_one.items():
+
+            transformer = Plugins.create(
+                'preprocess.transformer',
+                'many_to_one',
+                config.getConfig(),
+                x,
+                transformers,
+                feature
+            )
+
+            encoders.append((f'many_to_one_{feature}', transformer.pipeline(), [feature]))
 
         preprocessor = ColumnTransformer(
             transformers=encoders,

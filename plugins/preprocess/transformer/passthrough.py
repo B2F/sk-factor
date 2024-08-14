@@ -1,7 +1,9 @@
-import pandas as pd
 from plugins.preprocess.base_transformer import BaseTransformer
 
 class Passthrough(BaseTransformer):
 
-    def transform(self) -> pd.DataFrame:
-        return super().transform()
+    _name = 'passthrough'
+
+    def estimator(self):
+        # Default method, used by the passthrough transformer:
+        return super().estimator()

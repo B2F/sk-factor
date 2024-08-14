@@ -1,9 +1,11 @@
 from plugins.preprocess.base_transformer import BaseTransformer
 from sklearn.preprocessing import OrdinalEncoder as SklearnOrdinalEncoder
-from sklearn.pipeline import Pipeline
 
 class OrdinalEncoder(BaseTransformer):
 
-    def transform(self):
+    _name = 'ordinal_encoder'
+
+    def estimator(self):
+
         # Preprocess for columns selected in the .ini config.
         return SklearnOrdinalEncoder()

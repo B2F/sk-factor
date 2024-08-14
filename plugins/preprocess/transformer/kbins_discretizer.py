@@ -3,6 +3,9 @@ from sklearn.preprocessing import KBinsDiscretizer as SklearnKBinsDiscretizer
 
 class KbinsDiscretizer(BaseTransformer):
 
-    def transform(self):
+    _name = 'k_bins_discretizer'
+
+    def estimator(self, n_bins = 5, strategy = 'quantile'):
+
         # Preprocess for columns selected in the .ini config.
-        return SklearnKBinsDiscretizer(encode="ordinal")
+        return SklearnKBinsDiscretizer(n_bins=n_bins, encode="ordinal", strategy = strategy)
