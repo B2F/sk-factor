@@ -11,10 +11,7 @@ class ToyDataset(BaseLoader):
 
         dataset = getattr(toy_datasets, f'load_{self._arguments[0]}')()
 
-        data = self._config.get('dataset', 'data')
-        columns = self._config.get('dataset', 'columns')
-
-        x = pd.DataFrame(data = dataset[data], columns = dataset[columns])
+        x = pd.DataFrame(data = dataset['data'], columns = dataset['feature_names'])
         y = pd.DataFrame(data = dataset['target'], columns = ['target'])
 
         if dataset.get('target_names') is not None:

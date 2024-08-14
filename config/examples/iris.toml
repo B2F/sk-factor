@@ -2,8 +2,6 @@
 loader = 'toy_dataset'
 # Ignored if -t (--train_files) is passed to the CLI.
 files = ['iris']
-data = 'data'
-columns = 'feature_names'
 show_columns = true
 
 [preprocess]
