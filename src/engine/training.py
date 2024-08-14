@@ -19,14 +19,13 @@ class Training():
         x: pd.DataFrame,
         y: pd.DataFrame,
         labels: list,
-        n_splits: int,
     ):
 
         self._x = x
         self._y = y
         self._config = config
         self._y_labels = labels
-        self._n_splits = n_splits
+        self._n_splits = config.get('training', 'nb_splits')
 
     def run(self):
 
@@ -45,7 +44,8 @@ class Training():
             runnerObject.run(pipeline, cv)
 
     def setConfig(self, config):
-
+        """ Used to update config in a GUI.
+        """
         self._config = config
 
     def setX(self, x):

@@ -3,7 +3,9 @@ from src.engine.plugins import Plugins
 class Plots():
 
     @staticmethod
-    def run(plots, config, x, y, y_labels, identifier):
+    def run(config, x, y, y_labels, identifier):
+
+        plots = config.get('eda', 'plots')
 
         if plots is None:
             return

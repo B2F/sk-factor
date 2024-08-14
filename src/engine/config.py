@@ -32,10 +32,10 @@ class Config():
         else:
             return None
 
-    def set(self, section, value):
+    def set(self, section, value, newValue):
 
         if section in self._config:
-            self._config[section] = value
+            self._config[section][value] = newValue
         else:
             return None
 

@@ -6,6 +6,7 @@ from src.engine.transfomers import Transformers
 from src.engine.training import Training
 from src.engine.plots import Plots
 from src.engine.dataset_loader import DatasetLoader
+from src.engine.debug import Debugger
 
 parser = argparse.ArgumentParser()
 
@@ -22,11 +23,10 @@ argument = parser.parse_args()
 
 config = Config(argument.config)
 
-if argument.debug or config.eq('debug', 'enabled', True):
-    debugpy = importlib.import_module("debugpy")
-    debugpy.listen((config.get('debug', 'host'), config.get('debug', 'port')))
-    if config.eq(*('debug', 'wait_for_client'), True):
-        debugpy.wait_for_client()
+if argument.debug:
+    config.set('debug', 'enabled', True)
+
+Debugger.attach(config)
 
 trainfiles = argument.train_files if argument.train_files else config.get('dataset', 'files')
 
@@ -48,21 +48,18 @@ if trainfiles:
 
     if config.eq('eda', 'show_plots', True) or config.eq('eda', 'save_images', True):
 
-        plots = config.get('eda', 'plots')
         identifier = identifier = '/'.join(trainfiles) if len(trainfiles) > 1 else trainfiles
-        Plots().run(plots, config, x_train, y_train, labels, identifier)
+        Plots().run(config, x_train, y_train, labels, identifier)
 
     ###
     # Step 3. Training:
 
     if config.eq('training', 'enabled', True):
 
-        if type(config.get('training', 'nb_splits')) is int :
-            nb_splits = config.get('training', 'nb_splits')
-        else:
-            nb_splits = len(argument.train_files)
+        if config.get('training', 'nb_splits') is None and len(argument.train_files) > 1:
+            config.set('training', 'nb_splits', len(argument.train_files))
 
-        Training(config, x_train, y_train, labels, nb_splits).run()
+        Training(config, x_train, y_train, labels).run()
 
     ### Step 4. Predictions from model:
 

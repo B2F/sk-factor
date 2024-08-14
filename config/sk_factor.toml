@@ -89,7 +89,8 @@ roundpredictions = false
 # @see https://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter
 
 [debug]
-enabled = false
 port = 5678
 host = '127.0.0.1'
 wait_for_client = true
+# Ignored if -d (--debug) is passed to the CLI
+enabled = false
