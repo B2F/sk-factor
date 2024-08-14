@@ -70,7 +70,6 @@ class Report(ABC):
             dpi=self._config.get('eda', 'dpi')
 
         if self._showPlot:
-            plt.margins(10, tight=False)
             plt.show()
         if self._saveImage:
             plt.savefig(self.getImageFilepath(plotId), dpi=dpi)

@@ -16,7 +16,7 @@ class DistributionX(Report):
             plot_name = self._config.get('eda', 'distribution_x') + '_distribution'
         else:
             plt.hist(self._x, bins=n_bins)
-            plot_name = "_".join(list(self._x.columns)) + 'distribution'
+            plot_name = "_".join(list(self._x.columns)) + ' distribution'
 
         plt.title(plot_name.replace('_', ' ').title(), pad=20)
 

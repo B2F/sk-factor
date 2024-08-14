@@ -32,5 +32,6 @@ class ConfusionMatrix(TrainingPlot):
         ax[0].set_title('Confusion matrix', pad=20)
         ax[0].xaxis.set_ticks_position('top')
         sns.heatmap(cm_df, annot=True, fmt='d', cmap='YlOrBr', ax = ax[0])
+        ax[1].margins(10, tight=False)
 
         return 'confusion_matrix'
