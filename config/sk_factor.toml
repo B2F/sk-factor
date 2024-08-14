@@ -1,12 +1,11 @@
 [preprocess]
 label = 'Class'
 label_encode = true
-# Gather merged files filenames in a one reserved column 'group':
-# Used for splitting by default (GroupKFold), see [training] group_column config.
+# Gather merged files IDs in a one reserved column 'group':
 groupFiles = false
 # preprocessors.drop_columns = ['column_unwanted']
-#  Pass features as is to the pipeline, empty list to keep all features.
 # preprocessors.drop_na = []
+#  Pass features as is to the pipeline, empty list to keep all features.
 transformers.passthrough = []
 
 #  Use with groups = true above, will encode groups from train filenames:
@@ -15,7 +14,7 @@ transformers.passthrough = []
 #  Encode groups in their own column (beware you cannot split on one hot encoder groups):
 # transformers.one_hot_encoder = ['group']
 
-# Pipeline suffixes are removed by default:
+# Pipeline suffixes are removed from columns by default:
 verbose_feature_names_out = false
 
 # @todo: implement pipeline save method.
@@ -46,8 +45,6 @@ enabled = true
 # If 'index' axis is used, a group column with the filename will be added.
 # If 'column' axis is used, no grouping will occur.
 trainfiles_axis = 'index'
-# Default splitting method is KFold
-# @todo add the shuffle method.
 splitting_method = 'kfold_shuffle'
 # Nb splits will be equal to the number of files in --train_files by default.
 nb_splits = 3
