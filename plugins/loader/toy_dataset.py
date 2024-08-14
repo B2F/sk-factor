@@ -4,7 +4,7 @@ from plugins.loader.base_loader import BaseLoader
 
 class ToyDataset(BaseLoader):
 
-    def load(self):
+    def _load(self):
 
         if len(self._arguments) > 1:
             raise Exception('Cannot load more than one toy dataset at once')

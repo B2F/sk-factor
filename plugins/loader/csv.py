@@ -6,7 +6,7 @@ class Csv(BaseLoader):
 
     _DEFAULT_DIRECTORY = 'data/'
 
-    def load(self):
+    def _load(self):
 
         mergeAxis = self._config.get('preprocess', 'files_axis')
         dataFrames = list(map(self.readCsv, self._arguments))

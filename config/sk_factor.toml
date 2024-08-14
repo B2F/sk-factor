@@ -1,12 +1,12 @@
 [dataset]
 loader = 'csv'
-# Debug unprocessed features from the dataset
-show_features = false
+# Debug unprocessed columns from the dataset
+show_columns = false
 # Ignored if -t (--train_files) is passed to the CLI.
 # files = []
 
 [preprocess]
-label = 'Class'
+label = 'target'
 label_encode = true
 # Gather merged files IDs in a one reserved column 'group':
 groupFiles = false

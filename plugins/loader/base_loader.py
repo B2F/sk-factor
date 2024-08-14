@@ -12,6 +12,15 @@ class BaseLoader(ABC):
         self._config = config
 
     @abstractmethod
-    def load() -> pd.DataFrame:
+    def _load(self) -> pd.DataFrame:
 
         pass
+
+    def load(self) -> pd.DataFrame:
+
+        df = self._load()
+        if self._config.get('dataset', 'show_columns'):
+
+            print(df.columns)
+
+        return df
