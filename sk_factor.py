@@ -23,8 +23,7 @@ argument = parser.parse_args()
 
 config = Config(argument.config)
 
-if argument.debug:
-    config.set('debug', 'enabled', True)
+config.set('debug', 'enabled', True) if argument.debug else config.set('debug', 'enabled', False)
 
 Debugger.attach(config)
 

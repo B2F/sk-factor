@@ -26,7 +26,7 @@ class Config():
 
         if section not in self._config:
             return None
-        elif self._config[section].get(value):
+        elif self._config[section].get(value) is not None:
             value = self._config[section][value]
             return value
         else:
@@ -36,8 +36,6 @@ class Config():
 
         if section in self._config:
             self._config[section][value] = newValue
-        else:
-            return None
 
     def eq(self, section, value, testvalue) -> bool:
 
