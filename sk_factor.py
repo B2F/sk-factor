@@ -69,27 +69,12 @@ if argument.train_files:
 
     if config.eq('training', 'enabled', True):
 
-        estimators = config.get('training', 'estimators')
-        runners = config.get('training', 'runners')
-
         if type(config.get('training', 'nb_splits')) is int :
             nb_splits = config.get('training', 'nb_splits')
         else:
             nb_splits = len(argument.train_files)
 
-        split_method = config.get('training', 'splitting_method')
-        group_column = config.get('training', 'group_column')
-
-        Training(
-            x_train,
-            y_train,
-            estimators,
-            runners,
-            config,
-            labels,
-            nb_splits,
-            split_method,
-            group_column).run()
+        Training(config, x_train, y_train, labels, nb_splits).run()
 
     ### Step 4. Predictions from model:
 

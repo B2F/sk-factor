@@ -1,12 +1,31 @@
 import pandas as pd
-from plugins.pipeline.base_pipeline import BasePipeline
 from src.engine.plugins import Plugins
 from src.engine.config import Config
+import importlib
+from src.engine.config import Config
+
+class BasePipeline:
+
+      _steps: list
+
+      def __init__(self, config: Config):
+          self._steps = []
+          pipelineModule = config.get('training', 'pipeline')
+          pipeline = importlib.import_module(pipelineModule)
+          self._pipeline = getattr(pipeline, 'Pipeline')
+
+      def getPipeline(self):
+          return self._pipeline(
+              steps = self._steps
+          )
+
+      def addStep(self, stepTuple):
+          self._steps.append(stepTuple)
 
 class Pipeline():
 
     @staticmethod
-    def create(estimators: list, x: pd.DataFrame, y: pd.DataFrame, config: Config):
+    def create(config: Config, x: pd.DataFrame, y: pd.DataFrame):
 
         # Assemble all estimators (sampling, classifiers ...) in a single pipeline
         factoredPipeline = BasePipeline(config)

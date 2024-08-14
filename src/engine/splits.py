@@ -5,13 +5,14 @@ class Split():
 
     @staticmethod
     def cv(
+        config: dict,
         x: pd.DataFrame,
         y: pd.DataFrame,
-        config: dict,
         n_splits: int,
-        method: str = None,
-        group: str = None
     ):
+
+        method = config.get('training', 'splitting_method')
+        group = config.get('training', 'group_column')
 
         if group is not None and group in x.columns:
             group = x[group]
