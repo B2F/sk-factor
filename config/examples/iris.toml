@@ -41,8 +41,8 @@ save_timestamp = true
 images_extension = 'png'
 images_directory = 'output/eda'
 plots = [
-  # 'heatmap',
-  # 'pairplot',
+  'heatmap',
+  'pairplot',
 ]
 # distribution_x=column_a
 figsize = [35, 35]
@@ -54,7 +54,7 @@ dpi = 200
 enabled = true
 splitting_method = 'kfold_shuffle'
 # Nb splits will be equal to the number of files in --train_files by default.
-nb_splits = 2
+nb_splits = 3
 group_column = 'group'
 pipeline = 'imblearn.pipeline'
 estimators = [
