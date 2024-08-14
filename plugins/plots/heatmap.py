@@ -6,12 +6,7 @@ class Heatmap(Report):
 
   def plot(self):
 
-    if self._config.get('eda', 'features'):
-      x = self._x[self._config.get('eda', 'features')]
-    else:
-      x = self._x
-
-    df = pd.concat(list([x, self._y]), axis=1).corr()
+    df = pd.concat(list([self._x, self._y]), axis=1).corr()
 
     sns.heatmap(
       df,

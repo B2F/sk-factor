@@ -12,9 +12,8 @@ class DistributionX(Report):
             n_bins = self._config.get('eda', 'n_bins')
 
         if self._config.get('eda', 'distribution_x'):
-            feature = self._config.get('eda', 'distribution_x')
-            plt.hist(self._x[feature], bins=n_bins)
-            plot_name = 'distribution_' + feature
+            plt.hist(self._x, bins=n_bins)
+            plot_name = 'distribution_' + "_".join(list(self._x.columns))
         else:
             plt.hist(self._x, bins=n_bins)
 
