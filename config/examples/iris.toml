@@ -49,15 +49,11 @@ dpi = 200
 [training]
 # Disable to do eda only.
 enabled = true
-splitting_method = 'kfold_shuffle'
-# Nb splits will be equal to the number of files in --train_files by default.
-nb_splits = 3
-group_column = 'group'
 pipeline = 'imblearn.pipeline'
 estimators = [
     # 'power_transforms/yeo_johnson',
     # 'sampler/tomek_links',
-    'classifier/lgbm_random_forest_mc',
+    'classifier/_examples/lgbm_random_forest_mc',
     # 'regressor/lgbm_rf_regressor',
   ]
 runners = [

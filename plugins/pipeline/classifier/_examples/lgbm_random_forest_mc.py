@@ -1,9 +1,9 @@
 import lightgbm as lgb
-from plugins.pipeline.base_lgbm import BaseLgbm
+from plugins.pipeline.classifier.lgbm_random_forest import LgbmRandomForest
 from sklearn.utils.class_weight import compute_class_weight
 import numpy as np
 
-class LgbmRandomForestMc(BaseLgbm):
+class LgbmRandomForestMc(LgbmRandomForest):
 
     _type = 'classifier'
 
@@ -13,9 +13,9 @@ class LgbmRandomForestMc(BaseLgbm):
         # class_weights = compute_class_weight('balanced', classes=np.unique(all_labels), y=all_labels)
         # class_weight_dict = dict(enumerate(class_weights))
 
-        classifier = lgb.LGBMClassifier(
-            verbosity=-1,
+        return super().getEstimator(
             objective="multiclassova",
+            random_state=self._config.get('training', 'seed'),
             # class_weight=class_weight_dict,
             boosting_type="rf",
             num_leaves=100,
@@ -31,8 +31,5 @@ class LgbmRandomForestMc(BaseLgbm):
             reg_alpha=0,
             reg_lambda=5, # L2 regularization
             n_jobs=3,
-            seed=self._params['seed'],
             learning_rate=0.08,
         )
-
-        return ('lgbm_random_forest_mc', classifier)
