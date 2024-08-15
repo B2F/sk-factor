@@ -9,6 +9,6 @@ class TimeSeries(BaseCv):
         if self._config.get('split', 'split_gap'):
             gap = self._config.get('split', 'split_gap')
 
-        ts = TimeSeriesSplit(n_splits = self._nSplits, gap = gap)
+        ts = TimeSeriesSplit(n_splits = self._nSplits, test_size=self._test_size, gap = gap)
 
         return ts.split(self._x, self._y, self._groups)

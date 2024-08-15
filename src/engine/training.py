@@ -40,8 +40,12 @@ class Training():
 
             args = (self._config, self._x, self._y, self._y_labels, runner)
             runnerObject = Plugins.create('training', runner, *args)
-            cv = Split.cv(self._config, self._x, self._y, self._n_splits)
-            runnerObject.run(pipeline, cv)
+            cvList = Split.getList(self._config, self._x, self._y)
+            if cvList:
+                for cv in cvList:
+                    runnerObject.run(pipeline, cv)
+            else:
+                runnerObject.run(pipeline)
 
     def setConfig(self, config):
         """ Used to update config in a GUI.

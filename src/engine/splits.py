@@ -4,22 +4,18 @@ from src.engine.plugins import Plugins
 class Split():
 
     @staticmethod
-    def cv(
+    def getList(
         config: dict,
         x: pd.DataFrame,
         y: pd.DataFrame,
-        n_splits: int,
-    ):
+    ) -> list:
 
-        method = config.get('training', 'splitting_method')
-        group = config.get('training', 'group_column')
+        list = []
+        splittingMethods = config.get('training', 'splitting_methods')
 
-        if group is not None and group in x.columns:
-            group = x[group]
-        if n_splits > 1 and method is not None:
-            iteratorObject = Plugins.create('split', method, config, x, y, n_splits, group)
-            cv = iteratorObject.split()
-        else:
-            cv = n_splits
+        for plugin, n_splits in splittingMethods.items():
+            if n_splits > 1:
+                iteratorObject = Plugins.create('split', plugin, config, x, y, n_splits)
+                list.append(iteratorObject.split())
 
-        return cv
+        return list

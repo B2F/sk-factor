@@ -8,7 +8,7 @@ show_columns = false
 [preprocess]
 label = 'target'
 label_encode = true
-# Gather merged files IDs in a one reserved column 'group':
+# Gather merged files IDs in a reserved column named 'group':
 groupFiles = false
 # preprocessors.drop_columns = ['column_unwanted']
 # preprocessors.drop_na = []
@@ -52,10 +52,6 @@ dpi = 200
 [training]
 # Disable to do eda only.
 enabled = true
-splitting_method = 'kfold_shuffle'
-# Nb splits will be equal to the number of files in --train_files by default.
-nb_splits = 3
-group_column = 'group'
 pipeline = 'imblearn.pipeline'
 estimators = [
     # 'power_transforms/yeo_johnson',
@@ -68,6 +64,17 @@ runners = [
     # 'confusion_matrix',
     # precision_recall
   ]
+# Split method is a dict with the number of split as value.
+splitting_methods.kfold_shuffle = 3
+splitting_methods.kfold_stratified = 4
+# Some splitting option only affect related splitter:
+splitting_random_state = nan
+splitting_test_size = 0.2
+splitting_n_repeats = 10
+splitting_group = 'group'
+# @see https://scikit-learn.org/stable/modules/model_evaluation.html#common-cases-predefined-values
+scoring = 'accuracy'
+# A model will be trained from the whole dataset and saved.
 save_model = false
 model_timestamp = false
 models_directory = 'models'

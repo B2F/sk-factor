@@ -55,9 +55,6 @@ if trainfiles:
 
     if config.eq('training', 'enabled', True):
 
-        if config.get('training', 'nb_splits') is None and len(argument.train_files) > 1:
-            config.set('training', 'nb_splits', len(argument.train_files))
-
         Training(config, x_train, y_train, labels).run()
 
     ### Step 4. Predictions from model:

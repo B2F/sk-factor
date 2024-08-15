@@ -65,6 +65,10 @@ runners = [
     'confusion_matrix',
     # precision_recall,
   ]
+
+splitting_methods.kfold_shuffle = 2
+splitting_methods.kfold_stratified = 2
+
 save_model = false
 model_timestamp = false
 models_directory = 'models'

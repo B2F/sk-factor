@@ -12,8 +12,6 @@ class Config():
         if filename.find('.toml', -5) == -1:
             filename = self._DEFAULT_DIRECTORY + filename + '.toml'
 
-        config = configparser.ConfigParser()
-
         if not os.path.isfile(filename):
             raise Exception(filename + ' not found.')
 

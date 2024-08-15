@@ -25,10 +25,10 @@ class Transformers():
         for module, features in transformers.items():
 
             transformer = Plugins.create('preprocess.transformer', module, config.getConfig(), x)
-            if type(features) == 'list':
+            if type(features) is list:
                 # Preprocess for columns selected in the .ini config.
                 features = list(x.columns) if features == [] else features
-            elif type(features) == str:
+            elif type(features) is str:
                 features = Plugins.create('preprocess.selector', features, config).estimator()
             else:
                 raise Exception(module + ' value type is unsupported, only list and str are valid transformers types.')
