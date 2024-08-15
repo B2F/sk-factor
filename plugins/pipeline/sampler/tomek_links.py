@@ -3,7 +3,7 @@ from plugins.pipeline.base_estimator import BaseEstimator
 
 class TomekLinks(BaseEstimator):
 
-    _type = ('sampler')
+    _type = 'sampler'
 
     def getEstimator(self) -> tuple:
 

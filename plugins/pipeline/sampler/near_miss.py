@@ -1,10 +1,9 @@
-from sklearn.linear_model import LogisticRegression
 from imblearn.under_sampling import NearMiss as BaseNearMiss
 from plugins.pipeline.base_estimator import BaseEstimator
 
 class NearMiss(BaseEstimator):
 
-    _type = ('sampler')
+    _type = 'sampler'
 
     def getEstimator(self) -> tuple:
 
