@@ -1,5 +1,5 @@
-import configparser
 import os
+import random
 import tomllib
 
 class Config():
@@ -19,6 +19,10 @@ class Config():
             config = tomllib.load(f)
 
         self._config = config
+
+        # keyword based values transformations:
+        if self.get('training', 'seed') == 'random':
+            self.set('training', 'seed', random.seed())
 
     def get(self, section, value):
 

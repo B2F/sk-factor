@@ -79,10 +79,7 @@ save_model = false
 model_timestamp = false
 models_directory = 'models'
 # Use a random seed (default) or specify one
-# The seed will be printed with results
 seed = 'random'
-# @see https://scikit-learn.org/stable/modules/model_evaluation.html#common-cases-predefined-values
-scoring = 'accuracy'
 
 [predictions]
 # @todo predictions:
