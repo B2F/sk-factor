@@ -5,6 +5,6 @@ class KbinsDiscretizer10Kmeans(KbinsDiscretizer):
 
     _name = Path(__file__).stem
 
-    def estimator(self, n_bins = 10, strategy = 'kmeans'):
+    def estimator(self):
 
-        return super().estimator(n_bins, strategy)
+        return super().estimator(n_bins = 10, encode = 'ordinal', strategy = 'kmeans')

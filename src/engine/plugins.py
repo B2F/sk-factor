@@ -15,6 +15,8 @@ class Plugins():
     @staticmethod
     def create(package: str, module: str, *args):
 
+        # @todo allow to configure plugins retrieval from external package / directory.
+        # If class not found default back to sf_factor base plugins directory.
         if module.find('/') != -1:
             directory, separator, moduleName = module.rpartition('/')
             package = package + '.' + directory.replace('/', '.')
