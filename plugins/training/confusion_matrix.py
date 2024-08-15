@@ -16,9 +16,9 @@ class ConfusionMatrix(TrainingPlot):
         # y_values = np.unique(y_train.values)
 
         if not type(self._cv) is int or self._cv > 1:
-            y_pred = cross_val_predict(self._pipeline, self._x, self._y.values.flatten(), cv = self._cv)
+            y_pred = cross_val_predict(self._pipeline, self._x, self._y.values.flatten(), cv = self._cv, n_jobs=-1)
         else:
-            y_pred = cross_val_predict(self._pipeline, self._x, self._y.values.flatten())
+            y_pred = cross_val_predict(self._pipeline, self._x, self._y.values.flatten(), n_jobs=-1)
 
         # @todo add a normalize='true optionnal param to better understand classes imbalance.
         conf_matrix = confusion_matrix(self._y, y_pred)

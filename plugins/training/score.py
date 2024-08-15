@@ -14,7 +14,8 @@ class Score(BaseRunner):
             self._x,
             self._y.values.flatten(),
             cv = cv,
-            scoring = scoring
+            scoring = scoring,
+            n_jobs=-1
         )
 
         print(scores)
