@@ -3,6 +3,7 @@ import re
 from plugins.pipeline.base_estimator import BaseEstimator
 from plugins.plots.base_report import Report
 from plugins.preprocess.base_preprocessor import BasePreprocessor
+from plugins.preprocess.base_selector import BaseSelector
 from plugins.preprocess.base_transformer import BaseTransformer
 from plugins.split.base_cv import BaseCv
 from plugins.training.base_runner import BaseRunner
@@ -44,6 +45,7 @@ class Plugins():
             'pipeline': BaseEstimator,
             'plots': Report,
             'preprocess.preprocessor': BasePreprocessor,
+            'preprocess.selector': BaseSelector,
             'preprocess.transformer': BaseTransformer,
             'split': BaseCv,
             'training': BaseRunner,
