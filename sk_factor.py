@@ -5,8 +5,9 @@ from src.engine.preprocessors import Preprocessors
 from src.engine.transfomers import Transformers
 from src.engine.training import Training
 from src.engine.plots import Plots
-from src.engine.dataset_loader import DatasetLoader
 from src.engine.debug import Debugger
+from src.engine.predictions import Predictions
+from src.engine.plugins import Plugins
 
 parser = argparse.ArgumentParser()
 
@@ -31,12 +32,15 @@ Debugger.attach(config)
 
 trainfiles = argument.train_files if argument.train_files else config.get('dataset', 'files')
 
+model = None
+
 if trainfiles:
 
     ###
     # Step 0. Reading files from command line
 
-    df_train = DatasetLoader.load(config, trainfiles)
+    loader = config.get('dataset', 'loader')
+    df_train = Plugins.create('loader', loader, config, trainfiles).load()
 
     ###
     # Step 1. Preprocessing
