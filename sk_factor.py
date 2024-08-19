@@ -15,7 +15,7 @@ parser.add_argument("-c", "--config", help = "Use a config file from the config/
 
 # -t and -p arguments can be cumulated
 parser.add_argument("-t", "--train_files", help = "Train with given file(s)", required = False, nargs = "*")
-parser.add_argument("-p", "--test_files", help = "Predict with given file(s)", required = False, nargs = "*")
+parser.add_argument("-p", "--predict_files", help = "Predict with given file(s)", required = False, nargs = "*")
 parser.add_argument("-m", "--model_file", help = "Model file(s) used for predictions", required = False, nargs = "*")
 
 parser.add_argument("-d", "--debug", help = "Enable debugging", action='store_true')
@@ -61,9 +61,15 @@ if trainfiles:
 
     if config.eq('training', 'enabled', True):
 
-        Training(config, x_train, y_train, labels).run()
+        model = Training(config, x_train, y_train, labels).run()
 
-    ### Step 4. Predictions from model:
+### Step 4. Predictions from model:
 
-    # @todo
-    # Optionnaly save models and coefs (feature importance) from the output of cross_validate
+if config.eq('predictions', 'enabled', True):
+
+    predict_files = argument.predict_files if argument.predict_files else [config.get('predictions', 'predict_file')]
+    Predictions(config, predict_files, model).run()
+
+# @todo
+# Add unit tests
+# Model stacking

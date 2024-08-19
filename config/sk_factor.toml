@@ -77,21 +77,28 @@ splitting_group = 'group'
 scoring = 'accuracy'
 # A model will be trained from the whole dataset and saved.
 save_model = false
-model_timestamp = false
+# Model will be named by config name, .pkl extension.
 models_directory = 'models'
+# Append timestamp to model filename.
+model_timestamp = false
 # Use a random seed (default) or specify one
 seed = 'random'
 
 [predictions]
-# @todo predictions:
-# Will use training by default, else use a model_file if specified.
-# model_file = model
+enabled = false
+loader = 'csv'
+test_file = 'test_data.csv'
+# Available plugins: binary, multiclass, regressor
+objective = 'classifier'
+# Use the preprocess, as in training.
+preprocess = true
+model = 'models/filename.pkl'
+threshold = 0.5
 predictions_directory = 'output/predictions'
 save_predictions = false
 predictions_timestamp = true
-# @todo: apply the threshold to class output
-roundpredictions = false
-# @see https://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter
+# Keep X data features in the final predictions columns.
+keep_data = true
 
 [debug]
 port = 5678

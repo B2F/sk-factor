@@ -8,6 +8,7 @@ from plugins.preprocess.base_transformer import BaseTransformer
 from plugins.split.base_cv import BaseCv
 from plugins.training.base_runner import BaseRunner
 from plugins.loader.base_loader import BaseLoader
+from plugins.predictions.base_predictor import BasePredictor
 
 class Plugins():
     """ Plugins factory.
@@ -61,7 +62,7 @@ class Plugins():
             'preprocess.transformer': BaseTransformer,
             'split': BaseCv,
             'training': BaseRunner,
-            # 'predictions': BasePredictions,
+            'predictions': BasePredictor,
         }
 
         matchingPackage = ''

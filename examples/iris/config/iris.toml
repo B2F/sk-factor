@@ -75,15 +75,21 @@ seed = 'random'
 scoring = 'accuracy'
 
 [predictions]
-# @todo predictions:
-# Will use training by default, else use a model_file if specified.
-# model_file = model
+enabled = true
+loader = 'csv'
+predict_file = 'tests/iris/test.csv'
+model = 'models/iris.pkl'
+# Available plugins: binary, multiclass, regressor
+objective = 'multiclass'
+# Use the preprocess, as in training.
+preprocess = true
+# model = 'models/iris.pkl'
+threshold = 0.5
 predictions_directory = 'output/predictions'
 save_predictions = false
 predictions_timestamp = true
-# @todo: apply the threshold to class output
-roundpredictions = false
-# @see https://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter
+# Keep X data features in the final predictions columns.
+keep_data = true
 
 [debug]
 enabled = false
