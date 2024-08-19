@@ -45,7 +45,7 @@ class Training():
                 for cv in cvList:
                     runnerObject.run(pipeline, cv)
             else:
-                runnerObject.run(pipeline)
+                runnerObject.run(pipeline, 2)
 
     def setConfig(self, config):
         """ Used to update config in a GUI.

@@ -11,7 +11,9 @@ class Split():
     ) -> list:
 
         list = []
-        splittingMethods = config.get('training', 'splitting_methods')
+        splittingMethods = config.get('training', 'splitting_method')
+        if splittingMethods is None:
+            return
 
         for plugin, n_splits in splittingMethods.items():
             if n_splits > 1:

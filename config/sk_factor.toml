@@ -67,8 +67,8 @@ runners = [
     # precision_recall
   ]
 # Split method is a dict with the number of split as value.
-splitting_methods.kfold_shuffle = 3
-splitting_methods.kfold_stratified = 4
+splitting_method.kfold_shuffle = 3
+splitting_method.kfold_stratified = 4
 # Some splitting option only affect related splitter:
 splitting_random_state = nan
 splitting_test_size = 0.2
