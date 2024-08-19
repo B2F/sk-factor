@@ -13,24 +13,37 @@ class Plugins():
     """ Plugins factory.
     """
 
+    PACKAGE_BASE = 'plugins'
+
     @staticmethod
-    def create(package: str, module: str, *args):
+    def create(package: str, module: str, config = None, *args):
 
         # @todo allow to configure plugins retrieval from external package / directory.
         # If class not found default back to sf_factor base plugins directory.
+        packageBase = Plugins.PACKAGE_BASE
+        if config.get('dataset', 'plugins'):
+            packageBase = config.get('dataset', 'plugins')
+
         if module.find('/') != -1:
             directory, separator, moduleName = module.rpartition('/')
             package = package + '.' + directory.replace('/', '.')
-            classModule = importlib.import_module(f"plugins.{package}.{moduleName}")
         else:
             moduleName = module
-            classModule = importlib.import_module(f"plugins.{package}.{moduleName}")
+
+        # First, we try to find the plugin from toml's [dataset] plugins config if available:
+        pluginPath = f"{Plugins.PACKAGE_BASE}.{package}.{moduleName}"
+        try:
+            classModule = importlib.import_module(f"{packageBase}.{pluginPath}")
+        # Else, fallback to
+        except ModuleNotFoundError:
+            if Plugins.PACKAGE_BASE != packageBase:
+                classModule = importlib.import_module(f"{pluginPath}")
 
         classTokens = moduleName.split('_')
         className = ''.join(ele.title() for ele in classTokens)
         className = getattr(classModule, className)
 
-        object = className(*args)
+        object = className(config, *args)
 
         Plugins.checkPackageClass(object, package)
 

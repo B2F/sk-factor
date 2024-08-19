@@ -4,6 +4,8 @@ loader = 'csv'
 show_columns = false
 # Ignored if -t (--train_files) is passed to the CLI.
 # files = []
+# You can choose a custom plugin package, it has to follow sk_factor's plugin directory structure.
+# plugins = 'examples.iris'
 
 [preprocess]
 label = 'target'

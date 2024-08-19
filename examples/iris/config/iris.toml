@@ -3,6 +3,7 @@ loader = 'toy_dataset'
 # Ignored if -t (--train_files) is passed to the CLI.
 files = ['iris']
 show_columns = true
+plugins = 'examples.iris'
 
 [preprocess]
 label = 'target'
@@ -32,7 +33,7 @@ transformers_pipeline_directory = 'output/transformers'
 files_axis = 'index'
 
 [eda]
-show_plots = true
+show_plots = false
 save_images = false
 save_timestamp = true
 images_extension = 'png'
@@ -53,7 +54,7 @@ pipeline = 'imblearn.pipeline'
 estimators = [
     # 'power_transforms/yeo_johnson',
     # 'sampler/tomek_links',
-    'classifier/_examples/lgbm_random_forest_mc',
+    'classifier/lgbm_random_forest_mc',
     # 'regressor/lgbm_rf_regressor',
   ]
 runners = [
