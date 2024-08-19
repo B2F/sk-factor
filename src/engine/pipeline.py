@@ -30,7 +30,7 @@ class Pipeline():
         # Assemble all estimators (sampling, classifiers ...) in a single pipeline
         factoredPipeline = BasePipeline(config)
         for estimator in config.get('training', 'estimators'):
-            # Put GridSearchCV, RandomizedSearchCV, HalvingGridSearchCV etc in the pipeline directiory.
+            # Put GridSearchCV, RandomizedSearchCV, HalvingGridSearchCV etc in the plugins pipeline directory.
             # Same for automated feature selection ? (RFECV, SelectFromModel)
             estimator = Plugins.create('pipeline', estimator, config, x, y)
             factoredPipeline.addStep(estimator.getEstimator())

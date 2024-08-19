@@ -53,6 +53,7 @@ class Report(ABC):
         if not os.path.isdir(directory):
             os.makedirs(directory)
         if self._saveTimestamp:
+            # @todo: convert timestamp to date in the predictions output (do the same for predictions and model file).
             filename += '_' + str(time.time())
         filename = f"{filename}.{self._imagesExtension}"
         return f'{directory}/{filename}'

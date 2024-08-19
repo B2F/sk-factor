@@ -4,7 +4,9 @@ loader = 'csv'
 show_columns = false
 # Ignored if -t (--train_files) is passed to the CLI.
 # files = []
-# You can choose a custom plugin package, it has to follow sk_factor's plugin directory structure.
+# You can choose override plugins from a custom package,
+# it has to follow sk_factor's plugin directory structure.
+# @todo: move loaders related to toy datasets in a dedicated examples plugins package
 # plugins = 'examples.iris'
 
 [preprocess]
