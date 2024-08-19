@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 import pandas as pd
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import FunctionTransformer

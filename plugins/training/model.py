@@ -31,11 +31,11 @@ class Model:
         if not self._saveModel:
             return
 
-        self._pipeline.fit(self._x, self._y)
+        self._pipeline.fit(self._x, self._y.to_numpy().flatten())
         # The filename is retrieved from config file, in sk_factor.py
         filename = self._config.get('dataset', 'filename')
         if self._modelTimestamp:
-            filename = filename + time.time()
+            filename = filename + '_' + str(time.time())
 
         modelFilePath = self._modelsDirectory + f'/{filename}.pkl'
         if not os.path.isdir(self._modelsDirectory):
