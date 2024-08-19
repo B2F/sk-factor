@@ -37,10 +37,13 @@ class Model:
         if self._modelTimestamp:
             filename = filename + '_' + str(time.time())
 
-        modelFilePath = self._modelsDirectory + f'/{filename}.pkl'
-        if not os.path.isdir(self._modelsDirectory):
-            os.makedirs(self._modelsDirectory)
+        if (self._saveModel):
 
-        joblib.dump(self._pipeline, modelFilePath)
+          modelFilePath = self._modelsDirectory + f'/{filename}.pkl'
+          if not os.path.isdir(self._modelsDirectory):
+              os.makedirs(self._modelsDirectory)
 
-        print ('Model file written in ' + modelFilePath)
+          joblib.dump(self._pipeline, modelFilePath)
+          print ('Model file written in ' + modelFilePath)
+
+        return self._pipeline

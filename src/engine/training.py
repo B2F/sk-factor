@@ -49,7 +49,7 @@ class Training():
                 runnerObject.run(pipeline, 2)
 
         model = Model(self._config, self._x, self._y, pipeline)
-        model.save()
+        return model.save()
 
     def setConfig(self, config):
         """ Used to update config in a GUI.
