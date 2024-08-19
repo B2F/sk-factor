@@ -7,7 +7,7 @@ from plugins.predictions.base_predictor import BasePredictor
 
 class Binary(BasePredictor):
 
-    def predict(self, model):
+    def _predict(self, model):
 
         probas = model.predict_proba(self._x)
 

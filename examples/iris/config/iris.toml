@@ -85,9 +85,9 @@ objective = 'multiclass'
 preprocess = true
 # model = 'models/iris.pkl'
 threshold = 0.5
-predictions_directory = 'output/predictions'
-save_predictions = false
-predictions_timestamp = true
+predictions_directory = 'tests/iris/predictions'
+save_predictions = true
+predictions_timestamp = false
 # Keep X data features in the final predictions columns.
 keep_data = true
 

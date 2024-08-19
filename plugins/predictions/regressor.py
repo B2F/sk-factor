@@ -8,7 +8,7 @@ from plugins.predictions.base_predictor import BasePredictor
 
 class Regressor(BasePredictor):
 
-    def predict(self, model):
+    def _predict(self, model):
 
         all_predictions = np.array([tree.predict(self._x) for tree in model.estimators_])
 
