@@ -66,7 +66,7 @@ runners = [
 splitting_method.kfold_shuffle = 2
 splitting_method.kfold_stratified = 2
 
-save_model = false
+save_model = true
 model_timestamp = false
 models_directory = 'models'
 # Use a random seed (default) or specify one

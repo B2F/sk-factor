@@ -26,9 +26,6 @@ transformers.passthrough = []
 # Pipeline suffixes are removed from columns by default:
 verbose_feature_names_out = false
 
-# @todo: implement pipeline save method.
-save_transformers_pipeline = false
-transformers_pipeline_directory = 'output/transformers'
 # Multiple files will be combined, by default the "index" axis is used.
 # If 'index' axis is used, a group column with the filename will be added.
 # If 'column' axis is used, no grouping will occur.

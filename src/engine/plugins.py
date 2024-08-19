@@ -18,12 +18,11 @@ class Plugins():
     @staticmethod
     def create(package: str, module: str, config = None, *args):
 
-        # @todo allow to configure plugins retrieval from external package / directory.
-        # If class not found default back to sf_factor base plugins directory.
         packageBase = Plugins.PACKAGE_BASE
         if config.get('dataset', 'plugins'):
             packageBase = config.get('dataset', 'plugins')
 
+        # If the module string contains a path, split directory from module name.
         if module.find('/') != -1:
             directory, separator, moduleName = module.rpartition('/')
             package = package + '.' + directory.replace('/', '.')
@@ -34,7 +33,7 @@ class Plugins():
         pluginPath = f"{Plugins.PACKAGE_BASE}.{package}.{moduleName}"
         try:
             classModule = importlib.import_module(f"{packageBase}.{pluginPath}")
-        # Else, fallback to
+        # Else, fallback to default sk_factor plugins directory:
         except ModuleNotFoundError:
             if Plugins.PACKAGE_BASE != packageBase:
                 classModule = importlib.import_module(f"{pluginPath}")
@@ -52,7 +51,7 @@ class Plugins():
     @staticmethod
     def checkPackageClass(object, package):
 
-        # Check validity relating to package.
+        # Check if package class is valid:
         packagesClasses = {
             'loader': BaseLoader,
             'pipeline': BaseEstimator,

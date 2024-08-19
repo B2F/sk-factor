@@ -3,6 +3,7 @@ from src.engine.pipeline import Pipeline
 from src.engine.plugins import Plugins
 from src.engine.splits import Split
 from src.engine.config import Config
+from plugins.training.model import Model
 
 class Training():
 
@@ -46,6 +47,9 @@ class Training():
                     runnerObject.run(pipeline, cv)
             else:
                 runnerObject.run(pipeline, 2)
+
+        model = Model(self._config, self._x, self._y, pipeline)
+        model.save()
 
     def setConfig(self, config):
         """ Used to update config in a GUI.

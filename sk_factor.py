@@ -1,4 +1,5 @@
 import argparse
+import re
 from src.engine.config import Config
 from src.engine.preprocessors import Preprocessors
 from src.engine.transfomers import Transformers
@@ -21,6 +22,8 @@ parser.add_argument("-d", "--debug", help = "Enable debugging", action='store_tr
 argument = parser.parse_args()
 
 config = Config(argument.config)
+reConfig = re.search(r"(?:.*/)?([^\/\.]*)(?:\.toml)$", argument.config)
+config.set('dataset', 'filename', reConfig.group(1))
 
 config.set('debug', 'enabled', True) if argument.debug else config.set('debug', 'enabled', False)
 
