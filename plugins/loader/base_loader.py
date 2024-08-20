@@ -21,6 +21,6 @@ class BaseLoader(ABC):
         df = self._load()
         if self._config.get('dataset', 'show_columns'):
 
-            print(df.columns)
+            print(df.dtypes)
 
         return df
