@@ -7,10 +7,10 @@ class NearMiss(BaseEstimator):
 
     def getEstimator(self) -> tuple:
 
-        # Illustrates how a custom config can be used in an estimator class.
-        if self._config.get('sampling', 'version'):
-            version = self._config.get('sampling', 'version')
-        else:
-            version = 3
-        nm = BaseNearMiss(version=version)
+        version = self._config.get('sampling', 'near_miss_version', 2)
+        nb_jobs = self._config.get('sampling', 'nb_jobs')
+        nm = BaseNearMiss(
+            version=version,
+            n_jobs=nb_jobs
+        )
         return ('near_miss', nm)
