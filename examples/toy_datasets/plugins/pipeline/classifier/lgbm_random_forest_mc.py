@@ -1,22 +1,22 @@
 import lightgbm as lgb
-from plugins.pipeline.classifier.lgbm_random_forest import LgbmRandomForest
+from plugins.pipeline.classifier.lgbm_classifier import LgbmClassifier
 from sklearn.utils.class_weight import compute_class_weight
 import numpy as np
 
-class LgbmRandomForestMc(LgbmRandomForest):
+class LgbmRandomForestMc(LgbmClassifier):
 
     _type = 'classifier'
 
     def getEstimator(self):
 
-        # all_labels = self._y.to_numpy().flatten()
-        # class_weights = compute_class_weight('balanced', classes=np.unique(all_labels), y=all_labels)
-        # class_weight_dict = dict(enumerate(class_weights))
+        all_labels = self._y.to_numpy().flatten()
+        class_weights = compute_class_weight('balanced', classes=np.unique(all_labels), y=all_labels)
+        class_weight_dict = dict(enumerate(class_weights))
 
         return super().getEstimator(
             objective="multiclassova",
             random_state=self._config.get('training', 'seed'),
-            # class_weight=class_weight_dict,
+            class_weight=class_weight_dict,
             boosting_type="rf",
             num_leaves=100,
             colsample_bytree=.5,

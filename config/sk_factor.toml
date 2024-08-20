@@ -55,10 +55,8 @@ dpi = 200
 enabled = true
 pipeline = 'imblearn.pipeline'
 estimators = [
-    # 'power_transforms/yeo_johnson',
-    # 'sampler/tomek_links',
-    'classifier/lgbm_random_forest_mc',
-    # 'regressor/lgbm_rf_regressor',
+    # 'classifier/lgbm_random_forest',
+    'regressor/lgbm_rf_regressor',
   ]
 runners = [
     'score'

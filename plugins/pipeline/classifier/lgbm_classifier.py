@@ -1,7 +1,7 @@
 import lightgbm as lgb
 from plugins.pipeline.base_estimator import BaseEstimator
 
-class LgbmRandomForest(BaseEstimator):
+class LgbmClassifier(BaseEstimator):
 
     _type = 'classifier'
 
