@@ -89,7 +89,7 @@ enabled = false
 loader = 'csv'
 test_file = 'test_data.csv'
 # Available plugins: binary, multiclass, regressor
-objective = 'classifier'
+objective = 'multiclass'
 # Use the preprocess, as in training.
 preprocess = true
 model = 'models/filename.pkl'
