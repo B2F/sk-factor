@@ -2,14 +2,14 @@ import sklearn.datasets as toy_datasets
 import pandas as pd
 from plugins.loader.base_loader import BaseLoader
 
-class ToyDataset(BaseLoader):
+class ToyDatasets(BaseLoader):
 
     def _load(self):
 
-        if len(self._arguments) > 1:
+        if len(self._files) > 1:
             raise Exception('Cannot load more than one toy dataset at once')
 
-        dataset = getattr(toy_datasets, f'load_{self._arguments[0]}')()
+        dataset = getattr(toy_datasets, f'load_{self._files[0]}')()
 
         x = pd.DataFrame(data = dataset['data'], columns = dataset['feature_names'])
         y = pd.DataFrame(data = dataset['target'], columns = ['target'])

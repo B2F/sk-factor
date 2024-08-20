@@ -1,9 +1,9 @@
 [dataset]
-loader = 'toy_dataset'
+loader = 'toy_datasets'
 # Ignored if -t (--train_files) is passed to the CLI.
 files = ['iris']
 show_columns = true
-plugins = 'examples.iris'
+plugins = 'examples.toy_datasets'
 
 [preprocess]
 label = 'target'
@@ -65,12 +65,13 @@ runners = [
 
 splitting_method.kfold_shuffle = 2
 splitting_method.kfold_stratified = 2
+splitting_random_state = 26387
 
 save_model = true
 model_timestamp = false
 models_directory = 'models'
 # Use a random seed (default) or specify one
-seed = 'random'
+seed = 7368298
 # @see https://scikit-learn.org/stable/modules/model_evaluation.html#common-cases-predefined-values
 scoring = 'accuracy'
 
