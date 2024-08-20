@@ -24,15 +24,15 @@ class Config():
         if self.get('training', 'seed') == 'random':
             self.set('training', 'seed', random.seed())
 
-    def get(self, section, value):
+    def get(self, section, value, defaultValue = None):
 
         if section not in self._config:
-            return None
+            return defaultValue
         elif self._config[section].get(value) is not None:
             value = self._config[section][value]
             return value
         else:
-            return None
+            return defaultValue
 
     def set(self, section, value, newValue):
 
