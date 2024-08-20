@@ -6,10 +6,10 @@ class OpenMl(BaseLoader):
 
     def _load(self):
 
-        if len(self._arguments) > 1:
+        if len(self._files) > 1:
             raise Exception('Cannot load more than one openml dataset at once')
 
-        df = fetch_openml(name=self._arguments[0], as_frame=True)
+        df = fetch_openml(name=self._files[0], as_frame=True)
 
         x = pd.DataFrame(data = df['data'], columns = df['feature_names'])
         y = pd.DataFrame(data = df['target'])

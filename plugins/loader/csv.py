@@ -9,7 +9,7 @@ class Csv(BaseLoader):
     def _load(self):
 
         mergeAxis = self._config.get('preprocess', 'files_axis')
-        dataFrames = list(map(self.readCsv, self._arguments))
+        dataFrames = list(map(self.readCsv, self._files))
         if self._config.eq(*('preprocess', 'groupFiles'), True):
             dataFrames = list(map(self.addGroup, *(dataFrames, 'group')))
         df = self.mergeFiles(dataFrames, mergeAxis)
