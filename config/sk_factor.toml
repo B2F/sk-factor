@@ -34,6 +34,9 @@ verbose_feature_names_out = false
 files_axis = 'index'
 
 [eda]
+enabled = false
+# show_plots and save_images are used for training plots also,
+# regardless of eda enabled.
 show_plots = false
 save_images = false
 save_timestamp = true

@@ -51,7 +51,7 @@ if trainfiles:
     ###
     # Step 2. EDA plots:
 
-    if config.eq('eda', 'show_plots', True) or config.eq('eda', 'save_images', True):
+    if config.eq('eda', 'enabled', True):
 
         identifier = identifier = '/'.join(trainfiles) if len(trainfiles) > 1 else trainfiles
         Plots().run(config, x_train, y_train, labels, identifier)
