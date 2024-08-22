@@ -1,5 +1,4 @@
-import lightgbm as lgb
-from plugins.pipeline.classifier.lgbm_classifier import LgbmClassifier
+from plugins.estimators.classifier.lgbm_classifier import LgbmClassifier
 from sklearn.utils.class_weight import compute_class_weight
 import numpy as np
 

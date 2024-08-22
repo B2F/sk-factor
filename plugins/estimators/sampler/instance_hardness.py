@@ -1,6 +1,6 @@
 from sklearn.linear_model import LogisticRegression
 from imblearn.under_sampling import InstanceHardnessThreshold
-from plugins.pipeline.base_estimator import BaseEstimator
+from plugins.estimators.base_estimator import BaseEstimator
 
 class InstanceHardness(BaseEstimator):
 

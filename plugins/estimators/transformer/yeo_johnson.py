@@ -1,5 +1,5 @@
 from sklearn.preprocessing import PowerTransformer
-from plugins.pipeline.base_estimator import BaseEstimator
+from plugins.estimators.base_estimator import BaseEstimator
 
 class YeoJohnson(BaseEstimator):
 

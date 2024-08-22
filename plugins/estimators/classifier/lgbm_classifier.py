@@ -1,11 +1,12 @@
 import lightgbm as lgb
-from plugins.pipeline.base_estimator import BaseEstimator
+from plugins.estimators.base_estimator import BaseEstimator
 
-class LgbmRegressor(BaseEstimator):
+class LgbmClassifier(BaseEstimator):
 
-    _type = 'regressor'
+    _type = 'classifier'
 
     def getEstimator(
+        self,
         boosting_type = "gbdt",
         num_leaves = 31,
         max_depth = -1,
@@ -27,7 +28,8 @@ class LgbmRegressor(BaseEstimator):
         importance_type = "split",
     ):
 
-        regressor = lgb.LGBMRegressor(
+        classifier = lgb.LGBMClassifier(
+            verbosity=-1,
             boosting_type = boosting_type,
             num_leaves = num_leaves,
             max_depth = max_depth,
@@ -46,7 +48,7 @@ class LgbmRegressor(BaseEstimator):
             reg_lambda = reg_lambda,
             random_state = random_state,
             n_jobs = n_jobs,
-            importance_type = importance_type
+            importance_type = importance_type,
         )
 
-        return ('lgbm_rf_regressor', regressor)
+        return ('lgbm_classifier', classifier)

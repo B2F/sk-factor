@@ -1,5 +1,5 @@
 from sktime.classification.interval_based import TimeSeriesForestClassifier as BaseTSFC
-from plugins.pipeline.base_estimator import BaseEstimator
+from plugins.estimators.base_estimator import BaseEstimator
 
 class TimeSeriesForestClassifier(BaseEstimator):
 

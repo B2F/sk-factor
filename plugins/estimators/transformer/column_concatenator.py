@@ -1,5 +1,5 @@
 from sktime.transformations.panel.compose import ColumnConcatenator as BaseColumnConcatenator
-from plugins.pipeline.base_estimator import BaseEstimator
+from plugins.estimators.base_estimator import BaseEstimator
 
 class ColumnConcatenator(BaseEstimator):
 
