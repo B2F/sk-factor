@@ -6,7 +6,6 @@ show_columns = false
 # files = []
 # You can choose override plugins from a custom package,
 # it has to follow sk_factor's plugin directory structure.
-# @todo: move loaders related to toy datasets in a dedicated examples plugins package
 # plugins = 'examples.iris'
 
 [preprocess]
@@ -57,9 +56,15 @@ dpi = 200
 # Disable to do eda only.
 enabled = true
 pipeline = 'imblearn.pipeline'
+# Optionnals steps (@see plugins/estimators/):
+# samplers = [
+#     'sampler/near_miss',
+# ]
+# transformers = [
+#     'transformer/yeo_johnson',
+# ]
 estimators = [
-    # 'classifier/lgbm_random_forest',
-    'regressor/lgbm_rf_regressor',
+    'regressor/lgbm_classifier',
   ]
 runners = [
     'score'
@@ -89,17 +94,20 @@ seed = 'random'
 enabled = false
 loader = 'csv'
 test_file = 'test_data.csv'
+# Leave out the models param to use fitted pipelines from the previous training.
+# models = [
+#   'models/iris.pkl'
+# ]
 # Available plugins: binary, multiclass, regressor
 objective = 'multiclass'
 # Use the preprocess, as in training.
 preprocess = true
-model = 'models/filename.pkl'
 threshold = 0.5
 predictions_directory = 'output/predictions'
 save_predictions = false
 predictions_timestamp = true
 # Keep X data features in the final predictions columns.
-keep_data = true
+keep_data = false
 
 [debug]
 port = 5678

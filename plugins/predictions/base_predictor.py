@@ -1,7 +1,10 @@
 from abc import ABC, abstractmethod
 import os
+import re
 import time
 import pandas as pd
+from src.engine.model import Model
+from sklearn.pipeline import Pipeline
 
 class BasePredictor(ABC):
 
@@ -18,7 +21,7 @@ class BasePredictor(ABC):
         self._labels = labels
 
     @abstractmethod
-    def _predict(self, model: object):
+    def _predict(self, model: Pipeline):
         """Calculate predictions here.
         You can add your own predictions objective plugin.
 
@@ -31,23 +34,27 @@ class BasePredictor(ABC):
         """
         pass
 
-    def predict(self, model: object):
+    def predict(self, model: Model):
 
-        predictions = self._predict(model)
+        predictions = self._predict(model.pipeline)
         if self._config.eq('predictions', 'save_predictions', True):
-            self._writeToFile(predictions)
+            self._writeToFile(predictions, model.id)
 
-    def _writeToFile(self, predictions):
+    def _writeToFile(self, predictions, id):
 
+        prediction_filename = self._config.get('dataset', 'filename') + '-' + id
         directory = self._config.get('predictions', 'predictions_directory')
-        if not os.path.isdir(directory):
-            os.makedirs(directory)
-        prediction_filename = self._config.get('dataset', 'filename')
+
+        predictionDir = re.match(r'^(.*\/)+', f"{directory}/{prediction_filename}").group(0)
+        filename = re.match(r'(?:(?:(?:[^\/]*)\/)*)(.*)$', f"{directory}/{prediction_filename}").group(1)
+
+        if not os.path.isdir(predictionDir):
+            os.makedirs(predictionDir)
 
         if self._config.eq('predictions', 'predictions_timestamp', True):
             prediction_filename += '_' + str(time.time())
 
-        fullPath = f"{directory}/{prediction_filename}.csv"
+        fullPath = f"{predictionDir}{filename}.csv"
         predictions.to_csv(f"{fullPath}")
 
         print (f'{fullPath} written to disk.')

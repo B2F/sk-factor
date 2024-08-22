@@ -5,10 +5,11 @@
 
 from plugins.predictions.base_predictor import BasePredictor
 import pandas as pd
+from sklearn.pipeline import Pipeline
 
 class Multiclass(BasePredictor):
 
-    def _predict(self, model):
+    def _predict(self, model: Pipeline):
 
         probas = model.predict_proba(self._x)
 

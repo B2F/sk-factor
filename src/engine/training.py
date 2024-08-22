@@ -3,7 +3,7 @@ from src.engine.pipeline import Pipeline
 from src.engine.plugins import Plugins
 from src.engine.splits import Split
 from src.engine.config import Config
-from plugins.training.model import Model
+from src.engine.model import Model
 
 class Training():
 
@@ -28,28 +28,42 @@ class Training():
         self._y_labels = labels
         self._n_splits = config.get('training', 'nb_splits')
 
-    def run(self):
+    def run(self) -> list:
+        ''' Run training processes.
+            Returns a list of fitted sk_factor Model objects.
+        '''
+
+        models = []
 
         runners = self._config.get('training', 'runners')
         if runners is None:
             return
 
         # Assemble all estimators (sampling, classifiers ...) in a single pipeline
-        pipeline = Pipeline.create(self._config, self._x, self._y)
+        pipelines = Pipeline.create(self._config, self._x, self._y)
 
-        for runner in runners:
+        for id, pipeline in pipelines:
+            for runner in runners:
 
-            args = (self._config, self._x, self._y, self._y_labels, runner)
-            runnerObject = Plugins.create('training', runner, *args)
-            cvList = Split.getList(self._config, self._x, self._y)
-            if cvList:
-                for cv in cvList:
-                    runnerObject.run(pipeline, cv)
-            else:
-                runnerObject.run(pipeline, 2)
+                print('...\nRunning ' + id + ' ' + runner + ':')
+                args = (self._config, self._x, self._y, self._y_labels, runner)
+                runnerObject = Plugins.create('training', runner, *args)
+                cvList = Split.getList(self._config, self._x, self._y)
+                if cvList:
+                    for cv in cvList:
+                        runnerObject.run(pipeline, cv)
+                else:
+                    runnerObject.run(pipeline, 2)
 
-        model = Model(self._config, self._x, self._y, pipeline)
-        return model.save()
+            model = Model(self._config, self._x, self._y, pipeline, id)
+            model.fit()
+
+            if self._config.get('training', 'save_model'):
+                model.save()
+
+            models.append(model)
+
+        return models
 
     def setConfig(self, config):
         """ Used to update config in a GUI.

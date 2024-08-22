@@ -10,7 +10,7 @@ class Preprocessors():
         """ Returns preprocessed x, y and decoded labels from the given DataFrame.
         """
 
-        print('Before preprocessing:')
+        print('...\nBefore preprocessing:')
         print(df.shape)
 
         preprocessors = config.get('preprocess', 'preprocessors')

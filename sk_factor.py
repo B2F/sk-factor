@@ -61,14 +61,14 @@ if trainfiles:
 
     if config.eq('training', 'enabled', True):
 
-        model = Training(config, x_train, y_train, labels).run()
+        models = Training(config, x_train, y_train, labels).run()
 
 ### Step 4. Predictions from model:
 
 if config.eq('predictions', 'enabled', True):
 
     predict_files = argument.predict_files if argument.predict_files else [config.get('predictions', 'predict_file')]
-    Predictions(config, predict_files, labels, model).run()
+    Predictions(config, predict_files, labels, models).run()
 
 # @todo
 # Add unit tests

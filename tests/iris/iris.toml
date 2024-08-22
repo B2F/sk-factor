@@ -24,15 +24,13 @@ transformers.passthrough = []
 # Pipeline suffixes are removed from columns by default:
 verbose_feature_names_out = false
 
-# @todo: implement pipeline save method.
-save_transformers_pipeline = false
-transformers_pipeline_directory = 'output/transformers'
 # Multiple files will be combined, by default the "index" axis is used.
 # If 'index' axis is used, a group column with the filename will be added.
 # If 'column' axis is used, no grouping will occur.
 files_axis = 'index'
 
 [eda]
+enabled = false
 show_plots = false
 save_images = false
 save_timestamp = true
@@ -51,15 +49,22 @@ dpi = 200
 # Disable to do eda only.
 enabled = true
 pipeline = 'imblearn.pipeline'
-estimators = [
+samplers = [
     'sampler/near_miss',
+]
+transformers = [
+    'transformer/yeo_johnson',
+]
+estimators = [
+    'classifier/linear_svc',
+    'classifier/xgboost',
     'classifier/lgbm_random_forest_mc',
-  ]
+]
 runners = [
     'score',
     'confusion_matrix',
     # precision_recall,
-  ]
+]
 
 splitting_method.kfold_shuffle = 2
 splitting_method.kfold_stratified = 2
@@ -76,13 +81,15 @@ scoring = 'accuracy'
 [predictions]
 enabled = true
 loader = 'csv'
+preprocess = true
 predict_file = 'tests/iris/test.csv'
-model = 'models/iris.pkl'
+# Leave out the models param to use fitted pipelines from the previous training.
+# models = [
+#   'models/iris.pkl'
+# ]
 # Available plugins: binary, multiclass, regressor
 objective = 'multiclass'
 # Use the preprocess, as in training.
-preprocess = true
-# model = 'models/iris.pkl'
 threshold = 0.5
 predictions_directory = 'tests/iris/predictions'
 save_predictions = true

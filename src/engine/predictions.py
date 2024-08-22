@@ -9,10 +9,10 @@ class Predictions():
     _x: pd.DataFrame
     _plugin: Plugins
     _config: dict
-    _model: object
+    _models: list
     _labels: list
 
-    def __init__(self, config, files, labels = None, model = None):
+    def __init__(self, config, files, labels = None, models = []):
         """ Model is specified in config by default,
         The trained model is used otherwise.
         """
@@ -23,24 +23,26 @@ class Predictions():
         df = Plugins.create('loader', loader, config, files).load()
 
         if config.get('predictions', 'preprocess'):
-          x, y_train, labels = Preprocessors.apply(config, df)
+          x, y, labels = Preprocessors.apply(config, df)
           x = Transformers.apply(config, x)
         else:
             x = df
 
         self._x = x
 
-        modelFilePath = self._config.get('predictions', 'model')
-        if modelFilePath:
-            self._model = joblib.load(modelFilePath)
-        elif model is not None:
-            self._model = model
+        modelsFilePath = self._config.get('predictions', 'models')
+        if modelsFilePath is not None:
+            for modelFilePath in modelsFilePath:
+                self._models.append(joblib.load(modelFilePath))
+        elif models is not None:
+            self._models = models
         else:
-            raise Exception('Predictions model is missing from both config and training, you need at least one model with predictions enabled.')
+            raise Exception('Predictions models are missing from both config and training, you need at least one model with predictions enabled.')
 
     def run(self):
 
         objective = self._config.get('predictions', 'objective')
         predictor = Plugins.create('predictions', objective, self._config, self._x, self._labels)
-        predictor.predict(self._model)
 
+        for model in self._models:
+            predictor.predict(model)
