@@ -8,6 +8,11 @@ plugins = 'examples.toy_datasets'
 [preprocess]
 label = 'target'
 label_encode = true
+# The shuffle value is its random_state seed.
+preprocessors.shuffle = 1
+preprocessors.drop_rows = -3
+# Dropped samples left out for predictions (relevant for testing the final model):
+drop_rows_to_predict_file = true
 # Gather merged files IDs in a one reserved column 'group':
 groupFiles = false
 # preprocessors.drop_columns = ['column_unwanted']
@@ -62,7 +67,7 @@ estimators = [
 ]
 runners = [
     'score',
-    'confusion_matrix',
+    # 'confusion_matrix',
     # precision_recall,
 ]
 
@@ -81,7 +86,7 @@ scoring = 'accuracy'
 [predictions]
 enabled = true
 loader = 'csv'
-preprocess = true
+preprocess = false
 predict_file = 'tests/iris/test.csv'
 # Leave out the models param to use fitted pipelines from the previous training.
 # models = [
