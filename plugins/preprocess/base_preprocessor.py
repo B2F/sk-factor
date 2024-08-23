@@ -7,13 +7,12 @@ class BasePreprocessor(ABC):
     _df = pd.DataFrame
     _config = dict
     _id = Path(__file__).stem
+    _arguments: list
 
-    def __init__(self, config, df: pd.DataFrame, features: list = None):
+    def __init__(self, config, df: pd.DataFrame, arguments = None):
         self._config = config
-        if features:
-            self._df = df[features]
-        else:
-            self._df = df
+        self._df = df
+        self._arguments = arguments
 
     @abstractmethod
     def preprocess(self) -> pd.DataFrame:
@@ -21,7 +20,7 @@ class BasePreprocessor(ABC):
         return self._df
 
     def transform(self):
-        print('\n' + self._id + ':')
+        print('\nAfter ' + self._id + ':')
         df = self.preprocess()
         print(df.shape)
         return df
