@@ -8,23 +8,19 @@ plugins = 'examples.toy_datasets'
 [preprocess]
 label = 'target'
 label_encode = true
+
+#  Pass features as is to the pipeline, empty list to keep all features.
+transformers.passthrough = []
+# @see examples/ config for more files examples
+
 # The shuffle value is its random_state seed.
 preprocessors.shuffle = 1
 preprocessors.drop_rows = -3
+
 # Dropped samples left out for predictions (relevant for testing the final model):
 drop_rows_to_predict_file = true
 # Gather merged files IDs in a one reserved column 'group':
 groupFiles = false
-# preprocessors.drop_columns = ['column_unwanted']
-# preprocessors.drop_na = []
-#  Pass features as is to the pipeline, empty list to keep all features.
-transformers.passthrough = []
-
-#  Use with groups = true above, will encode groups from train filenames:
-# transformers.ordinal_encoder = ['group']
-
-#  Encode groups in their own column (beware you cannot split on one hot encoder groups):
-# transformers.one_hot_encoder = ['group']
 
 # Pipeline suffixes are removed from columns by default:
 verbose_feature_names_out = false

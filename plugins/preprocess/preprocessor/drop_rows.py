@@ -24,9 +24,4 @@ class DropRows(BasePreprocessor):
 
         print(removedDf)
 
-        if dropToPredictFile:
-            predictFile = self._config.get('predictions', 'predict_file')
-            removedDf.to_csv(predictFile, index=False)
-            print('Dropped rows written to: ' + predictFile)
-
         return reducedDataset

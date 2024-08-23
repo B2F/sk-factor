@@ -8,11 +8,7 @@ plugins = 'examples.open_ml'
 [preprocess]
 label = 'Happiness Score'
 label_encode = false
-# The shuffle value is its random_state seed.
-preprocessors.shuffle = 1
-preprocessors.drop_rows = -5
-# Dropped samples left out for predictions (relevant for testing the final model):
-drop_rows_to_predict_file = true
+
 transformers.passthrough = [
   'Economy (GDP per Capita)',
   'Family',
@@ -24,6 +20,15 @@ transformers.passthrough = [
 ]
 transformers.one_hot_encoder = ['Region']
 transformers.scaler = ['Standard Error']
+
+# The shuffle value is its random_state seed.
+preprocessors.shuffle = 1
+# Negative values start at the end:
+preprocessors.drop_rows = -5
+# Dropped samples left out for predictions (relevant for testing the final model):
+drop_rows_to_predict_file = true
+# Dropped samples (x + y) to a file:
+drop_rows_to_file = 'tests/happiness_rank/valid.csv'
 
 # Pipeline suffixes are removed from columns by default:
 verbose_feature_names_out = false
@@ -92,8 +97,7 @@ predictions_directory = 'tests/happiness_rank/predictions'
 save_predictions = true
 predictions_timestamp = false
 # Keep X data features in the final predictions columns.
-keep_data = true
-
+keep_data = false
 
 [debug]
 enabled = false
