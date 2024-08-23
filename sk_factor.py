@@ -9,6 +9,7 @@ from src.engine.plots import Plots
 from src.engine.debug import Debugger
 from src.engine.predictions import Predictions
 from src.engine.plugins import Plugins
+from src.engine.files import Files
 
 parser = argparse.ArgumentParser()
 
@@ -81,8 +82,11 @@ if trainfiles:
     x_train = Preprocessors.apply(config, x_train)
 
     if config.get('preprocess', 'preprocess_to_file'):
+
         preprocessed_file = config.get('preprocess', 'preprocess_to_file')
-        pd.concat(list([x_train, y_train]), axis=1).to_csv(preprocessed_file)
+        preprocessedDf = pd.concat(list([x_train, y_train]), axis=1)
+        Files.toCsv(preprocessedDf, preprocessed_file)
+
         print('Preprocessed rows written to: ' + preprocessed_file)
 
     ###

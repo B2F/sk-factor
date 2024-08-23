@@ -1,5 +1,6 @@
 from plugins.preprocess.base_preprocessor import BasePreprocessor
 from pathlib import Path
+from src.engine.files import Files
 
 class DropRows(BasePreprocessor):
 
@@ -26,7 +27,7 @@ class DropRows(BasePreprocessor):
 
         if dropToPredictFile:
             predictFile = self._config.get('predictions', 'predict_file')
-            removedDf.to_csv(predictFile, index=False)
+            Files.toCsv(removedDf, predictFile, index=False)
             print('Dropped rows written to: ' + predictFile)
 
         return reducedDataset
