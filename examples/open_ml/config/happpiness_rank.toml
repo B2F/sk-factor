@@ -82,7 +82,6 @@ predict_file = 'tests/happiness_rank/test.csv'
 models = [
   'models/happiness_rank-regressor/xgboost.pkl',
   'models/happiness_rank-regressor/lgbm_regressor.pkl',
-  'models/happiness_rank-regressor/ridge_cv.pkl',
   'models/happiness_rank-regressor/hgbr.pkl'
 ]
 # Available plugins: binary, multiclass, regressor

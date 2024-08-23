@@ -38,7 +38,7 @@ class Predictions():
         modelsFilePath = self._config.get('predictions', 'models')
         if modelsFilePath is not None:
             for modelFilePath in modelsFilePath:
-                model = Model(config, df, [], joblib.load(modelFilePath), modelsFilePath)
+                model = Model(config, df, [], joblib.load(modelFilePath), modelFilePath)
                 self._models.append(model)
         elif models:
             self._models = models
