@@ -29,6 +29,7 @@ class LgbmRegressor(BaseEstimator):
     ):
 
         regressor = lgb.LGBMRegressor(
+            verbosity=-1,
             boosting_type = boosting_type,
             num_leaves = num_leaves,
             max_depth = max_depth,
