@@ -3,6 +3,7 @@ import pandas as pd
 from src.engine.preprocessors import Preprocessors
 from src.engine.transfomers import Transformers
 from src.engine.plugins import Plugins
+from src.engine.model import Model
 
 class Predictions():
 
@@ -19,6 +20,8 @@ class Predictions():
 
         self._labels = labels
         self._config = config
+        self._models = []
+
         loader = config.get('predictions', 'loader')
         df = Plugins.create('loader', loader, config, files).load()
 
@@ -33,8 +36,9 @@ class Predictions():
         modelsFilePath = self._config.get('predictions', 'models')
         if modelsFilePath is not None:
             for modelFilePath in modelsFilePath:
-                self._models.append(joblib.load(modelFilePath))
-        elif models is not None:
+                model = Model(config, df, [], joblib.load(modelFilePath), modelsFilePath)
+                self._models.append(model)
+        elif models:
             self._models = models
         else:
             raise Exception('Predictions models are missing from both config and training, you need at least one model with predictions enabled.')
