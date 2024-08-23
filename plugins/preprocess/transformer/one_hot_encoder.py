@@ -10,7 +10,6 @@ class OneHotEncoder(BaseTransformer):
         self,
         categories='auto',
         drop=None,
-        sparse_output=True,
         dtype=np.float64,
         handle_unknown='error',
         min_frequency=None,
@@ -20,9 +19,10 @@ class OneHotEncoder(BaseTransformer):
 
         # Preprocess for columns selected in the .ini config.
         return OneHotEncoderBase(
+            # The preprocessing fitting requires a dense DataFrame.
+            sparse_output=False,
             categories=categories,
             drop=drop,
-            sparse_output=sparse_output,
             dtype=dtype,
             handle_unknown=handle_unknown,
             min_frequency=min_frequency,
