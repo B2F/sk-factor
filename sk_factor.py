@@ -20,6 +20,11 @@ parser.add_argument("-m", "--model_file", help = "Model file(s) used for predict
 
 parser.add_argument("-d", "--debug", help = "Enable debugging", action='store_true')
 
+group = parser.add_mutually_exclusive_group()
+group.add_argument("-ef", "--eda", help = "EDA plots only", action='store_true', required = False)
+group.add_argument("-tf", "--train", help = "Training only", action='store_true', required = False)
+group.add_argument("-pf", "--predict", help = "Predict only", action='store_true', required = False)
+
 argument = parser.parse_args()
 
 config = Config(argument.config)
@@ -27,6 +32,19 @@ reConfig = re.search(r"(?:.*/)?([^\/\.]*)(?:\.toml)$", argument.config)
 config.set('dataset', 'filename', reConfig.group(1))
 
 config.set('debug', 'enabled', True) if argument.debug else config.set('debug', 'enabled', False)
+
+if argument.eda:
+    config.set('eda', 'enabled', True)
+    config.set('training', 'enabled', False)
+    config.set('predictions', 'enabled', False)
+elif argument.train:
+    config.set('eda', 'enabled', False)
+    config.set('training', 'enabled', True)
+    config.set('predictions', 'enabled', False)
+elif argument.predict:
+    config.set('eda', 'enabled', False)
+    config.set('training', 'enabled', False)
+    config.set('predictions', 'enabled', True)
 
 Debugger.attach(config)
 
