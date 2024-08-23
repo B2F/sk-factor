@@ -63,8 +63,21 @@ if trainfiles:
     ###
     # Step 1. Preprocessing
 
-    x_train, y_train, labels = Preprocessors.apply(config, df_train)
+    x_train, y_train, labels = Preprocessors.encodeLabel(config, df_train)
     x_train = Transformers.apply(config, x_train)
+
+    # Order below is significant if drop_rows if used with drop_rows_to_csv.
+    # In that case only x_train is relevant if used as a predict_file.
+
+    print('\nBefore Y preprocessing:')
+    print(y_train.shape)
+
+    y_train = Preprocessors.apply(config, y_train)
+
+    print('\nBefore X preprocessing:')
+    print(y_train.shape)
+
+    x_train = Preprocessors.apply(config, x_train)
 
     ###
     # Step 2. EDA plots:

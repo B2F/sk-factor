@@ -1,17 +1,9 @@
-from sklearn.preprocessing import LabelEncoder
 import pandas as pd
 from src.engine.config import Config
 from sklearn.compose import ColumnTransformer
 from src.engine.plugins import Plugins
 
 class Transformers():
-
-    @staticmethod
-    def labelEncode(y: pd.DataFrame, labelName: str):
-
-        le = LabelEncoder()
-        y = pd.DataFrame(list(le.fit_transform(y.values.flatten())), columns=[labelName])
-        return (y, le.classes_)
 
     @staticmethod
     def apply(config: Config, x: pd.DataFrame):

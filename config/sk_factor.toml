@@ -1,7 +1,7 @@
 [dataset]
 loader = 'csv'
 # Debug unprocessed columns from the dataset
-show_columns = false
+show_columns = true
 # Ignored if -t (--train_files) is passed to the CLI.
 # files = []
 # You can choose override plugins from a custom package,
@@ -11,6 +11,11 @@ show_columns = false
 [preprocess]
 label = 'target'
 label_encode = true
+# The shuffle value is its random_state seed.
+preprocessors.shuffle = 1
+preprocessors.drop_rows = -3
+# Dropped samples left out for predictions (relevant for testing the final model):
+drop_rows_to_predict_file = true
 # Gather merged files IDs in a reserved column named 'group':
 groupFiles = false
 # preprocessors.drop_columns = ['column_unwanted']
@@ -93,15 +98,15 @@ seed = 'random'
 [predictions]
 enabled = false
 loader = 'csv'
-test_file = 'test_data.csv'
+predict_file = 'path/to/test.csv'
 # Leave out the models param to use fitted pipelines from the previous training.
 # models = [
 #   'models/iris.pkl'
 # ]
 # Available plugins: binary, multiclass, regressor
 objective = 'multiclass'
-# Use the preprocess, as in training.
-preprocess = true
+# Use the preprocess, as in training. Set to false if preprocessors.drop_rows is used.
+preprocess = false
 threshold = 0.5
 predictions_directory = 'output/predictions'
 save_predictions = false

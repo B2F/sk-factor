@@ -26,12 +26,14 @@ class Predictions():
         df = Plugins.create('loader', loader, config, files).load()
 
         if config.get('predictions', 'preprocess'):
-          x, y, labels = Preprocessors.apply(config, df)
-          x = Transformers.apply(config, x)
-        else:
-            x = df
 
-        self._x = x
+            df = Transformers.apply(config, df)
+
+            print('\nBefore predictions preprocessing:')
+            print(df.shape)
+            df = Preprocessors.apply(config, df)
+
+        self._x = df
 
         modelsFilePath = self._config.get('predictions', 'models')
         if modelsFilePath is not None:
