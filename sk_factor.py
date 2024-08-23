@@ -50,7 +50,7 @@ Debugger.attach(config)
 
 trainfiles = argument.train_files if argument.train_files else config.get('dataset', 'files')
 
-model = None
+models = []
 
 if trainfiles:
 
