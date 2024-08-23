@@ -11,4 +11,4 @@ class Shuffle(BaseCv):
             random_state=self._random_state
         )
 
-        return s.split(self._x, self._y, self._groups)
+        return s.split(self._x, self._y)

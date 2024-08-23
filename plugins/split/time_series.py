@@ -11,4 +11,4 @@ class TimeSeries(BaseCv):
 
         ts = TimeSeriesSplit(n_splits = self._nSplits, test_size=self._test_size, gap = gap)
 
-        return ts.split(self._x, self._y, self._groups)
+        return ts.split(self._x, self._y)

@@ -28,7 +28,8 @@ class BaseCv(ABC):
 
         self._random_state = config.get('training', 'splitting_random_state')
         self._test_size = config.get('training', 'splitting_test_size')
-        self._n_repeats = config.get('training', 'splitting_n_repeats')
+        n_repeats = config.get('training', 'splitting_n_repeats')
+        self._n_repeats = 2 if n_repeats is None else n_repeats
 
     @abstractmethod
     def split(self):

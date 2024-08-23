@@ -5,4 +5,4 @@ class LeaveOneOut(BaseCv):
 
     def split(self):
         l = BaseLeaveOneOut()
-        return l.split(self._x, self._y, self._groups)
+        return l.split(self._x, self._y)

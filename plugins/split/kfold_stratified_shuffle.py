@@ -5,4 +5,4 @@ class KfoldStratifiedShuffle(BaseCv):
 
     def split(self):
         k = StratifiedKFold(n_splits = self._nSplits, shuffle=True, random_state=self._random_state)
-        return k.split(self._x, self._y, self._groups)
+        return k.split(self._x, self._y)
