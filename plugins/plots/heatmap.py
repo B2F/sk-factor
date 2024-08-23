@@ -8,7 +8,7 @@ class Heatmap(Report):
 
     df = pd.concat(list([self._x, self._y]), axis=1).corr()
 
-    sns.heatmap(
+    ax = sns.heatmap(
       df,
       cmap = 'coolwarm',
       annot=True,
@@ -21,5 +21,8 @@ class Heatmap(Report):
       xticklabels=True,
       yticklabels=True,
     )
+
+    ax.set_xticklabels(ax.get_xticklabels(), fontsize=8)
+    ax.set_yticklabels(ax.get_yticklabels(), fontsize=8)
 
     return 'heatmap'
