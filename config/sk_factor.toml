@@ -24,9 +24,10 @@ transformers.passthrough = []
 preprocessors.shuffle = 1
 # Negative values start at the end:
 preprocessors.drop_rows = -5
-# Dropped samples left out for predictions (relevant for testing the final model):
+# Dropped samples left out for predictions (relevant for testing the final model),
+# file path will be the on specified in training predict_file.
 drop_rows_to_predict_file = true
-# Dropped samples (x + y) to a file:
+preprocess_to_file = '/path/to/preprocessed-data.csv'
 
 # Gather merged files IDs in a reserved column named 'group':
 groupFiles = false

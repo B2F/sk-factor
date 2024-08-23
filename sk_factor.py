@@ -80,15 +80,10 @@ if trainfiles:
 
     x_train = Preprocessors.apply(config, x_train)
 
-    if config.eq('preprocess', 'drop_rows_to_predict_file', True):
-        predictFile = config.get('predictions', 'predict_file')
-        x_train.to_csv(predictFile, index=False)
-        print('Dropped predict rows (x_train) written to: ' + predictFile)
-
-    if config.get('preprocess', 'drop_rows_to_file'):
-        preprocessed_file = config.get('preprocess', 'drop_rows_to_file')
+    if config.get('preprocess', 'preprocess_to_file'):
+        preprocessed_file = config.get('preprocess', 'preprocess_to_file')
         pd.concat(list([x_train, y_train]), axis=1).to_csv(preprocessed_file)
-        print('Dropped rows written to: ' + preprocessed_file)
+        print('Preprocessed rows written to: ' + preprocessed_file)
 
     ###
     # Step 2. EDA plots:
