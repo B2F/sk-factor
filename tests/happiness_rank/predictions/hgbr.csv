@@ -1,0 +1,6 @@
+,Economy (GDP per Capita),Family,Health (Life Expectancy),Freedom,Trust (Government Corruption),Generosity,Dystopia Residual,Region_Australia and New Zealand,Region_Central and Eastern Europe,Region_Eastern Asia,Region_Latin America and Caribbean,Region_Middle East and Northern Africa,Region_North America,Region_Southeastern Asia,Region_Southern Asia,Region_Sub-Saharan Africa,Region_Western Europe,Standard Error,prediction
+0,1.33358,1.30923,0.93156,0.65124,0.35637,0.43562,2.26646,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-0.4127554426190975,7.320555538247582
+1,1.12094,1.20215,0.75905,0.32112,0.02758,0.128,1.24074,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.7714359044947622,4.56957927804351
+2,0.93929,1.07772,0.61766,0.28579,0.17383,0.07822,2.43209,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.1816805300428005,5.855776196464839
+3,0.52107,1.01404,0.36878,0.10081,0.1466,0.19062,2.20857,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,1.1417882378559645,4.791253978860596
+4,0.86402,0.99903,0.79075,0.48574,0.1809,0.11541,2.53942,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,-0.152397167191396,6.003271013604119

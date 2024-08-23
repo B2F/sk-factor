@@ -79,16 +79,16 @@ loader = 'csv'
 preprocess = false
 predict_file = 'tests/happiness_rank/test.csv'
 # Leave out the models param to use fitted pipelines from the previous training.
-models = [
-  'models/happiness_rank-regressor/xgboost.pkl',
-  'models/happiness_rank-regressor/lgbm_regressor.pkl',
-  'models/happiness_rank-regressor/hgbr.pkl'
-]
+# models = [
+#   'models/happiness_rank-regressor/xgboost.pkl',
+#   'models/happiness_rank-regressor/lgbm_regressor.pkl',
+#   'models/happiness_rank-regressor/hgbr.pkl'
+# ]
 # Available plugins: binary, multiclass, regressor
 objective = 'regression'
 # Use the preprocess, as in training.
 threshold = 0.5
-predictions_directory = 'tests/iris/predictions'
+predictions_directory = 'tests/happiness_rank/predictions'
 save_predictions = true
 predictions_timestamp = false
 # Keep X data features in the final predictions columns.

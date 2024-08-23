@@ -5,6 +5,7 @@ import time
 import pandas as pd
 from src.engine.model import Model
 from sklearn.pipeline import Pipeline
+from src.engine.files import Files
 
 class BasePredictor(ABC):
 
@@ -38,23 +39,7 @@ class BasePredictor(ABC):
 
         predictions = self._predict(model.pipeline)
         if self._config.eq('predictions', 'save_predictions', True):
-            self._writeToFile(predictions, model.id)
-
-    def _writeToFile(self, predictions, id):
-
-        prediction_filename = self._config.get('dataset', 'filename') + '-' + id
-        directory = self._config.get('predictions', 'predictions_directory')
-
-        predictionDir = re.match(r'^(.*\/)+', f"{directory}/{prediction_filename}").group(0)
-        filename = re.match(r'(?:(?:(?:[^\/]*)\/)*)(.*)$', f"{directory}/{prediction_filename}").group(1)
-
-        if not os.path.isdir(predictionDir):
-            os.makedirs(predictionDir)
-
-        if self._config.eq('predictions', 'predictions_timestamp', True):
-            prediction_filename += '_' + str(time.time())
-
-        fullPath = f"{predictionDir}{filename}.csv"
-        predictions.to_csv(f"{fullPath}")
-
-        print (f'{fullPath} written to disk.')
+            directory = self._config.get('predictions', 'predictions_directory')
+            filename = model.id
+            withTimestamp = self._config.get('predictions', 'predictions_timestamp')
+            Files.toCsv(predictions, directory, filename, withTimestamp)

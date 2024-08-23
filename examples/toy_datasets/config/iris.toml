@@ -90,7 +90,9 @@ preprocess = false
 predict_file = 'tests/iris/test.csv'
 # Leave out the models param to use fitted pipelines from the previous training.
 # models = [
-#   'models/iris.pkl'
+#   'models/iris-classifier/lgbm_random_forest_mc.pkl',
+#   'models/iris-classifier/xgboost.pkl',
+#   'models/iris-classifier/linear_svc.pkl',
 # ]
 # Available plugins: binary, multiclass, regressor
 objective = 'multiclass'
