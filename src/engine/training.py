@@ -56,6 +56,7 @@ class Training():
                     runnerObject.run(pipeline, 2)
 
             model = Model(self._config, self._x, self._y, pipeline, id)
+            # @todo: fit y_test to get a confidence interval with regression ?
             model.fit()
 
             if self._config.get('training', 'save_model'):

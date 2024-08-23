@@ -4,24 +4,23 @@
 """
 
 import numpy as np
+import pandas as pd
 from plugins.predictions.base_predictor import BasePredictor
 
 class Regression(BasePredictor):
 
     def _predict(self, model):
 
-        # all_predictions = np.array([tree.predict(self._x) for tree in model.estimators_])
         df_predict = model.predict(self._x)
-        print(df_predict)
-        return df_predict
 
-        # Calculate the mean and standard deviation of the predictions
-        mean_predictions = np.mean(all_predictions, axis=0)
-        std_predictions = np.std(all_predictions, axis=0)
+        estimations = pd.DataFrame(data = df_predict, columns=['prediction'])
 
-        # Keep predictions with a standard deviation below the threshold
-        filtered_predictions = mean_predictions[std_predictions < self._threshold]
+        outputColumns = [estimations]
+        if self._config.eq('predictions', 'keep_data', True):
+            outputColumns = [self._x] + outputColumns
 
-        # @todo: format table as for multiclass
+        predictions_output = pd.concat(outputColumns, sort=False, axis="columns")
 
-        return filtered_predictions
+        print(predictions_output)
+
+        return predictions_output

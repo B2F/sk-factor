@@ -89,7 +89,7 @@ objective = 'regression'
 # Use the preprocess, as in training.
 threshold = 0.5
 predictions_directory = 'tests/iris/predictions'
-save_predictions = false
+save_predictions = true
 predictions_timestamp = false
 # Keep X data features in the final predictions columns.
 keep_data = true
