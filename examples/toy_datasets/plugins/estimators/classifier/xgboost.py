@@ -6,4 +6,6 @@ class Xgboost(BaseEstimator):
     _type = 'classifier'
 
     def getEstimator(self):
-        return ('xgboost', XGBClassifier())
+        return ('xgboost', XGBClassifier(
+            random_state = self._config.get('training', 'seed'),
+        ))

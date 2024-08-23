@@ -6,4 +6,6 @@ class Xgboost(BaseEstimator):
     _type = 'regressor'
 
     def getEstimator(self):
-        return ('xgboost', XGBRegressor())
+        return ('xgboost', XGBRegressor(
+            random_state = self._config.get('training', 'seed'),
+        ))

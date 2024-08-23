@@ -14,7 +14,6 @@ class LgbmRandomForestMc(LgbmClassifier):
 
         return super().getEstimator(
             objective="multiclassova",
-            random_state=self._config.get('training', 'seed'),
             class_weight=class_weight_dict,
             boosting_type="rf",
             num_leaves=100,

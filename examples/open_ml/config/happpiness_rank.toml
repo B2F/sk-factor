@@ -55,7 +55,6 @@ pipeline = 'imblearn.pipeline'
 estimators = [
     'regressor/xgboost',
     'regressor/lgbm_regressor',
-    'regressor/ridge_cv',
     'regressor/hgbr',
 ]
 runners = [

@@ -46,7 +46,7 @@ class LgbmClassifier(BaseEstimator):
             colsample_bytree = colsample_bytree,
             reg_alpha = reg_alpha,
             reg_lambda = reg_lambda,
-            random_state = random_state,
+            random_state = self._config.get('training', 'seed'),
             n_jobs = n_jobs,
             importance_type = importance_type,
         )

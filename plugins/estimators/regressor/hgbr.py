@@ -25,7 +25,6 @@ class Hgbr(BaseEstimator):
         n_iter_no_change=10,
         tol=1e-07,
         verbose=0,
-        random_state=None
     ):
 
         regressor = HistGradientBoostingRegressor(
@@ -49,7 +48,7 @@ class Hgbr(BaseEstimator):
             n_iter_no_change=n_iter_no_change,
             tol=tol,
             verbose=verbose,
-            random_state=random_state
+            random_state=self._config.get('training', 'seed'),
         )
 
         return ('hist_gradient_boosting_regressor', regressor)
