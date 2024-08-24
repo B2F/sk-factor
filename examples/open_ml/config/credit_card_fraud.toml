@@ -1,0 +1,95 @@
+[dataset]
+loader = 'open_ml'
+# Ignored if -t (--train_files) is passed to the CLI.
+files = ['CreditCardFraudDetection']
+show_columns = true
+plugins = 'examples.open_ml'
+
+[preprocess]
+label = 'Class'
+label_encode = false
+
+transformers.scaler = []
+
+# The shuffle value is its random_state seed.
+preprocessors.shuffle = 1
+# Negative values start at the end:
+preprocessors.drop_columns = ['Time']
+preprocessors.drop_rows = -25000
+# Dropped samples left out for predictions (relevant for testing the final model),
+# file path will be the on specified in training predict_file.
+drop_rows_to_predict_file = true
+
+# Pipeline suffixes are removed from columns by default:
+verbose_feature_names_out = false
+
+# Multiple files will be combined, by default the "index" axis is used.
+# If 'index' axis is used, a group column with the filename will be added.
+# If 'column' axis is used, no grouping will occur.
+files_axis = 'index'
+
+[eda]
+enabled = false
+show_plots = true
+save_images = false
+plots = [
+  'distribution_y',
+]
+
+[training]
+enabled = true
+pipeline = 'imblearn.pipeline'
+samplers = [
+    # 'sampler/smote',
+    'sampler/tomek_links',
+]
+estimators = [
+    # 'classifier/logistic_regression',
+    # 'classifier/ridge_classifier',
+    'classifier/kneighbors_classifier',
+    'classifier/sgd_classifier',
+    # 'classifier/lgbm_classifier',
+]
+runners = [
+    'score',
+]
+scoring = 'f1'
+
+splitting_method.kfold_stratified = 3
+
+save_model = true
+model_timestamp = false
+models_directory = 'models'
+# Use a random seed (default) or specify one
+seed = 7368298
+# @see https://scikit-learn.org/stable/modules/model_evaluation.html#common-cases-predefined-values
+
+[sampling]
+near_miss_version=2
+nb_jobs=-1
+
+[predictions]
+enabled = true
+loader = 'csv'
+preprocess = false
+predict_file = 'tests/credit_card_fraud/test.csv'
+# Leave out the models param to use fitted pipelines from the previous training.
+models = [
+  'models/credit_card_fraud-classifier/kneighbors_classifier.pkl',
+  'models/credit_card_fraud-classifier/sgd_classifier.pkl'
+]
+# Provided plugins: binary, multiclass, regressor
+objective = 'binary'
+# Use the preprocess, as in training.
+threshold = 0.5
+predictions_directory = 'tests/credit_card_fraud/predictions'
+save_predictions = true
+predictions_timestamp = false
+# Keep original features data features in the final predictions columns.
+keep_data = false
+
+[debug]
+enabled = false
+port = 5678
+host = '127.0.0.1'
+wait_for_client = true
