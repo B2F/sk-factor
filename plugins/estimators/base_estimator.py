@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 import pandas as pd
 from src.engine.config import Config
+from sklearn.utils.class_weight import compute_class_weight
+import numpy as np
 
 class BaseEstimator(ABC):
     """
@@ -25,6 +27,8 @@ class BaseEstimator(ABC):
     TYPES = ('classifier', 'regressor', 'transformer', 'sampler')
 
     _type = str
+    # Only filled for classifiers:
+    _classWeights = []
 
     def __init__(self, config: Config, x: pd.DataFrame, y: pd.DataFrame):
 
@@ -32,9 +36,18 @@ class BaseEstimator(ABC):
         self._x = x
         self._y = y
 
+        if self._type == 'classifier':
+            self.setClassWeights()
+
     @abstractmethod
     def getEstimator(self) -> tuple:
         '''
         Returns a pipeline tuple such as ('classifier', RandomForestClassifier())
         '''
         pass
+
+    def setClassWeights(self):
+
+        all_labels = self._y.to_numpy().flatten()
+        class_weights = compute_class_weight('balanced', classes=np.unique(all_labels), y=all_labels)
+        self._classWeights = dict(enumerate(class_weights))
