@@ -15,7 +15,7 @@ transformers.passthrough = []
 
 # The shuffle value is its random_state seed.
 preprocessors.shuffle = 1
-preprocessors.drop_rows = -3
+preprocessors.drop_rows = -5
 
 # Dropped samples left out for predictions (relevant for testing the final model):
 drop_rows_to_predict_file = true
@@ -32,7 +32,7 @@ files_axis = 'index'
 
 [eda]
 enabled = false
-show_plots = false
+show_plots = true
 save_images = false
 save_timestamp = true
 images_extension = 'png'

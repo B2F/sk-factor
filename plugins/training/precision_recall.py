@@ -1,7 +1,6 @@
 from plugins.training.training_plot import TrainingPlot
 from sklearn.metrics import PrecisionRecallDisplay, precision_recall_curve
 from sklearn.model_selection import cross_val_predict
-import matplotlib.pyplot as plt
 
 class PrecisionRecall(TrainingPlot):
 

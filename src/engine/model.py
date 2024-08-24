@@ -32,7 +32,7 @@ class Model:
         self._labels = labels
 
     @property
-    def id(self):
+    def id(self) -> str:
         return self._id
 
     @property
