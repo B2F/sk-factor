@@ -79,7 +79,7 @@ if trainfiles and not argument.predict:
     df_train = Preprocessors.apply(config, df_train)
 
     # Re-separates x and y sets.
-    x_train, y_train, labels = Preprocessors.encodeLabel(config, df_train)
+    x_train, y_train, encodedLabels = Preprocessors.encodeLabel(config, df_train)
 
     if config.get('preprocess', 'preprocess_to_file'):
 
