@@ -23,7 +23,6 @@ class LgbmClassifier(BaseEstimator):
         colsample_bytree = 1.0,
         reg_alpha = 0.0,
         reg_lambda = 0.0,
-        random_state = None,
         n_jobs = None,
         importance_type = "split",
     ):
