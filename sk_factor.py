@@ -65,28 +65,26 @@ if trainfiles and not argument.predict:
     ###
     # Step 1. Preprocessing
 
+    # Label is first extracted from the dataset to pass x alone onto the transformers pipeline.
     x_train, y_train, labels = Preprocessors.encodeLabel(config, df_train)
     x_train = Transformers.apply(config, x_train)
 
-    # Order below is significant if drop_rows if used with drop_rows_to_csv.
-    # In that case only x_train is relevant if used as a predict_file.
+    # Rejoin x and y to apply uniform preprocessing to the whole dataset.
+    # Global preprocessing comes second, especially for the drop_rows_to_predict_file option.
+    df_train = pd.concat(list([x_train, y_train]), axis=1)
 
-    print('\nBefore Y preprocessing:')
-    print(y_train.shape)
+    print('\nBefore preprocessing:')
+    print(df_train.shape)
 
-    y_train = Preprocessors.apply(config, y_train)
+    df_train = Preprocessors.apply(config, df_train)
 
-    print('\nBefore X preprocessing:')
-    print(y_train.shape)
-
-    x_train = Preprocessors.apply(config, x_train)
+    # Re-separates x and y sets.
+    x_train, y_train, labels = Preprocessors.encodeLabel(config, df_train)
 
     if config.get('preprocess', 'preprocess_to_file'):
 
         preprocessed_file = config.get('preprocess', 'preprocess_to_file')
-        preprocessedDf = pd.concat(list([x_train, y_train]), axis=1)
-        Files.toCsv(preprocessedDf, preprocessed_file)
-
+        Files.toCsv(df_train, preprocessed_file)
         print('Preprocessed rows written to: ' + preprocessed_file)
 
     ###
