@@ -47,7 +47,6 @@ dpi = 200
 # features = ['column a', 'column b', 'column n']
 
 [training]
-# Disable to do eda only.
 enabled = true
 pipeline = 'imblearn.pipeline'
 samplers = [

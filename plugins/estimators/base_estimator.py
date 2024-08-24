@@ -3,6 +3,24 @@ import pandas as pd
 from src.engine.config import Config
 
 class BaseEstimator(ABC):
+    """
+    Sampler:
+    https://imbalanced-learn.org/stable/user_guide.html
+    For sampling, use a imblearn pipeline (pipeline = 'imblearn.pipeline' is the training config default)
+
+    Transformer:
+    Any transform done before prediction, such as non linear, power transforms
+    https://scikit-learn.org/stable/modules/preprocessing.html#non-linear-transformation
+
+    Classifier:
+    Sklearn compatible classifier, such as LinearSVC.
+
+    Regressor:
+    Sklearn compatible regressor, such as Ridge.
+
+    @see "Choosing the right estimator":
+    https://scikit-learn.org/stable/machine_learning_map.html
+    """
 
     TYPES = ('classifier', 'regressor', 'transformer', 'sampler')
 

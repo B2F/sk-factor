@@ -3,6 +3,8 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 
 class BasePreprocessor(ABC):
+    """ DataFrame preprocessor.
+    """
 
     _df = pd.DataFrame
     _config = dict

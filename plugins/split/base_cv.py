@@ -5,6 +5,9 @@ from src.engine.config import Config
 
 # Base Cross Validator.
 class BaseCv(ABC):
+    """ Cross validation plugins.
+    https://scikit-learn.org/stable/modules/cross_validation.html
+    """
 
     _config = Config
     _x = pd.DataFrame

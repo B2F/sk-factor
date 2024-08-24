@@ -5,6 +5,9 @@ from sklearn.preprocessing import FunctionTransformer
 from sklearn.base import BaseEstimator
 
 class BaseTransformer(ABC):
+    """ Feature preprocessing plugins.
+    https://scikit-learn.org/stable/modules/preprocessing.html
+    """
 
     _name: str
     _config = dict

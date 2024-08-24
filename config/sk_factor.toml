@@ -20,6 +20,7 @@ transformers.passthrough = []
 # transformers.one_hot_encoder = ['group']
 # @see examples/ config files
 
+# Order of preprocessors is respected / important:
 # The shuffle value is its random_state seed.
 preprocessors.shuffle = 1
 # Negative values start at the end:
@@ -63,7 +64,6 @@ dpi = 200
 # features = ['column a', 'column b', 'column n']
 
 [training]
-# Disable to do eda only.
 enabled = true
 pipeline = 'imblearn.pipeline'
 # Optionnals steps (@see plugins/estimators/):
@@ -116,7 +116,7 @@ threshold = 0.5
 predictions_directory = 'output/predictions'
 save_predictions = false
 predictions_timestamp = true
-# Keep X data features in the final predictions columns.
+# Keep original features data features in the final predictions columns.
 keep_data = false
 
 [debug]
