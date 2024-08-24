@@ -54,7 +54,7 @@ trainfiles = argument.train_files if argument.train_files else config.get('datas
 
 models = []
 
-if trainfiles:
+if trainfiles and not argument.predict:
 
     ###
     # Step 0. Reading files from command line
