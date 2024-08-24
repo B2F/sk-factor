@@ -18,7 +18,7 @@ class Report(ABC):
     _saveTimestamp: str
     _imagesExtension: str
     _imagesDirectory: str
-    __identifier: str
+    _identifier: str
 
     def __init__(self, config: Config, x, y, labels, identifier = None):
 
@@ -40,14 +40,14 @@ class Report(ABC):
         self._saveTimestamp = config.get('eda', 'save_timestamp')
         self._imagesDirectory = config.get('eda', 'images_directory')
         self._imagesExtension = config.get('eda', 'images_extension')
-        self.__identifier = identifier
+        self._identifier = identifier
 
         # figure size in inches
         if type(config.get('eda', 'figsize')) is list:
             rcParams['figure.figsize'] = (config.get('eda', 'figsize')[0], config.get('eda', 'figsize')[1])
 
     def getImageFilepath(self, filename):
-        imagePath = self.__identifier.replace('/', '-')
+        imagePath = self._identifier.replace('/', '-')
         directory = f'{self._imagesDirectory}/{imagePath}'
         if not os.path.isdir(directory):
             os.makedirs(directory)
