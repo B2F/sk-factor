@@ -3,7 +3,7 @@ import pandas as pd
 from src.engine.preprocessors import Preprocessors
 from src.engine.transfomers import Transformers
 from src.engine.plugins import Plugins
-from src.engine.model import Model
+from plugins.predictions.base_predictor import BasePredictor
 
 class Predictions():
 
@@ -49,7 +49,9 @@ class Predictions():
     def run(self):
 
         objective = self._config.get('predictions', 'objective')
-        predictor = Plugins.create('predictions', objective, self._config, self._x)
 
         for model in self._models:
-            predictor.predict(model)
+            self.getPredictor(objective).predict(model)
+
+    def getPredictor(self, objective: str) -> BasePredictor:
+        return Plugins.create('predictions', objective, self._config, self._x)
