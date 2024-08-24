@@ -1,30 +1,29 @@
-""" SHAP Beasworms features explainer.
+""" SHAP Beeswarms features explainer.
 @see https://saferml.com/explainable-ai/a-comprehensive-python-tutorial-for-quickly-diving-into-shap/
 """
 
 import matplotlib.pyplot as plt
 import shap
-from src.engine.model import Model
-from plugins.predictions.base_predictor import BasePredictor
+from plugins.training.training_plot import TrainingPlot
 
-class ShapBeeswarm(BasePredictor):
+class ShapBeeswarm(TrainingPlot):
 
-    def _predict(self, model: Model):
+    def plot(self):
 
         # We assume the classifier comes as last step in the pipeline.
-        explainer = shap.Explainer(model.pipeline[len(model.pipeline.steps)-1], self._x)
+        self._pipeline.fit(self._x, self._y.to_numpy().flatten())
+        explainer = shap.Explainer(self._pipeline[len(self._pipeline.steps)-1], self._x)
 
-        fig, axes = plt.subplots(len(model.labels), 1)
+        fig, axes = plt.subplots(len(self._labels), 1)
 
-        for iLabel in range(len(model.labels)):
+        for iLabel in range(len(self._labels)):
 
             plt.sca(axes[iLabel])
             shap_values = explainer(self._x)[:,:,iLabel]
             shap.plots.beeswarm(shap_values, max_display=20, show=False)
-            axes[iLabel].title.set_text(model.labels[iLabel])
+            axes[iLabel].title.set_text(self._labels[iLabel])
 
         plt.tight_layout()
         plt.subplots_adjust(hspace=1)
         manager = plt.get_current_fig_manager()
         manager.window.showMaximized()
-        plt.show()
