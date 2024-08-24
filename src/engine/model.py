@@ -17,8 +17,9 @@ class Model:
     _y: pd.DataFrame
     _pipeline: Pipeline
     _id: str
+    _labels: list
 
-    def __init__(self, config, x, y, pipeline, id):
+    def __init__(self, config, x, y, pipeline, labels, id):
 
         self._config = config
         self._saveModel = config.get('training', 'save_model')
@@ -28,14 +29,19 @@ class Model:
         self._y = y
         self._pipeline = pipeline
         self._id = id
+        self._labels = labels
 
     @property
     def id(self):
         return self._id
 
     @property
-    def pipeline(self):
+    def pipeline(self) -> Pipeline:
         return self._pipeline
+
+    @property
+    def labels(self) -> list:
+        return self._labels
 
     def fit(self):
         self._pipeline.fit(self._x, self._y.to_numpy().flatten())
@@ -53,5 +59,6 @@ class Model:
         if not os.path.isdir(modelFileDir):
             os.makedirs(modelFileDir)
 
-        joblib.dump(self._pipeline, modelFilePath)
+        joblib.dump(self, modelFilePath)
+
         print ('Model file written in ' + modelFilePath)

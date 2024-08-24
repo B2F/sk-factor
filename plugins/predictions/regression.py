@@ -3,15 +3,15 @@
     Standard deviation.
 """
 
-import numpy as np
 import pandas as pd
 from plugins.predictions.base_predictor import BasePredictor
+from src.engine.model import Model
 
 class Regression(BasePredictor):
 
-    def _predict(self, model):
+    def _predict(self, model: Model):
 
-        df_predict = model.predict(self._x)
+        df_predict = model.pipeline.predict(self._x)
 
         estimations = pd.DataFrame(data = df_predict, columns=['prediction'])
 

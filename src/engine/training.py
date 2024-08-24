@@ -9,9 +9,8 @@ class Training():
 
     _x: pd.DataFrame
     _y: pd.DataFrame
-    _y_labels: list
     _config: Config
-    _y_labels: list
+    _labels: list
     _n_splits: int
 
     def __init__(
@@ -25,7 +24,7 @@ class Training():
         self._x = x
         self._y = y
         self._config = config
-        self._y_labels = labels
+        self._labels = labels
         self._n_splits = config.get('training', 'nb_splits')
 
     def run(self) -> list:
@@ -46,17 +45,17 @@ class Training():
             for runner in runners:
 
                 print('...\nRunning ' + id + ' ' + runner + ':')
-                args = (self._config, self._x, self._y, self._y_labels, runner)
+                args = (self._config, self._x, self._y, self._labels, runner)
                 runnerObject = Plugins.create('training', runner, *args)
                 cvList = Split.getList(self._config, self._x, self._y)
                 if cvList:
                     for cv in cvList:
-                        runnerObject.run(pipeline, cv)
+                        print ('|\n---' + type(cv).__name__)
+                        runnerObject.run(pipeline, cv.split())
                 else:
                     runnerObject.run(pipeline, 2)
 
-            model = Model(self._config, self._x, self._y, pipeline, id)
-            # @todo: fit y_test to get a confidence interval with regression ?
+            model = Model(self._config, self._x, self._y, pipeline, self._labels, id)
             model.fit()
 
             if self._config.get('training', 'save_model'):

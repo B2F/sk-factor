@@ -11,34 +11,35 @@ class Predictions():
     _plugin: Plugins
     _config: dict
     _models: list
-    _labels: list
 
-    def __init__(self, config, files, labels = None, models = []):
+    def __init__(self, config, files, models = []):
         """ Model is specified in config by default,
         The trained model is used otherwise.
         """
 
-        self._labels = labels
         self._config = config
         self._models = []
 
         loader = config.get('predictions', 'loader')
         df = Plugins.create('loader', loader, config, files).load()
 
-        if config.get('predictions', 'preprocess'):
+        # We remove y in case it is provided with 'drop_rows_to_predict_file':
+        if self._config.get('preprocess', 'label') in df.columns:
+            self._x, y, labels = Preprocessors.encodeLabel(config, df)
 
-            df = Transformers.apply(config, df)
+        # You usually won't use preprocessing on prediction data.
+        if config.eq('predictions', 'preprocess', True):
+
+            self._x = Transformers.apply(config, self._x)
 
             print('\nBefore predictions preprocessing:')
-            print(df.shape)
-            df = Preprocessors.apply(config, df)
-
-        self._x = df
+            print(self._x.shape)
+            self._x = Preprocessors.apply(config, self._x)
 
         modelsFilePath = self._config.get('predictions', 'models')
         if modelsFilePath is not None:
             for modelFilePath in modelsFilePath:
-                model = Model(config, df, [], joblib.load(modelFilePath), modelFilePath)
+                model = joblib.load(modelFilePath)
                 self._models.append(model)
         elif models:
             self._models = models
@@ -48,7 +49,7 @@ class Predictions():
     def run(self):
 
         objective = self._config.get('predictions', 'objective')
-        predictor = Plugins.create('predictions', objective, self._config, self._x, self._labels)
+        predictor = Plugins.create('predictions', objective, self._config, self._x)
 
         for model in self._models:
             predictor.predict(model)

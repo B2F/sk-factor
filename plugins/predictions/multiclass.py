@@ -5,22 +5,22 @@
 
 from plugins.predictions.base_predictor import BasePredictor
 import pandas as pd
-from sklearn.pipeline import Pipeline
+from src.engine.model import Model
 
 class Multiclass(BasePredictor):
 
-    def _predict(self, model: Pipeline):
+    def _predict(self, model: Model):
 
-        probas = model.predict_proba(self._x)
+        probas = model.pipeline.predict_proba(self._x)
 
         estimations = []
 
-        labelRange = range(len(self._labels))
+        labelRange = range(len(model.labels))
         # Output valid classes given the configured predictions threshold:
         for classes in probas:
             # @todo: per class threshold ?
             validClasses = classes > self._config.get('predictions', 'threshold')
-            validLabels = [self._labels[i] for i in labelRange if validClasses[i]]
+            validLabels = [model.labels[i] for i in labelRange if validClasses[i]]
             validLabels = " or ".join(validLabels)
             if not validLabels:
                 estimations.append('Not predicted')
@@ -28,7 +28,7 @@ class Multiclass(BasePredictor):
                 estimations.append(validLabels)
 
         testRange = range(len(estimations))
-        probasDf = pd.DataFrame(data = probas, columns = self._labels)
+        probasDf = pd.DataFrame(data = probas, columns = model.labels)
         estimations = pd.DataFrame(data = estimations, columns=['estimation'])
         threshold = pd.DataFrame(data = [self._threshold for _ in testRange], columns=['threshold'])
 

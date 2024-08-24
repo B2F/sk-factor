@@ -18,6 +18,6 @@ class Split():
         for plugin, n_splits in splittingMethods.items():
             if n_splits > 1:
                 iteratorObject = Plugins.create('split', plugin, config, x, y, n_splits)
-                list.append(iteratorObject.split())
+                list.append(iteratorObject)
 
         return list
