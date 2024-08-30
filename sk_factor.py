@@ -23,7 +23,7 @@ parser.add_argument("-m", "--model_file", help = "Model file(s) used for predict
 parser.add_argument("-d", "--debug", help = "Enable debugging", action='store_true')
 
 group = parser.add_mutually_exclusive_group()
-group.add_argument("-ef", "--eda", help = "EDA plots only", action='store_true', required = False)
+group.add_argument("-ef", "--explore", help = "EDA plots only", action='store_true', required = False)
 group.add_argument("-tf", "--train", help = "Training only", action='store_true', required = False)
 group.add_argument("-pf", "--predict", help = "Predict only", action='store_true', required = False)
 
