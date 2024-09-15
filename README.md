@@ -16,18 +16,18 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Contributors][contributors-shield]][contributors-url]
+<!-- [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
+[![LinkedIn][linkedin-shield]][linkedin-url] -->
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/B2F/sk-factor/tree/main/images/logo.png">
-    <img src="https://github.com/B2F/sk-factor/tree/main/images/logo.png" alt="Logo" width="80" height="80">
+  <a href="https://github.com/B2F/sk-factor/blob/main/images/logo.png">
+    <img src="https://github.com/B2F/sk-factor/blob/main/images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">SK Factor: one liner CLI to factor and reuse code from sklearn project</h3>
@@ -96,7 +96,7 @@ From the get go (in a single command line run), you will be able to do many adva
 
 To achieve this, SK Factor uses **.toml configuration files** reflecting each part of the **workflow**:
 
-<img src="https://github.com/B2F/sk-factor/tree/main/images/workflow.png" alt="SK Factor workflow">
+<img src="https://github.com/B2F/sk-factor/blob/main/images/workflow.png" alt="SK Factor workflow">
 
 Each steps can be customized via a convenient [plugins system](#plugin-system) (loader, estimators ...)
 
@@ -198,8 +198,6 @@ python sk_factor.py -c examples/open_ml/config/happiness_rank.toml
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Configuration sections
-
-@todo: show relevant descriptive chunks of config sections:
 
 ### [dataset]
 
@@ -342,8 +340,12 @@ Figure resolution in DPI.
 ### [training]
 -> split, power transforms (yeo_johnson), sample (nearmiss, smote, tomek links), classify and display score
 
+@todo: explain
+
 ### [predictions]
 -> load models, adjust threshold, display prediction tables for each models
+
+@todo: explain
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
