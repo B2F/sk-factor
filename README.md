@@ -168,8 +168,9 @@ Additionnal dependencies:
 <!-- USAGE EXAMPLES -->
 ## Usage examples
 
-### Binary target (credit_card_fraud.toml)
-This project example predicts credit card frauds using open_ml's CreditCardFraudDetection dataset.
+### Binary target
+
+The [credit_card_fraud.toml](https://github.com/B2F/sk-factor/blob/main/examples/open_ml/config/credit_card_fraud.toml) config predicts credit card frauds using open_ml's CreditCardFraudDetection dataset.
 
 ```sh
 python sk_factor.py -c examples/open_ml/config/credit_card_fraud.toml
@@ -218,7 +219,7 @@ python sk_factor.py -c examples/open_ml/config/happiness_rank.toml
 
 The [dataset] section is used to describe the data source and how to parse it
 
-Example from [happiness_rank.toml](https://github.com/B2F/sk-factor/tree/main/examples/open_ml/config/happiness_rank.toml):
+Example from [happiness_rank.toml](https://github.com/B2F/sk-factor/blob/main/examples/open_ml/config/happiness_rank.toml):
 
 ```toml
 [dataset]
@@ -231,7 +232,7 @@ plugins = 'examples.open_ml'
 #### loader
 Data parser from which one or multiple files are read.
 
-Options: [**csv**](https://github.com/B2F/sk-factor/tree/main/plugins/loader/csv.py'), [**open_ml**](https://github.com/B2F/sk-factor/tree/main/examples/open_ml/plugins/loader/open_ml.py), [**toy_datasets**](https://github.com/B2F/sk-factor/tree/main/examples/toy_datasets/plugins/loader/toy_datasets.py).
+Options: [**csv**](https://github.com/B2F/sk-factor/blob/main/plugins/loader/csv.py'), [**open_ml**](https://github.com/B2F/sk-factor/blob/main/examples/open_ml/plugins/loader/open_ml.py), [**toy_datasets**](https://github.com/B2F/sk-factor/blob/main/examples/toy_datasets/plugins/loader/toy_datasets.py).
 
 #### files
 Array of arguments to be passed to the loader.
@@ -248,7 +249,7 @@ Package or directory used to override plugins definition. @see [plugins system](
 ### [preprocess]
 Preprocessing options to apply transformation to the dataset (drop, shuffle, encode, passthrough).
 
-Example from [happiness_rank.toml](https://github.com/B2F/sk-factor/tree/main/examples/open_ml/config/happiness_rank.toml):
+Example from [happiness_rank.toml](https://github.com/B2F/sk-factor/blob/main/examples/open_ml/config/happiness_rank.toml):
 
 ```toml
 [preprocess]
@@ -300,7 +301,7 @@ Use dropped rows for predictions (@see [predictions](#predictions) )
 ### [eda]
 Options for Exploratory Data Analysis with matplotlib and seaborn plots or anything else printed with Python
 
-Example from [happiness_rank.toml](https://github.com/B2F/sk-factor/tree/main/examples/open_ml/config/happiness_rank.toml):
+Example from [happiness_rank.toml](https://github.com/B2F/sk-factor/blob/main/examples/open_ml/config/happiness_rank.toml):
 
 ```toml
 [eda]
@@ -339,9 +340,9 @@ Extension of saved files.
 Directory of saved plot files.
 
 #### plots
-Plot plugins to use, @see [plugins/plots](https://github.com/B2F/sk-factor/tree/main/plugins/plots)
+Plot plugins to use, @see [plugins/plots](https://github.com/B2F/sk-factor/blob/main/plugins/plots)
 
-Options: [**heatmap**](https://github.com/B2F/sk-factor/tree/main/plugins/plots/heatmap.py'), [**pairplot**](https://github.com/B2F/sk-factor/tree/main/examples/open_ml/plugins/plots/pairplot.py), [**distribution_y**](https://github.com/B2F/sk-factor/tree/main/plugins/plots/distribution_y.py), [**distribution_x**](https://github.com/B2F/sk-factor/tree/main/plugins/plots/distribution_x.py)
+Options: [**heatmap**](https://github.com/B2F/sk-factor/blob/main/plugins/plots/heatmap.py'), [**pairplot**](https://github.com/B2F/sk-factor/blob/main/examples/open_ml/plugins/plots/pairplot.py), [**distribution_y**](https://github.com/B2F/sk-factor/blob/main/plugins/plots/distribution_y.py), [**distribution_x**](https://github.com/B2F/sk-factor/blob/main/plugins/plots/distribution_x.py)
 
 #### features
 Specify an array of columns name to be used with the plot plugin above.
@@ -366,7 +367,7 @@ Figure resolution in DPI.
 
 ## Plugin system
 
-Default plugins are located in the [plugins](https://github.com/B2F/sk-factor/tree/main/plugins) directory:
+Default plugins are located in the [plugins](https://github.com/B2F/sk-factor/blob/main/plugins) directory:
 
 * plugins/estimators
 * plugins/loader
@@ -375,11 +376,11 @@ Default plugins are located in the [plugins](https://github.com/B2F/sk-factor/tr
 * plugins/split
 * plugins/training
 
-You can override or add more functionnality by putting your plugin class files in a package containing a plugins/ directory, which hierarchy reflects the project's base [plugins](https://github.com/B2F/sk-factor/tree/main/plugins) structure.
+You can override or add more functionnality by putting your plugin class files in a package containing a plugins/ directory, which hierarchy reflects the project's base [plugins](https://github.com/B2F/sk-factor/blob/main/plugins) structure.
 
 This package is specified by the **plugins** key in your toml config's dataset section.
 
-From the **[examples/toy_datasets/config/iris.toml](https://github.com/B2F/sk-factor/tree/main/examples/toy_datasets/config/iris.toml)** file:
+From the **[examples/toy_datasets/config/iris.toml](https://github.com/B2F/sk-factor/blob/main/examples/toy_datasets/config/iris.toml)** file:
 
 ```toml
 [dataset]
@@ -387,7 +388,7 @@ From the **[examples/toy_datasets/config/iris.toml](https://github.com/B2F/sk-fa
 plugins = 'examples.toy_datasets'
 ```
 
-If you look into **[examples/toy_datasets/plugins](https://github.com/B2F/sk-factor/tree/main/examples/toy_datasets/plugins)** you will find a custom plugins structure.
+If you look into **[examples/toy_datasets/plugins](https://github.com/B2F/sk-factor/blob/main/examples/toy_datasets/plugins)** you will find a custom plugins structure.
 
 <!-- ROADMAP -->
 ## Roadmap
