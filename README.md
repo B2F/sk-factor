@@ -48,10 +48,7 @@
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
+      <a href="#what-is-sk-factor-">What is SK Factor ?</a>
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
@@ -60,7 +57,25 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
+    <li>
+      <a href="#usage-examples">Usage examples</a>
+      <ul>
+        <li><a href="#binary-target-credit_card_fraudtoml">Binary targets</a></li>
+        <li><a href="#multiclass-target">Multiclass target</a></li>
+        <li><a href="#regression-target">Regression target</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#configuration-sections">Configuration sections</a>
+      <ul>
+        <li><a href="#dataset">Dataset</a></li>
+        <li><a href="#preprocess">Preprocess</a></li>
+        <li><a href="#eda">Exploratory Data Analysis</a></li>
+        <li><a href="#training-1">Training</a></li>
+        <li><a href="#predictions">Predictions</a></li>
+      </ul>
+    </li>
+    <li><a href="#plugin-system">Plugin system</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
