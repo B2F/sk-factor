@@ -35,7 +35,7 @@ config.set('dataset', 'filename', reConfig.group(1))
 
 config.set('debug', 'enabled', True) if argument.debug else config.set('debug', 'enabled', False)
 
-if argument.eda:
+if argument.explore:
     config.set('eda', 'enabled', True)
     config.set('training', 'enabled', False)
     config.set('predictions', 'enabled', False)

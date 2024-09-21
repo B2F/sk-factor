@@ -405,6 +405,12 @@ Drops n rows at the beginning (positive integer), or from the end (negative inte
 #### drop_rows_to_predict_file
 Use dropped rows for predictions (@see [predictions](#predictions) )
 
+#### verbose_feature_names_out
+Set to false to remove suffixes from one hot encoder
+
+#### files_axis
+Choose the dataframe merge axis when using multiple files
+
 ### [eda]
 The **eda** section (Exploratory Data Analysis) is used with matplotlib and seaborn plots or anything else printed with Python.
 
@@ -582,6 +588,7 @@ If you look into **[examples/toy_datasets/plugins](https://github.com/B2F/sk-fac
 - [x] training
 - [x] predictions
 - [ ] Sphinx documentation (complete list of configuration options in the external documentation)
+- [ ] Manage default values for unspecified config elements
 - [ ] Additionnal plugins (roc curve with threshold display on both roc and precision / recall)
 - [ ] Stacking estimators
 - [ ] Example with time series forecast with tsfresh and sktime
