@@ -512,10 +512,13 @@ The loader plugin used to retrieve data for prediction.
 
 #### preprocess
 Choose weither or not to re-use the preprocessing section rules for the prediction data.
+
 If you used preprocessors.drop_rows with drop_rows_to_predict_file enabled in the **preprocess** section, then your prediction data is already preprocessed and you'll want to set preprocess = false
 
 #### predict_file
-Path used to write predictions. If you set drop_rows_to_predict_file = true, then this file will be written with the number of rows from the original dataset, specified in preprocessors.drop_rows
+Path used to make predictions (test data).
+
+If you set drop_rows_to_predict_file = true, then this file will be written with the number of rows from the original dataset, specified in preprocessors.drop_rows
 
 #### models
 An array of models files to use for predictions
