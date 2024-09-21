@@ -138,13 +138,13 @@ The [credit_card_fraud.toml](https://github.com/B2F/sk-factor/blob/main/examples
 #### Preprocessing:
 ```toml
 [preprocess]
-# preprocessing is always required
+# preprocessing section is always required
 ````
 
 * The dataset is scaled, shuffled, and 'Time' column is removed.
 ```toml
-preprocessors.shuffle = 1
-transformers.scaler = []
+preprocessors.shuffle = 1 # shuffle's value is a random_state
+transformers.scaler = [] # empty array means all columns
 preprocessors.drop_columns = ['Time']
 ```
 
@@ -184,7 +184,7 @@ samplers = [
 ]
 ```
 
-* A kfold_stratified splitting is done 3 times.
+* The kfold_stratified algorithm is applied in 3 splits.
 
 ```toml
 splitting_method.kfold_stratified = 3
@@ -221,8 +221,14 @@ models_directory = 'models'
 ```toml
 [predictions]
 objective = 'binary'
-loader = 'csv'
-preprocess = false
+```
+
+* Extracts test data from original dataset (@see [drop_rows_to_predict_file](#drop_rows_to_predict_file))
+
+```toml
+loader = 'csv' # Loads test data from predict_file below
+predict_file = 'tests/credit_card_fraud/test.csv'
+preprocess = false # preprocess is skipped because test data was extracted from [preprocess] section.
 enabled = true
 ```
 
@@ -239,7 +245,6 @@ threshold = 0.5
 * Predictions are saved to .csv files for each model and displayed in the console
 
 ```toml
-predict_file = 'tests/credit_card_fraud/test.csv'
 predictions_directory = 'tests/credit_card_fraud/predictions'
 save_predictions = true
 predictions_timestamp = false
