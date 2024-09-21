@@ -86,6 +86,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## What is SK Factor ?
+***
 
 ```bash
 python sk_factor.py -c examples/open_ml/config/credit_card_fraud.toml
@@ -126,8 +127,10 @@ See practical **.toml configuration** [examples below](#usage-examples)
 
 <!-- USAGE EXAMPLES -->
 ## Usage examples
+___
 
 ### Binary target
+---
 
 ```sh
 python sk_factor.py -c examples/open_ml/config/credit_card_fraud.toml
@@ -253,6 +256,7 @@ keep_data = false
 ```
 
 ### Multiclass target
+---
 
 ```sh
 python sk_factor.py -c examples/toy_datasets/config/iris.toml
@@ -279,6 +283,7 @@ The [iris.toml](https://github.com/B2F/sk-factor/blob/main/examples/toy_datasets
 * Predictions are saved to .csv files for each model and displayed in console
 
 ### Regression target
+---
 
 ```sh
 python sk_factor.py -c examples/open_ml/config/happiness_rank.toml
@@ -309,6 +314,7 @@ The [happiness_rank.toml](https://github.com/B2F/sk-factor/blob/main/examples/op
 
 <!-- GETTING STARTED -->
 ## Getting started
+___
 
 SK Factor is a standard Python OOP script organized in packages and modules.
 
@@ -348,8 +354,10 @@ Additionnal dependencies:
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Configuration sections
+___
 
 ### [dataset]
+---
 
 The **[dataset]** section is used to describe the data source and how to parse it.
 
@@ -363,206 +371,217 @@ show_columns = true
 plugins = 'examples.open_ml'
 ```
 
-#### loader
-Data parser from which one or multiple files are read.
++ #### loader
+   Data parser from which one or multiple files are read.
 
-Options: [**csv**](https://github.com/B2F/sk-factor/blob/main/plugins/loader/csv.py'), [**open_ml**](https://github.com/B2F/sk-factor/blob/main/examples/open_ml/plugins/loader/open_ml.py), [**toy_datasets**](https://github.com/B2F/sk-factor/blob/main/examples/toy_datasets/plugins/loader/toy_datasets.py).
+   Options: [**csv**](https://github.com/B2F/sk-factor/blob/main/plugins/loader/csv.py'), [**open_ml**](https://github.com/B2F/sk-factor/blob/main/examples/open_ml/plugins/loader/open_ml.py), [**toy_datasets**](https://github.com/B2F/sk-factor/blob/main/examples/toy_datasets/plugins/loader/toy_datasets.py).
 
-#### files
-Array of arguments to be passed to the loader.
++ #### files
+   Array of arguments to be passed to the loader.
 
-Can be replaced by --train_files CLI argument.
+   Can be replaced by --train_files CLI argument.
 
-#### show_columns
++ #### show_columns
 
-Will display all available dataset's columns at the beginning of the CLI output.
+   Will display all available dataset's columns at the beginning of the CLI output.
 
-#### plugins
-Package or directory used to override plugins definition. @see [plugins system](#plugin-system).
++ #### plugins
+   Package or directory used to override plugins definition. @see [plugins system](#plugin-system).
 
 ### [preprocess]
-The **preprocess** section is used to apply transformation to the dataset (drop, shuffle, encode, passthrough).
+---
 
-#### label
-Column name used as the target label.
+   The **preprocess** section is used to apply transformation to the dataset (drop, shuffle, encode, passthrough).
 
-#### label_encode
-Boolean, specify if the label must be encoded (use true for string).
++ #### label
+   Column name used as the target label.
 
-#### transformers.passthrough
-List of columns left unchanged, use an empty [] for all.
++ #### label_encode
+   Boolean, specify if the label must be encoded (use true for string).
 
-#### transformers.one_hot_encoder
-Encode values in a new categorical column.
++ #### transformers.passthrough
+   List of columns left unchanged, use an empty [] for all.
 
-#### transformers.ordinal_encoder
-Encode values by replacing them in the same column.
++ #### transformers.one_hot_encoder
+   Encode values in a new categorical column.
 
-#### transformers.scaler
-Applies sklearn StandardScaler.
++ #### transformers.ordinal_encoder
+   Encode values by replacing them in the same column.
 
-#### transformers.shuffle
-Shuffles the DataFrame with the random state as value.
++ #### transformers.scaler
+   Applies sklearn StandardScaler.
 
-#### preprocessors.drop_rows
-Drops n rows at the beginning (positive integer), or from the end (negative integer).
++ #### transformers.shuffle
+   Shuffles the DataFrame with the random state as value.
 
-#### drop_rows_to_predict_file
-Use dropped rows for predictions (@see [predictions](#predictions) )
++ #### preprocessors.drop_rows
+   Drops n rows at the beginning (positive integer), or from the end (negative integer).
 
-#### verbose_feature_names_out
-Set to false to remove suffixes from one hot encoder
++ #### drop_rows_to_predict_file
+   Use dropped rows for predictions (@see [predictions](#predictions) )
 
-#### files_axis
-Choose the dataframe merge axis when using multiple files
++ #### verbose_feature_names_out
+   Set to false to remove suffixes from one hot encoder
+
++ #### files_axis
+   Choose the dataframe merge axis when using multiple files
 
 ### [eda]
+---
+
 The **eda** section (Exploratory Data Analysis) is used with matplotlib and seaborn plots or anything else printed with Python.
 
-#### enabled
-If the EDA phase is skipped, no output, no file save (default: true).
++ #### enabled
+   If the EDA phase is skipped, no output, no file save (default: true).
 
-Use the **--explore** CLI option to filter script execution on **eda** config only.
+   Use the **--explore** CLI option to filter script execution on **eda** config only.
 
-#### show_plots
-To skip diagram or printed output, use show_plots = false.
++ #### show_plots
+   To skip diagram or printed output, use show_plots = false.
 
-#### save_images
-Write plots visual to files.
++ #### save_images
+   Write plots visual to files.
 
-#### save_timestamp
-Append a timestamp suffix to saved files.
++ #### save_timestamp
+   Append a timestamp suffix to saved files.
 
-#### images_extension
-Extension of saved files.
++ #### images_extension
+   Extension of saved files.
 
-#### images_directory
-Directory of saved plot files.
++ #### images_directory
+   Directory of saved plot files.
 
-#### plots
-Plot plugins to use, @see [plugins/plots](https://github.com/B2F/sk-factor/blob/main/plugins/plots)
++ #### plots
+   Plot plugins to use, @see [plugins/plots](https://github.com/B2F/sk-factor/blob/main/plugins/plots)
 
-Options: [**heatmap**](https://github.com/B2F/sk-factor/blob/main/plugins/plots/heatmap.py'), [**pairplot**](https://github.com/B2F/sk-factor/blob/main/examples/open_ml/plugins/plots/pairplot.py), [**distribution_y**](https://github.com/B2F/sk-factor/blob/main/plugins/plots/distribution_y.py), [**distribution_x**](https://github.com/B2F/sk-factor/blob/main/plugins/plots/distribution_x.py)
+   Options: [**heatmap**](https://github.com/B2F/sk-factor/blob/main/plugins/plots/heatmap.py'), [**pairplot**](https://github.com/B2F/sk-factor/blob/main/examples/open_ml/plugins/plots/pairplot.py), [**distribution_y**](https://github.com/B2F/sk-factor/blob/main/plugins/plots/distribution_y.py), [**distribution_x**](https://github.com/B2F/sk-factor/blob/main/plugins/plots/distribution_x.py)
 
-#### features
-Specify an array of columns name to be used with the plot plugin above.
++ #### features
+   Specify an array of columns name to be used with the plot plugin above.
 
-#### figsize
-Figure size width and height in inches.
++ #### figsize
+   Figure size width and height in inches.
 
-#### dpi
-Figure resolution in DPI.
++ #### dpi
+   Figure resolution in DPI.
 
 ### [training]
+---
+
 The **training** section is used to train on splits and to to create models
 
-#### enabled
-If you want to force skip the training section, set to false (default: true)
++ #### enabled
+   If you want to force skip the training section, set to false (default: true)
 
-Use the **--train** option to filter script execution on **training** config only.
+   Use the **--train** option to filter script execution on **training** config only.
 
-#### pipeline
-Training's pipeline module (default: 'imblearn.pipeline')
++ #### pipeline
+   Training's pipeline module (default: 'imblearn.pipeline')
 
-#### samplers
-Imblearn samplers ('sampler/smote', 'sampler/tomek_links')
++ #### samplers
+   Imblearn samplers ('sampler/smote', 'sampler/tomek_links')
 
-#### estimators
-Classifier and regressor estimators (see plugins/classifiers).
-```toml
-# Ex:
-estimators = [
-    'classifier/logistic_regression',
-    'classifier/ridge_classifier',
-    'classifier/kneighbors_classifier',
-    'classifier/sgd_classifier',
-    'classifier/lgbm_classifier',
-]
-```
++ #### estimators
+   Classifier and regressor estimators (see plugins/classifiers).
+   ```toml
+   # Ex:
+  estimators = [
+      'classifier/logistic_regression',
+      'classifier/ridge_classifier',
+      'classifier/kneighbors_classifier',
+      'classifier/sgd_classifier',
+      'classifier/lgbm_classifier',
+  ]
+  ```
 
-#### runners
-Training score runners: 'score', 'classification_report', 'confusion_matrix', 'precision_recall' ... (@see plugins/training)
++ #### runners
+   Training score runners: 'score', 'classification_report', 'confusion_matrix', 'precision_recall' ... (@see plugins/training)
 
-#### scoring
-Scoring metric passed as argument to the score runner plugin ('f1', 'r2' ...)
++ #### scoring
+   Scoring metric passed as argument to the score runner plugin ('f1', 'r2' ...)
 
-#### splitting_method.kfold_stratified
-Specify unlimited amount of sklearn splitting methods (one per line), with value as n_splits.
-Ex:
-```toml
-splitting_method.kfold = 5
-splitting_method.kfold_shuffle = 5
-```
++ #### splitting_method.kfold_stratified
+   Specify unlimited amount of sklearn splitting methods (one per line), with value as n_splits.
+   Ex:
+    ```toml
+    splitting_method.kfold = 5
+    splitting_method.kfold_shuffle = 5
+    ```
 
-#### save_model
-Save trained model
++ #### save_model
+   Save trained model
 
-#### model_timestamp
-Append timestamp suffix to model filename
++ #### model_timestamp
+   Append timestamp suffix to model filename
 
-#### models_directory
-Saved models directory
++ #### models_directory
+   Saved models directory
 
 ### [predictions]
+---
 
 The **predictions** section is used to predict from training data or model files.
 
-#### enabled = true
-Enable or disable the **predictions** section section altogether.
++ #### enabled = true
+   Enable or disable the **predictions** section section altogether.
 
-Use the **--predict** option to filter CLI execution on the **predictions** section only.
+   Use the **--predict** option to filter CLI execution on the **predictions** section only.
 
-#### loader = 'csv'
-The loader plugin used to retrieve data for prediction.
++ #### loader
+  The loader plugin used to retrieve data for prediction.
 
-#### preprocess
-Choose weither or not to re-use the preprocessing section rules for the prediction data.
+  Ex: 'csv'
 
-If you used preprocessors.drop_rows with drop_rows_to_predict_file enabled in the **preprocess** section, then your prediction data is already preprocessed and you'll want to set preprocess = false
++ #### preprocess
+   Choose weither or not to re-use the preprocessing section rules for the prediction data.
 
-#### predict_file
-Path used to make predictions (test data).
+   If you used preprocessors.drop_rows with drop_rows_to_predict_file enabled in the **preprocess** section, then your prediction data is already preprocessed and you'll want to set preprocess = false
 
-If you set drop_rows_to_predict_file = true, then this file will be written with the number of rows from the original dataset, specified in preprocessors.drop_rows
++ #### predict_file
+   Path used to make predictions (test data).
 
-#### models
-An array of models files to use for predictions
+   If you set drop_rows_to_predict_file = true, then this file will be written with the number of rows from the original dataset, specified in preprocessors.drop_rows
 
-#### objective
-Options 'binary', 'multiclass', 'regressor'
++ #### models
+   An array of models files to use for predictions
 
-#### threshold
-Threshold parameter passed to the objective plugin to filter probabilities.
++ #### objective
+   Options 'binary', 'multiclass', 'regressor'
 
-#### save_predictions
-If set to true, predictions will be saved to the predictions_directory.
++ #### threshold
+   Threshold parameter passed to the objective plugin to filter probabilities.
 
-#### predictions_directory
-Where to save predictions.
++ #### save_predictions
+   If set to true, predictions will be saved to the predictions_directory.
 
-#### predictions_timestamp
-Set to true to append the timestamp to predictions filenames.
++ #### predictions_directory
+   Where to save predictions.
 
-#### keep_data
-Set to true to keep all prediction's data columns in predictions files.
++ #### predictions_timestamp
+   Set to true to append the timestamp to predictions filenames.
+
++ #### keep_data
+   Set to true to keep all prediction's data columns in predictions files.
 
 ### [debug]
+---
 
-#### enabled
-Enable python CLI debugger
++ #### enabled
+   Enable python CLI debugger
 
-#### port
-Debug port (Usually 5678)
++ #### port
+   Debug port (Usually 5678)
 
-#### host
-Host address (Usually '127.0.0.1')
++ #### host
+   Host address (Usually '127.0.0.1')
 
-#### wait_for_client
-Set to true to start debugger with execution
++ #### wait_for_client
+   Set to true to start debugger with execution
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Plugin system
+___
 
 Default plugins are located in the [plugins](https://github.com/B2F/sk-factor/blob/main/plugins) directory:
 
@@ -589,6 +608,8 @@ If you look into **[examples/toy_datasets/plugins](https://github.com/B2F/sk-fac
 
 <!-- ROADMAP -->
 ## Roadmap
+___
+
 
 - [x] clean OOP code architecture with a plugin system
 - [x] custom loader
@@ -609,6 +630,7 @@ See the [open issues](https://github.com/B2F/sk-factor/issues) for a full list o
 
 <!-- CONTRIBUTING -->
 ## Contributing
+___
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
@@ -633,6 +655,7 @@ Don't forget to give the project a star! Thanks again!
 
 <!-- LICENSE -->
 ## License
+___
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
 
@@ -640,7 +663,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <!-- CONTACT -->
 ## Contact
-
+___
 B2F - [Linkedin](https://www.linkedin.com/in/didier-boff-ba6683118/)
 
 Project Link: https://github.com/B2F/sk-factor
@@ -649,6 +672,7 @@ Project Link: https://github.com/B2F/sk-factor
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
+___
 
 SK Factor is relying on all those awesome Data Science projects !
 
