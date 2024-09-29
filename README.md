@@ -376,6 +376,8 @@ plugins = 'examples.open_ml'
 
    Options: [**csv**](https://github.com/B2F/sk-factor/blob/main/plugins/loader/csv.py'), [**open_ml**](https://github.com/B2F/sk-factor/blob/main/examples/open_ml/plugins/loader/open_ml.py), [**toy_datasets**](https://github.com/B2F/sk-factor/blob/main/examples/toy_datasets/plugins/loader/toy_datasets.py).
 
+   @see [plugins/loader](https://github.com/B2F/sk-factor/blob/main/plugins/loader)
+
 + #### files
    Array of arguments to be passed to the loader.
 
@@ -392,6 +394,8 @@ plugins = 'examples.open_ml'
 ---
 
    The **preprocess** section is used to apply transformation to the dataset (drop, shuffle, encode, passthrough).
+
+   @see [plugins/preprocess](https://github.com/B2F/sk-factor/blob/main/plugins/preprocess)
 
 + #### label
    Column name used as the target label.
@@ -495,7 +499,7 @@ The **training** section is used to train on splits and to to create models
   ```
 
 + #### runners
-   Training score runners: 'score', 'classification_report', 'confusion_matrix', 'precision_recall' ... (@see plugins/training)
+   Training score runners: 'score', 'classification_report', 'confusion_matrix', 'precision_recall' ... (@see plugins/training)[https://github.com/B2F/sk-factor/blob/main/plugins/training]
 
 + #### scoring
    Scoring metric passed as argument to the score runner plugin ('f1', 'r2' ...)
@@ -585,14 +589,57 @@ ___
 
 Default plugins are located in the [plugins](https://github.com/B2F/sk-factor/blob/main/plugins) directory:
 
-* plugins/estimators
-* plugins/loader
-* plugins/plots
-* plugins/predictions
-* plugins/split
-* plugins/training
+* **plugins/loader                  -> inherits [BaseLoader](https://github.com/B2F/sk-factor/blob/main/plugins/loader/base_loader.py)**
+
+    Used to implements specific loading methods, like the provided CSV loader.
+
+* **plugins/preprocess/preprocessor -> inherits [BasePreprocessor](https://github.com/B2F/sk-factor/blob/main/plugins/preprocess/base_preprocessor.py)**
+
+   Used to add data transformation to the whole dataset (drop column, drop na, drop nb rows ...)
+
+* **plugins/preprocess/transformer  -> inherits [BaseTransformer](https://github.com/B2F/sk-factor/blob/main/plugins/preprocess/base_transformer.py)**
+
+   Data transformer per column (scaler, discretizer, encoder ...)
+
+* **plugins/preprocess/selector     -> inherits [BaseSelector](https://github.com/B2F/sk-factor/blob/main/plugins/preprocess/base_selector.py)**
+
+   Used to apply a transformer on columns from selector (numbers, string, k best)
+
+* **plugins/plots                   -> inherits [Report](https://github.com/B2F/sk-factor/blob/main/plugins/plots/base_report.py)**
+
+   Plotting heatmap, pairplots ....
+
+* **plugins/estimators/classifier   -> inherits [BaseEstimator](https://github.com/B2F/sk-factor/blob/main/plugins/estimators/base_estimator.py)**
+
+   Adds classifier algorithms (linear svc, lgbm ...)
+
+* **plugins/estimators/regressor    -> inherits [BaseEstimator](https://github.com/B2F/sk-factor/blob/main/plugins/estimators/base_estimator.py)**
+
+   Adds regressor algorithms (ridge cv, hgbr , xgboost...)
+
+* **plugins/estimators/sampler      -> inherits [BaseEstimator](https://github.com/B2F/sk-factor/blob/main/plugins/estimators/base_estimator.py)**
+
+   Sampling methods with the imblearn pipeline (smote, near miss, tomek links, instance hardness ...)
+
+* **plugins/estimators/transformer  -> inherits [BaseEstimator](https://github.com/B2F/sk-factor/blob/main/plugins/estimators/base_estimator.py)**
+
+   Power transforms (yeo johnson)
+
+* **plugins/split                   -> inherits [BaseCv](https://github.com/B2F/sk-factor/blob/main/plugins/split/base_cv.py)**
+
+   Splitting methods (Kfold, leave one out, shuffle ...)
+
+* **plugins/training                -> inherits [TrainingPlot](https://github.com/B2F/sk-factor/blob/main/plugins/training/training_plot.py)**
+
+   Training reports (Confusion matrix, classification report, sharp permutation ...)
+
+* **plugins/predictions             -> inherits [BasePredictor](https://github.com/B2F/sk-factor/blob/main/plugins/predictions/base_predictor.py)**
+
+   Handles prediction objective with output format and threshold (binary, multiclass, regression ...)
 
 You can override or add more functionnality by putting your plugin class files in a package containing a plugins/ directory, which hierarchy reflects the project's base [plugins](https://github.com/B2F/sk-factor/blob/main/plugins) structure.
+
+Plugins files names must match the class name in CamelCase with an underscore to signal an uppercase character.
 
 This package is specified by the **plugins** key in your toml config's dataset section.
 
@@ -637,12 +684,13 @@ Contributions are what make the open source community such an amazing place to l
 If you have a suggestion that would make this better, please fork the repo and create a pull request. You can help with following tags:
 
 * plugins
-* estimators
 * loader
+* preprocess
 * plots
+* estimators
+* training
 * predictions
 * split
-* training
 * engine
 
 Don't forget to give the project a star! Thanks again!
