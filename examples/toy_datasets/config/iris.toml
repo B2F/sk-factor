@@ -72,7 +72,7 @@ splitting_random_state = 26387
 
 save_model = true
 model_timestamp = false
-models_directory = 'models'
+models_directory = 'tests/models'
 # Use a random seed (default) or specify one
 seed = 7368298
 # @see https://scikit-learn.org/stable/modules/model_evaluation.html#common-cases-predefined-values
@@ -85,9 +85,9 @@ preprocess = false
 predict_file = 'tests/iris/test.csv'
 # Leave out the models param to use fitted pipelines from the previous training.
 # models = [
-#   'models/iris-classifier/lgbm_random_forest_mc.pkl',
-#   'models/iris-classifier/xgboost.pkl',
-#   'models/iris-classifier/linear_svc.pkl',
+#   'tests/models/iris-classifier/lgbm_random_forest_mc.pkl',
+#   'tests/models/iris-classifier/xgboost.pkl',
+#   'tests/models/iris-classifier/linear_svc.pkl',
 # ]
 # Available plugins: binary, multiclass, regressor
 objective = 'multiclass'

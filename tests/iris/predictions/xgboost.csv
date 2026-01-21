@@ -1,4 +1,0 @@
-,sepal length (cm),sepal width (cm),petal length (cm),petal width (cm),setosa,versicolor,virginica,threshold,estimation
-0,5.8,2.7,4.1,1.0,0.0019727098,0.99666226,0.0013651036,0.5,versicolor
-1,7.7,3.8,6.7,2.2,0.00044634033,0.0013448638,0.99820876,0.5,virginica
-2,4.6,3.2,1.4,0.2,0.9964947,0.002617637,0.0008877066,0.5,setosa

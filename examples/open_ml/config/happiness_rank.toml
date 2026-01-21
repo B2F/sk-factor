@@ -71,7 +71,7 @@ splitting_random_state = 36572
 
 save_model = true
 model_timestamp = false
-models_directory = 'models'
+models_directory = 'tests/models'
 # Use a random seed (default) or specify one
 seed = 7368298
 # @see https://scikit-learn.org/stable/modules/model_evaluation.html#common-cases-predefined-values
@@ -83,9 +83,9 @@ preprocess = false
 predict_file = 'tests/happiness_rank/test.csv'
 # Leave out the models param to use fitted pipelines from the previous training.
 models = [
-  'models/happiness_rank-regressor/xgboost.pkl',
-  'models/happiness_rank-regressor/lgbm_regressor.pkl',
-  'models/happiness_rank-regressor/hgbr.pkl'
+  'tests/models/happiness_rank-regressor/xgboost.pkl',
+  'tests/models/happiness_rank-regressor/lgbm_regressor.pkl',
+  'tests/models/happiness_rank-regressor/hgbr.pkl'
 ]
 # Available plugins: binary, multiclass, regressor
 objective = 'regression'
