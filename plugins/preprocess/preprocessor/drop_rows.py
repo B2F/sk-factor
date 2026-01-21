@@ -27,6 +27,8 @@ class DropRows(BasePreprocessor):
 
         if dropToPredictFile:
             predictFile = self._config.get('predictions', 'predict_file')
+            if predictFile is None:
+                raise Exception('drop_rows_to_predict_file is enabled but predict_file is not configured in [predictions] section of config')
             Files.toCsv(removedDf, predictFile, index=False)
             print('Dropped rows written to: ' + predictFile)
 
