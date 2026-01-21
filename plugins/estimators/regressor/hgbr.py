@@ -15,7 +15,7 @@ class Hgbr(BaseEstimator):
         l2_regularization=0.0,
         max_features=1.0,
         max_bins=255,
-        categorical_features='warn',
+        categorical_features=None,
         monotonic_cst=None,
         interaction_cst=None,
         warm_start=False,
