@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sk-factor"
+version = "0.1.0"
+authors = [{name = "B2F"}]
+description = "SK Factor: one liner CLI to factor and reuse code from sklearn projects"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 1 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "scikit-learn>=1.3.0",
+    "imbalanced-learn>=0.10.0",
+    "toml>=0.10.0",
+    "pandas>=1.5.0",
+    "matplotlib>=3.5.0",
+    "seaborn>=0.11.0",
+    "lightgbm>=3.3.0",
+    "xgboost>=1.7.0",
+    "shap>=0.40.0",
+    "openml>=0.12.0",
+]
+
+[project.scripts]
+sk-factor = "sk_factor:main"
+
+[project.urls]
+Homepage = "https://github.com/B2F/sk-factor"
+Repository = "https://github.com/B2F/sk-factor"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["*", "src.*", "plugins.*", "examples.*"]
+
+[tool.setuptools.package-data]
+"*" = ["*.md", "examples/**/*", "config/**/*", "plugins/**/*", "src/**/*"]
+
+[tool.setuptools]
+py-modules = ["sk_factor"]

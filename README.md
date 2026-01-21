@@ -322,6 +322,10 @@ By default, running sk_factor requires the following dependencies:
 
 ### Prerequisites
 
+The project uses a comprehensive set of dependencies managed through pip. All required packages are listed in the `requirements.txt` file.
+
+Key dependencies include:
+
   * **[sklearn][sklearn]**    -> core functionality such as pipeline is based on sklearn
   * **[imblearn][imblearn]**   -> provides advanced samplers to mitigate dataset unbalance
   * **[toml][toml]**       -> standard format for configuration file
@@ -329,27 +333,68 @@ By default, running sk_factor requires the following dependencies:
   * **[pandas][pandas]**     -> advanced dataset arrays operations
   * **[matplotlib][matplotlib]** -> data visualisation
   * **[seaborn][seaborn]**    -> diagrams plots
+  * **[lightgbm][lightgbm]** -> gradient boost estimators
+  * **[shap][shap]**     -> advanced features analysis (such as permutation)
 
-The standard python package installer PIP is required:
+Optionnal dependencies (additional example packages):
 
-  ```sh
-  pip install sklearn imblearn toml argparse pandas matoplotlib seaborn
-  ```
-
-Additionnal dependencies:
-
-  * [lightgbm][lightgbm] -> additionnal gradient boost estimators
-  * [xgboost][xgboost]  -> additionnal gradient boost estimators
-  * [shap][shap]     -> advanced features analysis (such as permutation)
+  * [xgboost][xgboost]  -> additional gradient boost estimators
   * [openml][openml]   -> access to machine learning datasets (instead of csv)
 
 ### Installation
 
-1. Clone the repo
+#### Method 1: From Source (Recommended for development)
+1. Clone the repository
    ```sh
    git clone https://github.com/B2F/sk-factor.git
+   cd sk-factor
    ```
-2. Grab one of the [examples below](#usage-examples)
+
+2. Install the package in development mode
+   ```sh
+   pip install -e .
+   ```
+
+3. Use the command line interface:
+   ```sh
+   sk-factor -c examples/open_ml/config/credit_card_fraud.toml
+   ```
+
+#### Method 2: Direct Usage (No Installation)
+If you prefer not to install the package:
+
+1. Clone the repository
+   ```sh
+   git clone https://github.com/B2F/sk-factor.git
+   cd sk-factor
+   ```
+
+2. Install dependencies only
+   ```sh
+   pip install -r requirements.txt
+   ```
+
+3. Run directly with Python:
+   ```sh
+   python sk_factor.py -c examples/open_ml/config/credit_card_fraud.toml
+   ```
+
+#### Available Command Line Options
+After installation, you can use various command line options:
+
+- `-c, --config`: Specify configuration file
+- `-ef, --explore`: EDA plots only
+- `-tf, --train`: Training only
+- `-pf, --predict`: Predictions only
+- `-t, --train_files`: Override training files
+- `-p, --predict_files`: Specify prediction files  
+- `-m, --model_file`: Specify model files for predictions
+- `-d, --debug`: Enable debugging
+
+For help with available options:
+```sh
+sk-factor --help
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -663,6 +708,7 @@ ___
 - [x] exploratory data analysis
 - [x] training
 - [x] predictions
+- [ ] Publish the package to PyPI
 - [ ] Sphinx documentation (complete list of configuration options in the external documentation)
 - [ ] Manage default values for unspecified config elements
 - [ ] Additionnal plugins (roc curve with threshold display on both roc and precision / recall)

@@ -1,6 +1,8 @@
 import argparse
 import pandas as pd
 import re
+import sys
+
 from src.engine.config import Config
 from src.engine.preprocessors import Preprocessors
 from src.engine.transfomers import Transformers
@@ -11,104 +13,114 @@ from src.engine.predictions import Predictions
 from src.engine.plugins import Plugins
 from src.engine.files import Files
 
-parser = argparse.ArgumentParser()
+def main():
+    
+    parser = argparse.ArgumentParser()
 
-parser.add_argument("-c", "--config", help = "Use a config file from the config/ directory", default='sk_factor')
+    parser.add_argument("-c", "--config", help = "Use a config file from the config/ directory", default='sk_factor')
 
-# -t and -p arguments can be cumulated
-parser.add_argument("-t", "--train_files", help = "Train with given file(s)", required = False, nargs = "*")
-parser.add_argument("-p", "--predict_files", help = "Predict with given file(s)", required = False, nargs = "*")
-parser.add_argument("-m", "--model_file", help = "Model file(s) used for predictions", required = False, nargs = "*")
+    # -t and -p arguments can be cumulated
+    parser.add_argument("-t", "--train_files", help = "Train with given file(s)", required = False, nargs = "*")
+    parser.add_argument("-p", "--predict_files", help = "Predict with given file(s)", required = False, nargs = "*")
+    parser.add_argument("-m", "--model_file", help = "Model file(s) used for predictions", required = False, nargs = "*")
 
-parser.add_argument("-d", "--debug", help = "Enable debugging", action='store_true')
+    parser.add_argument("-d", "--debug", help = "Enable debugging", action='store_true')
 
-group = parser.add_mutually_exclusive_group()
-group.add_argument("-ef", "--explore", help = "EDA plots only", action='store_true', required = False)
-group.add_argument("-tf", "--train", help = "Training only", action='store_true', required = False)
-group.add_argument("-pf", "--predict", help = "Predict only", action='store_true', required = False)
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("-ef", "--explore", help = "EDA plots only", action='store_true', required = False)
+    group.add_argument("-tf", "--train", help = "Training only", action='store_true', required = False)
+    group.add_argument("-pf", "--predict", help = "Predict only", action='store_true', required = False)
 
-argument = parser.parse_args()
+    # Show help if no arguments provided
+    if len(sys.argv) == 1:
+        parser.print_help()
+        return
 
-config = Config(argument.config)
-reConfig = re.search(r"(?:.*/)?([^\/\.]*)(?:\.toml)$", argument.config)
-config.set('dataset', 'filename', reConfig.group(1))
+    argument = parser.parse_args()
 
-config.set('debug', 'enabled', True) if argument.debug else config.set('debug', 'enabled', False)
+    config = Config(argument.config)
+    reConfig = re.search(r"(?:.*/)?([^\/\.]*)(?:\.toml)$", argument.config)
+    config.set('dataset', 'filename', reConfig.group(1))
 
-if argument.explore:
-    config.set('eda', 'enabled', True)
-    config.set('training', 'enabled', False)
-    config.set('predictions', 'enabled', False)
-elif argument.train:
-    config.set('eda', 'enabled', False)
-    config.set('training', 'enabled', True)
-    config.set('predictions', 'enabled', False)
-elif argument.predict:
-    config.set('eda', 'enabled', False)
-    config.set('training', 'enabled', False)
-    config.set('predictions', 'enabled', True)
+    config.set('debug', 'enabled', True) if argument.debug else config.set('debug', 'enabled', False)
 
-Debugger.attach(config)
+    if argument.explore:
+        config.set('eda', 'enabled', True)
+        config.set('training', 'enabled', False)
+        config.set('predictions', 'enabled', False)
+    elif argument.train:
+        config.set('eda', 'enabled', False)
+        config.set('training', 'enabled', True)
+        config.set('predictions', 'enabled', False)
+    elif argument.predict:
+        config.set('eda', 'enabled', False)
+        config.set('training', 'enabled', False)
+        config.set('predictions', 'enabled', True)
 
-trainfiles = argument.train_files if argument.train_files else config.get('dataset', 'files')
+    Debugger.attach(config)
 
-models = []
+    trainfiles = argument.train_files if argument.train_files else config.get('dataset', 'files')
 
-if trainfiles and not argument.predict:
+    models = []
 
-    ###
-    # Step 0. Reading files from command line
+    if trainfiles and not argument.predict:
 
-    loader = config.get('dataset', 'loader')
-    df_train = Plugins.create('loader', loader, config, trainfiles).load()
+        ###
+        # Step 0. Reading files from command line
 
-    ###
-    # Step 1. Preprocessing
+        loader = config.get('dataset', 'loader')
+        df_train = Plugins.create('loader', loader, config, trainfiles).load()
 
-    # Label is first extracted from the dataset to pass x alone onto the transformers pipeline.
-    x_train, y_train, labels = Preprocessors.encodeLabel(config, df_train)
-    x_train = Transformers.apply(config, x_train)
+        ###
+        # Step 1. Preprocessing
 
-    # Rejoin x and y to apply uniform preprocessing to the whole dataset.
-    # Global preprocessing comes second, especially for the drop_rows_to_predict_file option.
-    df_train = pd.concat(list([x_train, y_train]), axis=1)
+        # Label is first extracted from the dataset to pass x alone onto the transformers pipeline.
+        x_train, y_train, labels = Preprocessors.encodeLabel(config, df_train)
+        x_train = Transformers.apply(config, x_train)
 
-    print('\nBefore preprocessing:')
-    print(df_train.shape)
+        # Rejoin x and y to apply uniform preprocessing to the whole dataset.
+        # Global preprocessing comes second, especially for the drop_rows_to_predict_file option.
+        df_train = pd.concat(list([x_train, y_train]), axis=1)
 
-    df_train = Preprocessors.apply(config, df_train)
+        print('\nBefore preprocessing:')
+        print(df_train.shape)
 
-    # Re-separates x and y sets.
-    x_train, y_train, encodedLabels = Preprocessors.encodeLabel(config, df_train)
+        df_train = Preprocessors.apply(config, df_train)
 
-    if config.get('preprocess', 'preprocess_to_file'):
+        # Re-separates x and y sets.
+        x_train, y_train, encodedLabels = Preprocessors.encodeLabel(config, df_train)
 
-        preprocessed_file = config.get('preprocess', 'preprocess_to_file')
-        Files.toCsv(df_train, preprocessed_file)
-        print('Preprocessed rows written to: ' + preprocessed_file)
+        if config.get('preprocess', 'preprocess_to_file'):
 
-    ###
-    # Step 2. EDA plots:
+            preprocessed_file = config.get('preprocess', 'preprocess_to_file')
+            Files.toCsv(df_train, preprocessed_file)
+            print('Preprocessed rows written to: ' + preprocessed_file)
 
-    if config.eq('eda', 'enabled', True):
+        ###
+        # Step 2. EDA plots:
 
-        identifier = identifier = '/'.join(trainfiles) if len(trainfiles) > 1 else trainfiles
-        Plots().run(config, x_train, y_train, labels, identifier)
+        if config.eq('eda', 'enabled', True):
 
-    ###
-    # Step 3. Training:
+            identifier = identifier = '/'.join(trainfiles) if len(trainfiles) > 1 else trainfiles
+            Plots().run(config, x_train, y_train, labels, identifier)
 
-    if config.eq('training', 'enabled', True):
+        ###
+        # Step 3. Training:
 
-        models = Training(config, x_train, y_train, labels).run()
+        if config.eq('training', 'enabled', True):
 
-### Step 4. Predictions from model:
+            models = Training(config, x_train, y_train, labels).run()
 
-if config.eq('predictions', 'enabled', True):
+    ### Step 4. Predictions from model:
 
-    predict_files = argument.predict_files if argument.predict_files else [config.get('predictions', 'predict_file')]
-    Predictions(config, predict_files, models).run()
+    if config.eq('predictions', 'enabled', True):
 
-# @todo
-# Add unit tests
-# Model stacking
+        predict_files = argument.predict_files if argument.predict_files else [config.get('predictions', 'predict_file')]
+        Predictions(config, predict_files, models).run()
+
+    # @todo
+    # Add unit tests
+    # Model stacking
+
+if __name__ == "__main__":
+    main()
