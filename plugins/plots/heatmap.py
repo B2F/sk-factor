@@ -1,12 +1,16 @@
 import seaborn as sns
 from plugins.plots.base_report import Report
 import pandas as pd
+from src.utils.data_validator import validate_numeric_columns
 
 class Heatmap(Report):
 
   def plot(self):
+    # Check for non-numeric columns that could cause conversion errors
+    df_combined = pd.concat(list([self._x, self._y]), axis=1)
+    validate_numeric_columns(df_combined, "Heatmap correlation matrix")
 
-    df = pd.concat(list([self._x, self._y]), axis=1).corr()
+    df = df_combined.corr()
 
     ax = sns.heatmap(
       df,
