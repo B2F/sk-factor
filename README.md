@@ -374,7 +374,7 @@ plugins = 'examples.open_ml'
 + #### loader
    Data parser from which one or multiple files are read.
 
-   Options: [**csv**](https://github.com/B2F/sk-factor/blob/main/plugins/loader/csv.py'), [**open_ml**](https://github.com/B2F/sk-factor/blob/main/examples/open_ml/plugins/loader/open_ml.py), [**toy_datasets**](https://github.com/B2F/sk-factor/blob/main/examples/toy_datasets/plugins/loader/toy_datasets.py).
+   Options: [**csv**](https://github.com/B2F/sk-factor/blob/main/plugins/loader/csv.py), [**open_ml**](https://github.com/B2F/sk-factor/blob/main/examples/open_ml/plugins/loader/open_ml.py), [**toy_datasets**](https://github.com/B2F/sk-factor/blob/main/examples/toy_datasets/plugins/loader/toy_datasets.py).
 
    @see [plugins/loader](https://github.com/B2F/sk-factor/blob/main/plugins/loader)
 
@@ -458,7 +458,7 @@ The **eda** section (Exploratory Data Analysis) is used with matplotlib and seab
 + #### plots
    Plot plugins to use, @see [plugins/plots](https://github.com/B2F/sk-factor/blob/main/plugins/plots)
 
-   Options: [**heatmap**](https://github.com/B2F/sk-factor/blob/main/plugins/plots/heatmap.py'), [**pairplot**](https://github.com/B2F/sk-factor/blob/main/examples/open_ml/plugins/plots/pairplot.py), [**distribution_y**](https://github.com/B2F/sk-factor/blob/main/plugins/plots/distribution_y.py), [**distribution_x**](https://github.com/B2F/sk-factor/blob/main/plugins/plots/distribution_x.py)
+   Options: [**heatmap**](https://github.com/B2F/sk-factor/blob/main/plugins/plots/heatmap.py), [**pairplot**](https://github.com/B2F/sk-factor/blob/main/examples/open_ml/plugins/plots/pairplot.py), [**distribution_y**](https://github.com/B2F/sk-factor/blob/main/plugins/plots/distribution_y.py), [**distribution_x**](https://github.com/B2F/sk-factor/blob/main/plugins/plots/distribution_x.py)
 
 + #### features
    Specify an array of columns name to be used with the plot plugin above.
