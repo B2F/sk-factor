@@ -16,7 +16,7 @@ class Transformers():
 
         for module, features in transformers.items():
 
-            transformer = Plugins.create('preprocess.transformer', module, config.getConfig(), x)
+            transformer = Plugins.create('preprocess.transformer', module, config, x)
             if type(features) is list:
                 # Preprocess for columns selected in the .ini config.
                 features = list(x.columns) if features == [] else features
@@ -32,7 +32,7 @@ class Transformers():
             transformer = Plugins.create(
                 'preprocess.transformer',
                 'many_to_one',
-                config.getConfig(),
+                config,
                 x,
                 transformers,
                 feature
