@@ -19,9 +19,20 @@ class Plugins():
     @staticmethod
     def create(package: str, module: str, config = None, *args):
 
-        packageBase = Plugins.PACKAGE_BASE
-        if config.get('dataset', 'plugins'):
-            packageBase = config.get('dataset', 'plugins')
+        config_plugins = config.get('dataset', 'plugins')
+
+        # Handle both single plugin package (string) and multiple plugin packages (list/array)
+        if config_plugins:
+            if isinstance(config_plugins, str):
+                # Single plugin package (backward compatibility)
+                packageBases = [Plugins.PACKAGE_BASE, config_plugins]
+            elif isinstance(config_plugins, list):
+                # Multiple plugin packages
+                packageBases = [Plugins.PACKAGE_BASE] + config_plugins
+            else:
+                raise Exception('dataset plugins must be either list or str')
+        else:
+            packageBases = [Plugins.PACKAGE_BASE]
 
         # If the module string contains a path, split directory from module name.
         if module.find('/') != -1:
@@ -32,12 +43,22 @@ class Plugins():
 
         # First, we try to find the plugin from toml's [dataset] plugins config if available:
         pluginPath = f"{Plugins.PACKAGE_BASE}.{package}.{moduleName}"
-        try:
-            classModule = importlib.import_module(f"{packageBase}.{pluginPath}")
-        # Else, fallback to default sk_factor plugins directory:
-        except ModuleNotFoundError:
-            if Plugins.PACKAGE_BASE != packageBase:
+
+        classModule = None
+        # Try each plugin package in order
+        for pkg_base in packageBases:
+            try:
+                classModule = importlib.import_module(f"{pkg_base}.{pluginPath}")
+                break # Found the plugin, exit the loop
+            except ModuleNotFoundError:
+                continue
+
+        # If not found in any custom packages, fall back to default sk_factor plugins directory:
+        if classModule is None:
+            try:
                 classModule = importlib.import_module(f"{pluginPath}")
+            except ModuleNotFoundError:
+                raise ModuleNotFoundError(f"Plugin '{module}' not found in any of the specified plugin packages: {packageBases} or default plugins")
 
         classTokens = moduleName.split('_')
         className = ''.join(ele.title() for ele in classTokens)
