@@ -1,21 +1,41 @@
 [dataset]
-loader = 'open_ml'
-# Ignored if -t (--train_files) is passed to the CLI.
-files = ['CreditCardFraudDetection']
+loader = 'csv'
+files = ['examples/files/dataset/adult/adult.data.csv']
 show_columns = true
-plugins = 'examples.open_ml'
+plugins = ['examples.open_ml', 'examples.files']
 
 [preprocess]
-label = 'Class'
-label_encode = false
+label = 'income'  # The actual label column in adult dataset
+y_preprocessors = [
+    'binary_revenue'  # Use our new binary revenue preprocessor
+]
+# Remove label_encode since we're using the y_preprocessor
+# label_encode = true
 
-transformers.scaler = []
+# Adult dataset preprocessing
+transformers.passthrough = [
+    'age',
+    'fnlwgt',
+    'education-num',
+    'capital-gain',
+    'capital-loss',
+    'hours-per-week'
+]
+transformers.one_hot_encoder = [
+    'workclass',
+    'education',
+    'marital-status',
+    'occupation',
+    'relationship',
+    'race',
+    'sex',
+    'native-country'
+]
 
 # The shuffle value is its random_state seed.
 preprocessors.shuffle = 1
 # Negative values start at the end:
-preprocessors.drop_columns = ['Time']
-preprocessors.drop_rows = -25000
+preprocessors.drop_rows = -5
 # Dropped samples left out for predictions (relevant for testing the final model),
 # file path will be the on specified in training predict_file.
 drop_rows_to_predict_file = true
@@ -32,26 +52,28 @@ files_axis = 'index'
 enabled = false
 show_plots = true
 save_images = false
+save_timestamp = true
+images_extension = 'png'
+images_directory = 'output/eda'
 plots = [
   'distribution_y',
 ]
+figsize = [20, 15]
+dpi = 200
 
 [training]
 enabled = true
 pipeline = 'imblearn.pipeline'
 samplers = [
-    # 'sampler/smote',
     'sampler/tomek_links',
 ]
 estimators = [
-    # 'classifier/logistic_regression',
-    # 'classifier/ridge_classifier',
     'classifier/kneighbors_classifier',
-    'classifier/sgd_classifier',
-    # 'classifier/lgbm_classifier',
+    'classifier/logistic_regression',
 ]
 runners = [
     'score',
+    'classification_report',
 ]
 scoring = 'f1'
 
@@ -62,34 +84,15 @@ model_timestamp = false
 models_directory = 'tests/models'
 # Use a random seed (default) or specify one
 seed = 7368298
-# @see https://scikit-learn.org/stable/modules/model_evaluation.html#common-cases-predefined-values
-
-[sampling]
-near_miss_version=2
-nb_jobs=-1
 
 [predictions]
-enabled = true
+predict_file = 'tests/adult_revenue/predictions.csv'
 loader = 'csv'
 preprocess = false
-predict_file = 'tests/credit_card_fraud/test.csv'
-# Leave out the models param to use fitted pipelines from the previous training.
-models = [
-  'tests/models/credit_card_fraud-classifier/kneighbors_classifier.pkl',
-  'tests/models/credit_card_fraud-classifier/sgd_classifier.pkl'
-]
-# Provided plugins: binary, multiclass, regressor
+enabled = true
 objective = 'binary'
-# Use the preprocess, as in training.
 threshold = 0.5
-predictions_directory = 'tests/credit_card_fraud/predictions'
 save_predictions = true
+predictions_directory = 'tests/adult_revenue/predictions'
 predictions_timestamp = false
-# Keep original features data features in the final predictions columns.
 keep_data = false
-
-[debug]
-enabled = false
-port = 5678
-host = '127.0.0.1'
-wait_for_client = true
