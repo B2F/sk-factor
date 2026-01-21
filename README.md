@@ -708,10 +708,10 @@ ___
 - [x] exploratory data analysis
 - [x] training
 - [x] predictions
+- [x] Additionnal example plugins (roc curve with threshold display)
 - [ ] Publish the package to PyPI
 - [ ] Sphinx documentation (complete list of configuration options in the external documentation)
 - [ ] Manage default values for unspecified config elements
-- [ ] Additionnal plugins (roc curve with threshold display on both roc and precision / recall)
 - [ ] Stacking estimators
 - [ ] Example with time series forecast with tsfresh and sktime
 - [ ] More example use cases and tests
