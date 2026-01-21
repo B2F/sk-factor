@@ -14,7 +14,7 @@ from src.engine.plugins import Plugins
 from src.engine.files import Files
 
 def main():
-    
+
     parser = argparse.ArgumentParser()
 
     parser.add_argument("-c", "--config", help = "Use a config file from the config/ directory", default='sk_factor')
@@ -40,6 +40,9 @@ def main():
 
     config = Config(argument.config)
     reConfig = re.search(r"(?:.*/)?([^\/\.]*)(?:\.toml)$", argument.config)
+
+    Debugger.attach(config)
+
     config.set('dataset', 'filename', reConfig.group(1))
 
     config.set('debug', 'enabled', True) if argument.debug else config.set('debug', 'enabled', False)
@@ -56,8 +59,6 @@ def main():
         config.set('eda', 'enabled', False)
         config.set('training', 'enabled', False)
         config.set('predictions', 'enabled', True)
-
-    Debugger.attach(config)
 
     trainfiles = argument.train_files if argument.train_files else config.get('dataset', 'files')
 

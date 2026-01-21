@@ -5,7 +5,7 @@ class Debugger():
     @staticmethod
     def attach(config):
 
-        if config.eq('debug', 'enabled', False):
+        if not config.eq('debug', 'enabled', True):
             return
 
         debugpy = importlib.import_module("debugpy")

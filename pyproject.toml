@@ -31,6 +31,7 @@ dependencies = [
     "xgboost>=1.7.0",
     "shap>=0.40.0",
     "openml>=0.12.0",
+    "debugpy>=1.8.0",
 ]
 
 [project.scripts]
