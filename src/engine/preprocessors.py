@@ -37,10 +37,29 @@ class Preprocessors():
         x = df
         x = x.drop(label, axis=1)
 
+        # Apply Y preprocessors if configured
+        y_preprocessors = config.get('preprocess', 'y_preprocessors')
+        if type(y_preprocessors) is list:
+            for module in y_preprocessors:
+                y_preprocessor = Plugins.create(
+                    'preprocess.y_preprocessor', module,
+                    config,
+                    y
+                )
+                y = y_preprocessor.transform()
+
+        # Maintain backward compatibility with label_encode flag
         labels = y
         if config.eq('preprocess', 'label_encode', True):
-            le = LabelEncoder()
-            y = pd.DataFrame(list(le.fit_transform(y.values.flatten())), columns=[label])
-            labels = le.classes_
+            # If label_encode is True and no y_preprocessors are configured,
+            # use the default label encoder for backward compatibility
+            if y_preprocessors is None or len(y_preprocessors) == 0:
+                le = LabelEncoder()
+                y = pd.DataFrame(list(le.fit_transform(y.values.flatten())), columns=[label])
+                labels = le.classes_
+        else:
+            # If label_encode is not True, store original labels
+            if hasattr(y, 'values'):
+                labels = pd.Series(y.values.flatten()).unique()
 
         return x, y, labels

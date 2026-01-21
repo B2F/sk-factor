@@ -5,6 +5,7 @@ from plugins.plots.base_report import Report
 from plugins.preprocess.base_preprocessor import BasePreprocessor
 from plugins.preprocess.base_selector import BaseSelector
 from plugins.preprocess.base_transformer import BaseTransformer
+from plugins.preprocess.base_y_preprocessor import BaseYPreprocessor
 from plugins.split.base_cv import BaseCv
 from plugins.training.base_runner import BaseRunner
 from plugins.loader.base_loader import BaseLoader
@@ -81,6 +82,7 @@ class Plugins():
             'preprocess.preprocessor': BasePreprocessor,
             'preprocess.selector': BaseSelector,
             'preprocess.transformer': BaseTransformer,
+            'preprocess.y_preprocessor': BaseYPreprocessor,
             'split': BaseCv,
             'training': BaseRunner,
             'predictions': BasePredictor,
